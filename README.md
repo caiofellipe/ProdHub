@@ -1,5 +1,7 @@
 # ProdHub
 
+Um hub central para organizar planos de assinatura e produtos de anunciantes.
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.6.
 
 ## Development server
