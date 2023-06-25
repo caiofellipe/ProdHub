@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="row p-4">
+        <div class="col-11">
+            <h5>Cadastrar Usuario</h5>
+        </div>
+        <div class="col-1">
+            <button type="button" class="btn-close" aria-label="close" (click)="fechar()"></button>
+        </div>
+        <hr>
+        <form [formGroup]="criarUsuarioForm" (ngSubmit)="criaFormNovoUsuario()">
+            <div class="row">
+                <div class="form-group form-floating mb-3 col-12 col-md-6">
+                    <input type="text" class="form-control" placeholder=" Nome" formControlName="nome" id="idNome">
+                    <label for="idNome"> Nome</label>
+                </div>
+                <div class="form-group form-floating mb-3 col-12 col-md-6">
+                    <input type="text" class="form-control" placeholder=" Sobrenome" formControlName="sobrenome" id="idSobrenome">
+                    <label for="idSobrenome"> Sobrenome</label>
+                </div>
+                <div class="form-group form-floating mb-3 col-12 col-md-6">
+                    <input type="text" class="form-control" placeholder=" Email" formControlName="email" id="idEmail">
+                    <label for="idEmail"> Email</label>
+                </div>
+                <div class="form-group form-floating mb-3 col-12 col-md-6">
+                    <input type="text" class="form-control" placeholder=" Login" formControlName="login" id="idLogin">
+                    <label for="idLogin"> Login</label>
+                </div>
+                <div clas="form-group form-floating mb-3">
+                    <select class="form-select" id="idNivelUsuario" aria-label="Nivel Usuario">
+                        <option selected>Selecione o nivel do Usuario</option>
+                        <option value="USER">Usuario</option>
+                        <option value="ANUNC">Anunciante</option>
+                        <option value="ADMIN">Administrador</option>
+                    </select>
+                </div> 
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary m-2">Salvar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [
+const RoutingMain: Routes = [
   {
     path: 'home',
     loadChildren: () => import('../../pages/home/home.module').then(m => m.HomeModule)
@@ -10,10 +10,15 @@ const routes: Routes = [
     path: 'plans',
     loadChildren: () => import('../../pages/plans/plans.module').then(m => m.PlansModule)
   },
+  {
+    path: 'usuario',
+    loadChildren: () => import('../../pages/usuario/usuario.module').then(m => m.UsuarioModule)
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(RoutingMain)],
   exports: [RouterModule]
 })
 export class RoutingRoutingModule { }
+export { RoutingMain }

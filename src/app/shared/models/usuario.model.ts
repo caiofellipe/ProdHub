@@ -1,4 +1,13 @@
+import { NivelUsuario } from './nivelUsuario.model';
 export interface Usuario {
-    email: string;
-    senha: string;
+	id: string;
+	nome: string;
+	sobrenome: string;
+	email: string;
+	login: string;
+	idUsuario: string;
+	ativo: Boolean;
+    dataCriado: Date;
+	dataAlterado: Date;
+	nivelUsuario: NivelUsuario;
 }

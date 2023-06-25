@@ -1,0 +1,14 @@
+.sidebar{
+    position:fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 15%;
+}
+.sidebar-header, .nav-item:hover{
+    border-bottom: 1px solid #cdcdcd;
+}
+.nav-link{
+    cursor: pointer;
+}
+.sidebar-content{}

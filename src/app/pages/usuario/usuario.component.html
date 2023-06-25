@@ -1,0 +1,75 @@
+<div class="container">
+    <div class="row mb-5">
+        <div class="col-8">
+            <h6>Pesquisar Usuario</h6>
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="form-group form-floating mb-3">
+                    <input type="text" class="form-control" placeholder="Nome" formControlName="nome" id="idNome">
+                    <label for="idNome">Nome</label>
+                </div>
+                <div class="form-group form-floating mb-3">
+                    <input type="text" class="form-control" placeholder="Email" formControlName="email" id="idEmail">
+                    <label for="idEmail">Email</label>
+                </div>
+                <div class="form-group form-floating mb-3">
+                    <input type="text" class="form-control" placeholder="Login" formControlName="login" id="idLogin">
+                    <label for="idLogin">Login</label>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary m-2">Buscar</button>
+                    <button class="btn btn-primary m-2" (click)="criarUsuario()">Cadastrar</button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Sobrenome</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Login</th>
+                    <th scope="col">Data Alterado</th>
+                    <th scope="col">Data Criado</th>
+                    <th scope="col">Nivel Usuario</th>
+                    <th scope="col">Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>AAAAAAAAAA</td>
+                    <td>AAAAAAAAAA</td>
+                    <td>AAAAAAAAAA</td>
+                    <td>AAAAAAAAAA</td>
+                    <td>AAAAAAAAAA</td>
+                    <td>AAAAAAAAAA</td>
+                    <td>AAAAAAAAAA</td>
+                    <td><a href="#">Editar</a></td>
+                </tr>
+                <tr>
+                    <td>BBBBBBBBBB</td>
+                    <td>BBBBBBBBBB</td>
+                    <td>BBBBBBBBBB</td>
+                    <td>BBBBBBBBBB</td>
+                    <td>BBBBBBBBBB</td>
+                    <td>BBBBBBBBBB</td>
+                    <td>BBBBBBBBBB</td>
+                    <td><a href="#">Editar</a></td>
+                </tr>
+                <tr>
+                    <td>CCCCCCCCCC</td>
+                    <td>CCCCCCCCCC</td>
+                    <td>CCCCCCCCCC</td>
+                    <td>CCCCCCCCCC</td>
+                    <td>CCCCCCCCCC</td>
+                    <td>CCCCCCCCCC</td>
+                    <td>CCCCCCCCCC</td>
+                    <td><a href="#">Editar</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
