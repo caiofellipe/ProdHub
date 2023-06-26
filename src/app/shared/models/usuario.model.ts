@@ -1,5 +1,5 @@
-import { NivelUsuario } from './nivelUsuario.model';
-export interface Usuario {
+import { NivelUsuarioModel } from './nivelUsuario.model';
+export interface UsuarioModel {
 	id: string;
 	nome: string;
 	sobrenome: string;
@@ -9,5 +9,5 @@ export interface Usuario {
 	ativo: Boolean;
     dataCriado: Date;
 	dataAlterado: Date;
-	nivelUsuario: NivelUsuario;
+	nivelUsuario: NivelUsuarioModel;
 }

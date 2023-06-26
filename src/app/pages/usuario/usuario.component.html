@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row mb-5">
         <div class="col-8">
-            <h6>Pesquisar Usuario</h6>
+            <h5 class="mb-3">Pesquisar Usuario</h5>
             <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <div class="form-group form-floating mb-3">
                     <input type="text" class="form-control" placeholder="Nome" formControlName="nome" id="idNome">
@@ -17,14 +17,15 @@
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary m-2">Buscar</button>
-                    <button class="btn btn-primary m-2" (click)="criarUsuario()">Cadastrar</button>
+                    <a class="btn btn-primary m-2" (click)="buscarTodos()">Buscar Todos</a>
+                    <a class="btn btn-primary m-2" (click)="abrirModal()">Cadastrar</a>
                 </div>
             </form>
             
         </div>
     </div>
     <hr>
-    <div class="row">
+    <div class="row" *ngIf="retornoUsuario.length > 0">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -32,42 +33,18 @@
                     <th scope="col">Sobrenome</th>
                     <th scope="col">Email</th>
                     <th scope="col">Login</th>
-                    <th scope="col">Data Alterado</th>
-                    <th scope="col">Data Criado</th>
                     <th scope="col">Nivel Usuario</th>
                     <th scope="col">Ação</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>AAAAAAAAAA</td>
-                    <td>AAAAAAAAAA</td>
-                    <td>AAAAAAAAAA</td>
-                    <td>AAAAAAAAAA</td>
-                    <td>AAAAAAAAAA</td>
-                    <td>AAAAAAAAAA</td>
-                    <td>AAAAAAAAAA</td>
-                    <td><a href="#">Editar</a></td>
-                </tr>
-                <tr>
-                    <td>BBBBBBBBBB</td>
-                    <td>BBBBBBBBBB</td>
-                    <td>BBBBBBBBBB</td>
-                    <td>BBBBBBBBBB</td>
-                    <td>BBBBBBBBBB</td>
-                    <td>BBBBBBBBBB</td>
-                    <td>BBBBBBBBBB</td>
-                    <td><a href="#">Editar</a></td>
-                </tr>
-                <tr>
-                    <td>CCCCCCCCCC</td>
-                    <td>CCCCCCCCCC</td>
-                    <td>CCCCCCCCCC</td>
-                    <td>CCCCCCCCCC</td>
-                    <td>CCCCCCCCCC</td>
-                    <td>CCCCCCCCCC</td>
-                    <td>CCCCCCCCCC</td>
-                    <td><a href="#">Editar</a></td>
+                <tr *ngFor="let usuario of retornoUsuario">
+                    <td>{{ usuario.nome }}</td>
+                    <td>{{ usuario.sobrenome }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>{{ usuario.login }}</td>
+                    <td>{{ usuario.nivelUsuario.nivel }}</td>
+                    <td><a (click)="editar(usuario)" class="btn btn-outline-primary">Editar</a></td>
                 </tr>
             </tbody>
         </table>

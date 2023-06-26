@@ -6,8 +6,7 @@
         <div class="col-1">
             <button type="button" class="btn-close" aria-label="close" (click)="fechar()"></button>
         </div>
-        <hr>
-        <form [formGroup]="criarUsuarioForm" (ngSubmit)="criaFormNovoUsuario()">
+        <form [formGroup]="criarUsuarioForm" (ngSubmit)="criarUsuario()" class="p-4">
             <div class="row">
                 <div class="form-group form-floating mb-3 col-12 col-md-6">
                     <input type="text" class="form-control" placeholder=" Nome" formControlName="nome" id="idNome">
@@ -25,14 +24,14 @@
                     <input type="text" class="form-control" placeholder=" Login" formControlName="login" id="idLogin">
                     <label for="idLogin"> Login</label>
                 </div>
-                <div clas="form-group form-floating mb-3">
-                    <select class="form-select" id="idNivelUsuario" aria-label="Nivel Usuario">
-                        <option selected>Selecione o nivel do Usuario</option>
-                        <option value="USER">Usuario</option>
-                        <option value="ANUNC">Anunciante</option>
-                        <option value="ADMIN">Administrador</option>
+                <div class="form-froup mb-3">
+                    <h6>Marque o nivel de acesso do Usuario</h6>
+
+                    <select class="form-select" formControlName="nivelUsuario">
+                        <option *ngFor="let nv of checkboxNivelUsario; let i = index" [value]="nv.id" [selected]="nv.nivel.toString() == usuarioTemNivel">{{ nv.nivel }}</option>
                     </select>
-                </div> 
+                </div>
+                <hr>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary m-2">Salvar</button>
                 </div>

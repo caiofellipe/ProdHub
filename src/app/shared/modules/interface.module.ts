@@ -1,9 +1,9 @@
+import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { BrowserModule } from "@angular/platform-browser";
-import { AppRoutingModule } from "src/app/app-routing.module";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { LayoutModule } from "../components/layout/layout.module";
-import { CommonModule } from "@angular/common";
+import { ToastrModule } from "ngx-toastr";
 
 @NgModule({
     declarations: [],
@@ -12,11 +12,15 @@ import { CommonModule } from "@angular/common";
       ReactiveFormsModule,
       FormsModule,
       LayoutModule,
+      NgbModule,
+      ToastrModule.forRoot(),
     ],
     exports: [
       ReactiveFormsModule,
       FormsModule,
       LayoutModule,
+      NgbModule,
+      ToastrModule,
     ],
   })
 export class InterfaceModule { }
