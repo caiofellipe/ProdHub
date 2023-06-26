@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from "@angular/router";
     styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent{
+    public sidebarShow: boolean = false;
     
     constructor(
         private router: Router,
@@ -14,7 +15,6 @@ export class SidebarComponent{
     ){}
 
     acoesUsuarios() {
-        console.log(this.routeActive);
         this.router.navigate(['usuario'], {relativeTo: this.routeActive});
     }
 }

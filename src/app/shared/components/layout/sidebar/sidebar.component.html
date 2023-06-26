@@ -1,12 +1,22 @@
-<div class="sidebar bg-dark text-white" [class.sidebar-slide-in]="true">
-    <div class="sidebar-content">
-        <div class="sidebar-header text-center p-3">
-            <h5>Menu</h5>
+<div class="sidebar bg-dark ">
+    <div class="btn-w-600">
+        <button class="navbar-toggler navbar bg-white" (click)="sidebarShow = !sidebarShow" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <div class="sidebar-slider" [class.sidebar-slide-in]="sidebarShow">
+        <div class="sidebar-header row text-center m-3 p-2 text-white">
+            <div class="col-10">
+                <h5>Menu</h5>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn-close bg-white" (click)="sidebarShow = !sidebarShow"></button>
+            </div>
         </div>
         <div class="sidebar-body text-right p-3">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li class="nav-item">
-                  <a class="nav-link" (click)="acoesUsuarios()">Usuarios</a>
+                    <a class="nav-link text-white" (click)="acoesUsuarios()">Usuarios</a>
                 </li>
             </ul>
         </div>
