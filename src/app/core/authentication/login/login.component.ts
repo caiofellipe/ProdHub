@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
       usuarioLocalStorage.senha == login.senha){
         this.autenticado = true;
         this.toast.success("Autenticação realizada.","Sucesso");
-        this.router.navigate(["home"], {queryParams: { usuario: usuarioLocalStorage.id }} );
+        this.router.navigate(["planos"], {queryParams: { usuario: usuarioLocalStorage.id }} );
     }else{
       this.autenticado = false;
       this.toast.error("Email ou senha estão incorretos.","ERRO");
