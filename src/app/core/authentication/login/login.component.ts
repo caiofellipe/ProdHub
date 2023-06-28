@@ -45,6 +45,10 @@ export class LoginComponent implements OnInit {
     let chave = this.criaChaveLocalStorage(login.email);
     let usuarioLocalStorage =  this.localStorageService.getUsuario(chave);
 
+    if(usuarioLocalStorage == null){
+      this.toast.error("Usuario não encontrado com estes dados","ERRO");
+    }
+
     if(usuarioLocalStorage.email == login.email &&
       usuarioLocalStorage.senha == login.senha){
         this.autenticado = true;
@@ -52,7 +56,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(["home"], {queryParams: { usuario: usuarioLocalStorage.id }} );
     }else{
       this.autenticado = false;
-      this.toast.success("Email ou senha estão incorretos.","ERRO");
+      this.toast.error("Email ou senha estão incorretos.","ERRO");
     }
 
   }
