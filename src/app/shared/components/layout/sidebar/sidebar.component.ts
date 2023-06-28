@@ -14,7 +14,11 @@ export class SidebarComponent{
         private routeActive: ActivatedRoute,
     ){}
 
-    acoesUsuarios() {
-        this.router.navigate(['usuario'], {relativeTo: this.routeActive});
+    perfil() {
+        this.router.navigate(['/usuario'], {relativeTo: this.routeActive});
+    }
+
+    planos(){
+        this.router.navigate(["/planos"], {relativeTo: this.routeActive} )
     }
 }

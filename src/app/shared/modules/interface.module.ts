@@ -16,6 +16,7 @@ import { ToastrModule } from "ngx-toastr";
       ToastrModule.forRoot(),
     ],
     exports: [
+      CommonModule,
       ReactiveFormsModule,
       FormsModule,
       LayoutModule,

@@ -1,21 +1,22 @@
 <router-outlet></router-outlet>
 <div class="container container-grid">
     <div class="card border-primary  card-form">
-        <div class="card-body">
+        <div class="card-body ">
             <h3 class="card-title text-center border-bottom border-3 border-primary p-2">Login</h3>
-            <form [formGroup]="form">
+            <form [formGroup]="form" (ngSubmit)="login()">
                 <div class="form-group form-floating mb-3">
                     <input type="email" class="form-control" id="idFormControlEmail" placeholder="name@exemplo.com" formControlName="email">
                     <label for="idFormControlEmail" class="form-label">Seu E-mail</label>
                 </div>
                 <div class="form-group form-floating mb-3">
-                    <input type="password" class="form-control" id="idFormControlPassword" placeholder="Password" formControlName="pwd">
+                    <input type="password" class="form-control" id="idFormControlPassword" placeholder="Password" formControlName="senha">
                     <label for="idFormControlPassword">Sua Senha</label>
                 </div>
                 <div class="form-group p-2 text-center">
                     <button type="submit" class="btn btn-md btn-primary">Acessar</button>
                 </div>
             </form>
+            <a class="link d-flex m-2 justify-content-center" (click)="cadastrar()">Cadastre-se</a>
         </div>
     </div>
 </div>

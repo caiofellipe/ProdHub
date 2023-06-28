@@ -7,8 +7,8 @@ const RoutingMain: Routes = [
     loadChildren: () => import('../../pages/home/home.module').then(m => m.HomeModule)
   },
   {
-    path: 'plans',
-    loadChildren: () => import('../../pages/plans/plans.module').then(m => m.PlansModule)
+    path: 'planos',
+    loadChildren: () => import('../../pages/planos/planos.module').then(m => m.PlanosModule)
   },
   {
     path: 'usuario',
