@@ -1,0 +1,78 @@
+<div class="container">
+    <div class="row p-4">
+        <div class="col-11">
+            <h5>Cadastrar Empresa</h5>
+        </div>
+        <div class="col-1">
+            <button type="button" class="btn-close" aria-label="close" (click)="fechar()"></button>
+        </div>
+        <form [formGroup]="form" (ngSubmit)="salvar()" class="p-4">
+            <div class="row">
+                <div class="form-group form-floating mb-3 col-12 col-md-6">
+                    <input type="text" class="form-control" placeholder=" Nome" formControlName="nome" id="idNome">
+                    <label for="idNome"> Nome</label>
+                </div>
+                <div class="form-group form-floating mb-3 col-12 col-md-6">
+                    <input type="text" class="form-control" placeholder=" CNPJ" formControlName="cnpj" id="idCnpj">
+                    <label for="idCnpj"> CNPJ</label>
+                </div>
+                <div class="form-group form-floating mb-3 col-12 col-md-6">
+                    <input type="text" class="form-control" placeholder=" Email" formControlName="email" id="idEmail">
+                    <label for="idEmail"> Email</label>
+                </div>
+                <div class="form-group form-floating mb-3 col-12 col-md-6">
+                    <input type="text" class="form-control" placeholder=" Telefone" formControlName="telefone" id="idTelefone">
+                    <label for="idTelefone"> Telefone</label>
+                </div>
+                <div class="form-check mb-4 col-12">
+                    <h6>Marque o nivel o ramo da Empresa</h6>
+                    <div *ngFor="let opcaoRamo of ramos; let i = index">
+                        <input type="radio" class="form-check-input" formControlName="ramo" id="{{i}}" [value]="opcaoRamo">
+                        <label class="form-check-label" for="{{i}}">
+                            {{ opcaoRamo }}
+                        </label>
+                    </div>
+                </div>
+                <div class="row" formGroupName="endereco">
+                    <div class="form-group form-floating col-12 col-md-4 d-flex mb-3">
+                        <input type="text" class="form-control" placeholder=" CEP" formControlName="cep" id="idCep">
+                        <label for="idCep"> CEP</label>
+                        <button type="button" class="btn btn-outline-primary">Buscar</button>
+                    </div>
+                    <div class="form-group form-floating col-12 col-md-4 mb-3">
+                        <input type="text" class="form-control" placeholder=" Cidade" formControlName="cidade" id="idCidade">
+                        <label for="idCidade"> Cidade</label>
+                    </div>
+                    <div class="form-group form-floating col-12 col-md-4 mb-3">
+                        <input type="text" class="form-control" placeholder=" Estado" formControlName="estado" id="idEstado">
+                        <label for="idEstado"> Estado</label>
+                    </div>
+
+                    <div class="form-group form-floating col-12 col-md-2 mb-3">
+                        <input type="text" class="form-control" placeholder=" Número" formControlName="numero" id="idNumero">
+                        <label for="idNumero"> Número</label>
+                    </div>
+                    <div class="form-group form-floating col-12 col-md-2 mb-3">
+                        <input type="text" class="form-control" placeholder=" UF" formControlName="uf" id="idUF">
+                        <label for="idUF"> UF</label>
+                    </div>
+                    <div class="form-group form-floating col-12 col-md-8 mb-3">
+                        <input type="text" class="form-control" placeholder=" Bairro" formControlName="bairro" id="idBairro">
+                        <label for="idBairro"> Bairro</label>
+                    </div>
+                    <div class="form-group form-floating col-12 col-md-12 mb-3">
+                        <input type="text" class="form-control" placeholder=" Rua/Av." formControlName="rua" id="idRua">
+                        <label for="idRua"> Rua / Avenida</label>
+                    </div>
+                </div>
+                <div class="form-group mb-4 col-12 mb-3">
+                    <label for="idLogo">Logo</label>
+                    <input type="file" class="form-control" id="idLogo" formControlName="logo_b64" (change)="enviaLogo($event)">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary m-2">Salvar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

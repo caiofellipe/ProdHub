@@ -19,6 +19,9 @@ export class SidebarComponent{
     }
 
     planos(){
-        this.router.navigate(["/planos"], {relativeTo: this.routeActive} )
+        this.router.navigate(["/planos"], {relativeTo: this.routeActive});
+    }
+    empresas(){
+        this.router.navigate(["/empresas"], {relativeTo: this.routeActive});
     }
 }

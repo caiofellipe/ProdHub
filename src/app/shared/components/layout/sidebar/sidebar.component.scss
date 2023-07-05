@@ -21,9 +21,6 @@
     .sidebar-header, .nav-item:hover{
         border-bottom: 1px solid #cdcdcd;
     }
-    .nav-link{
-        cursor: pointer;
-    }
     .navbar-toggler,.btn-close{
         display: block;
     }
@@ -54,9 +51,6 @@
   @media screen and (min-width: 600px) and (max-width: 1200px) {
     .sidebar-header, .nav-item:hover{
         border-bottom: 1px solid #cdcdcd;
-    }
-    .nav-link{
-        cursor: pointer;
     }
     .navbar-toggler,.btn-close{
         display: block;

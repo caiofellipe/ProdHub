@@ -1,3 +1,4 @@
+import { EmpresasModule } from '../../pages/empresas/empresas.module';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -13,6 +14,10 @@ const RoutingMain: Routes = [
   {
     path: 'usuario',
     loadChildren: () => import('../../pages/usuario/usuario.module').then(m => m.UsuarioModule)
+  },
+  {
+    path: 'empresas',
+    loadChildren: () => import('../../pages/empresas/empresas.module').then(m => m.EmpresasModule)
   },
 ];
 
