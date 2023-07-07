@@ -1,7 +1,11 @@
+import { CepService } from './../../../core/services/cep.service';
+import { LocalStorageService } from './../../../core/services/localStorage.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { pesquisaEstadoPelaUf } from 'src/app/core/helpers/estadosHelper';
+import { CepResponseModel } from 'src/app/shared/models/cepResponse.model';
 import { EmpresaModel } from 'src/app/shared/models/empresa.model';
 
 @Component({
@@ -10,6 +14,7 @@ import { EmpresaModel } from 'src/app/shared/models/empresa.model';
   styleUrls: ['./empresas-form.component.scss']
 })
 export class EmpresasFormComponent implements OnInit {
+  empresaEdit?: EmpresaModel;
   logoBase64: any;
 
   ramos: string[] = [
@@ -32,27 +37,56 @@ export class EmpresasFormComponent implements OnInit {
     private fb: FormBuilder,
     private modal: NgbModal,
     private toast: ToastrService,
+    private cepService: CepService,
+    private localStorageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {
+    this.criaForm();
+    this.desabilitaCamposEndereco();
+    
+  }
+
+  criaForm(){
     this.form = this.fb.group({
-      id: ['', Validators.required],
-      nome: ['', Validators.required],
-      cnpj: ['', Validators.required],
-      email: ['', Validators.required],
-      ramo: ['', Validators.required],
+      nome: [this.empresaEdit?.nome || '', Validators.required],
+      cnpj: [this.empresaEdit?.cnpj || '', Validators.required],
+      email: [this.empresaEdit?.email || '', Validators.required],
+      ramo: [this.empresaEdit?.ramo || '', Validators.required],
       endereco: this.fb.group({
-        rua: ['', Validators.required],
-        numero: ['', Validators.required],
-        cep: ['', Validators.required],
-        estado: ['', Validators.required],
-        cidade: ['', Validators.required],
-        uf: ['', Validators.required],
-        bairro: ['', Validators.required],
+        rua: [this.empresaEdit?.endereco.rua || '', Validators.required],
+        numero: [this.empresaEdit?.endereco.numero || '', Validators.required],
+        cep: [this.empresaEdit?.endereco.cep || '', Validators.required],
+        estado: [this.empresaEdit?.endereco.estado || '', Validators.required],
+        cidade: [this.empresaEdit?.endereco.cidade || '', Validators.required],
+        uf: [this.empresaEdit?.endereco.uf || '', Validators.required],
+        bairro: [this.empresaEdit?.endereco.bairro || '', Validators.required],
       }),
-      telefone: ['', Validators.required ],
-      logo_b64: ['', Validators.required ],
+      telefone: [this.empresaEdit?.telefone || '', Validators.required ],
+      logo_b64: [this.empresaEdit?.logo || '', Validators.required ],
     });
+
+    console.log(this.empresaEdit);
+  }
+
+  desabilitaCamposEndereco(){
+    this.form.get('endereco.cidade')?.disable();
+    this.form.get('endereco.bairro')?.disable();
+    this.form.get('endereco.estado')?.disable();
+    this.form.get('endereco.rua')?.disable();
+    this.form.get('endereco.uf')?.disable();
+  }
+
+  buscaCep(cep: string){
+    if(cep){
+      this.cepService.getCep(cep).subscribe((res: CepResponseModel) => {
+        this.form.get('endereco.cidade')?.setValue(res.localidade);
+        this.form.get('endereco.bairro')?.setValue(res.bairro);
+        this.form.get('endereco.rua')?.setValue(res.logradouro);
+        this.form.get('endereco.uf')?.setValue(res.uf);
+        this.form.get('endereco.estado')?.setValue(pesquisaEstadoPelaUf(res.uf));
+      });
+    }
   }
 
   salvar(){
@@ -76,9 +110,12 @@ export class EmpresasFormComponent implements OnInit {
       logo: this.logoBase64,
     }
     
+    this.localStorageService.salvarEmpresa("empresa:" + empresa.nome, empresa);
+    this.localStorageService.getEmpresa(empresa.nome);
+    this.toast.success("Empresa " + empresa.nome + " criada","Cadastro concluido.");
+    this.form.reset();
+    this.fechar();
 
-
-    console.log(empresa);
   }
   fechar(){
     this.modal.dismissAll();
@@ -92,5 +129,9 @@ export class EmpresasFormComponent implements OnInit {
     fileReader.onloadend = (e) => {
       this.logoBase64 = e.target?.result;
     }
+  }
+
+  alterarLogo(){
+    this.form.get('logo_b64')?.reset()
   }
 }

@@ -13,7 +13,7 @@
                     <label for="idNome"> Nome</label>
                 </div>
                 <div class="form-group form-floating mb-3 col-12 col-md-6">
-                    <input type="text" class="form-control" placeholder=" CNPJ" formControlName="cnpj" id="idCnpj">
+                    <input type="text" class="form-control" placeholder=" CNPJ" formControlName="cnpj" mask="00.000.000/0000-00" id="idCnpj">
                     <label for="idCnpj"> CNPJ</label>
                 </div>
                 <div class="form-group form-floating mb-3 col-12 col-md-6">
@@ -21,11 +21,11 @@
                     <label for="idEmail"> Email</label>
                 </div>
                 <div class="form-group form-floating mb-3 col-12 col-md-6">
-                    <input type="text" class="form-control" placeholder=" Telefone" formControlName="telefone" id="idTelefone">
+                    <input type="text" class="form-control" placeholder=" Telefone" formControlName="telefone" mask="(00) 0000-0000||(00) 0 0000-0000" id="idTelefone">
                     <label for="idTelefone"> Telefone</label>
                 </div>
                 <div class="form-check mb-4 col-12">
-                    <h6>Marque o nivel o ramo da Empresa</h6>
+                    <h6>Selecione o ramo da Empresa</h6>
                     <div *ngFor="let opcaoRamo of ramos; let i = index">
                         <input type="radio" class="form-check-input" formControlName="ramo" id="{{i}}" [value]="opcaoRamo">
                         <label class="form-check-label" for="{{i}}">
@@ -37,19 +37,19 @@
                     <div class="form-group form-floating col-12 col-md-4 d-flex mb-3">
                         <input type="text" class="form-control" placeholder=" CEP" formControlName="cep" id="idCep">
                         <label for="idCep"> CEP</label>
-                        <button type="button" class="btn btn-outline-primary">Buscar</button>
+                        <button type="button" class="btn btn-outline-primary" (click)="buscaCep(this.form.get('endereco.cep')?.value)">Buscar</button>
                     </div>
                     <div class="form-group form-floating col-12 col-md-4 mb-3">
-                        <input type="text" class="form-control" placeholder=" Cidade" formControlName="cidade" id="idCidade">
+                        <input type="text" class="form-control" placeholder=" Cidade" formControlName="cidade" id="idCidade" >
                         <label for="idCidade"> Cidade</label>
                     </div>
                     <div class="form-group form-floating col-12 col-md-4 mb-3">
-                        <input type="text" class="form-control" placeholder=" Estado" formControlName="estado" id="idEstado">
+                        <input type="text" class="form-control" placeholder=" Estado" formControlName="estado" id="idEstado" >
                         <label for="idEstado"> Estado</label>
                     </div>
 
                     <div class="form-group form-floating col-12 col-md-2 mb-3">
-                        <input type="text" class="form-control" placeholder=" Número" formControlName="numero" id="idNumero">
+                        <input type="text" class="form-control" placeholder=" Número" formControlName="numero" mask="0000" id="idNumero">
                         <label for="idNumero"> Número</label>
                     </div>
                     <div class="form-group form-floating col-12 col-md-2 mb-3">
@@ -66,8 +66,14 @@
                     </div>
                 </div>
                 <div class="form-group mb-4 col-12 mb-3">
-                    <label for="idLogo">Logo</label>
-                    <input type="file" class="form-control" id="idLogo" formControlName="logo_b64" (change)="enviaLogo($event)">
+                    <div *ngIf="!this.form.get('logo_b64')?.value">
+                        <label for="idLogo">Logo</label>
+                        <input type="file" class="form-control" id="idLogo" formControlName="logo_b64" (change)="enviaLogo($event)">
+                    </div>
+                    <div *ngIf="this.form.get('logo_b64')?.value" class="d-grid">
+                        <img [src]="this.form.get('logo_b64')?.value" class="mb-3">
+                        <a class="btn btn-outline-primary btn-md" (click)="alterarLogo()">Alterar Logo</a>
+                    </div>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary m-2">Salvar</button>
