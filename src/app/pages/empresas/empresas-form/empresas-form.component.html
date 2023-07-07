@@ -66,11 +66,11 @@
                     </div>
                 </div>
                 <div class="form-group mb-4 col-12 mb-3">
-                    <div *ngIf="!this.form.get('logo_b64')?.value">
+                    <div *ngIf="!temLogo">
                         <label for="idLogo">Logo</label>
                         <input type="file" class="form-control" id="idLogo" formControlName="logo_b64" (change)="enviaLogo($event)">
                     </div>
-                    <div *ngIf="this.form.get('logo_b64')?.value" class="d-grid">
+                    <div *ngIf="temLogo" class="d-grid">
                         <img [src]="this.form.get('logo_b64')?.value" class="mb-3">
                         <a class="btn btn-outline-primary btn-md" (click)="alterarLogo()">Alterar Logo</a>
                     </div>

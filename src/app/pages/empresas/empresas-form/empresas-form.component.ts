@@ -16,6 +16,7 @@ import { EmpresaModel } from 'src/app/shared/models/empresa.model';
 export class EmpresasFormComponent implements OnInit {
   empresaEdit?: EmpresaModel;
   logoBase64: any;
+  temLogo: boolean = false;
 
   ramos: string[] = [
     "Pizzaria",
@@ -66,7 +67,10 @@ export class EmpresasFormComponent implements OnInit {
       logo_b64: [this.empresaEdit?.logo || '', Validators.required ],
     });
 
-    console.log(this.empresaEdit);
+    if(this.empresaEdit?.logo){
+      this.temLogo = true;
+    }
+
   }
 
   desabilitaCamposEndereco(){
@@ -132,6 +136,7 @@ export class EmpresasFormComponent implements OnInit {
   }
 
   alterarLogo(){
-    this.form.get('logo_b64')?.reset()
+    this.temLogo = false;
+    this.form.get('logo_b64')?.reset();
   }
 }
