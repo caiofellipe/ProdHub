@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { InterfaceModule } from 'src/app/shared/modules/interface.module';
 import { PlanosRoutingModule } from './planos-routing.module';
 import { PlanosComponent } from './planos.component';
+import { PlanosFormComponent } from './planos-form/planos-form.component';
 
 
 @NgModule({
   declarations: [
-    PlanosComponent
+    PlanosComponent,
+    PlanosFormComponent
   ],
   imports: [
     CommonModule,
