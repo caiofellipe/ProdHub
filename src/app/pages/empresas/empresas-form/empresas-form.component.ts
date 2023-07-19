@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { pesquisaEstadoPelaUf } from 'src/app/core/helpers/estadosHelper';
 import { CepResponseModel } from 'src/app/shared/models/cepResponse.model';
 import { EmpresaModel } from 'src/app/shared/models/empresa.model';
+import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 
 @Component({
   selector: 'app-empresas-form',
@@ -17,6 +18,7 @@ export class EmpresasFormComponent implements OnInit {
   empresaEdit?: EmpresaModel;
   logoBase64: any;
   temLogo: boolean = false;
+  usuario!: UsuarioModel;
 
   ramos: string[] = [
     "Pizzaria",
@@ -84,6 +86,9 @@ export class EmpresasFormComponent implements OnInit {
   buscaCep(cep: string){
     if(cep){
       this.cepService.getCep(cep).subscribe((res: CepResponseModel) => {
+        if(res.erro){
+          this.toast.warning("Digite outro Nº de CEP","CEP não encontrado.");
+        }
         this.form.get('endereco.cidade')?.setValue(res.localidade);
         this.form.get('endereco.bairro')?.setValue(res.bairro);
         this.form.get('endereco.rua')?.setValue(res.logradouro);
@@ -112,8 +117,13 @@ export class EmpresasFormComponent implements OnInit {
       },
       telefone: form.telefone,
       logo: this.logoBase64,
+      usuario: this.usuario,
     }
     
+    if(this.usuario.empresaId == ""){
+      this.atualizaEmpresaIdNoCadastroUsuario(empresa.id, empresa.usuario);
+    }
+  
     this.localStorageService.salvarEmpresa("empresa:" + empresa.nome, empresa);
     this.localStorageService.getEmpresa(empresa.nome);
     this.toast.success("Empresa " + empresa.nome + " criada","Cadastro concluido.");
@@ -121,6 +131,15 @@ export class EmpresasFormComponent implements OnInit {
     this.fechar();
 
   }
+
+  atualizaEmpresaIdNoCadastroUsuario(empresaId: string, usuario: UsuarioModel){
+    let chaveUsuario = "usuario " + usuario.id;
+    this.localStorageService.removerUsuario(chaveUsuario);
+    usuario.empresaId = empresaId;
+    this.localStorageService.salvarUsuario(chaveUsuario, usuario);
+  }
+
+
   fechar(){
     this.modal.dismissAll();
   }

@@ -9,4 +9,5 @@ export interface CepResponseModel{
     logradouro: string; 
     siafi: string;
     uf: string;
+    erro: boolean;
 }

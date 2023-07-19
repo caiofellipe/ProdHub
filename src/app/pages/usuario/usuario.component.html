@@ -44,7 +44,7 @@
                         <td>{{ usuario.sobrenome }}</td>
                         <td>{{ usuario.email }}</td>
                         <td>{{ usuario.login }}</td>
-                        <td>{{ usuario.nivelUsuario.nivel }}</td>
+                        <td>{{ usuario.nivelUsuario?.nivel }}</td>
                         <td><a (click)="editar(usuario)" class="btn btn-outline-primary">Editar</a></td>
                     </tr>
                 </tbody>

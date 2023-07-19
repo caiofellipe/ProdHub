@@ -46,14 +46,14 @@ export class UsuarioFormComponent implements OnInit {
       dataAlterado: [usuario?.dataAlterado || ''],
       nivelUsuario: [
         {
-          id: [usuario?.nivelUsuario.id || ''],
-          sigla: [usuario?.nivelUsuario.sigla || ''],
-          nivel: [usuario?.nivelUsuario.nivel || ''],
+          id: [usuario?.nivelUsuario?.id || ''],
+          sigla: [usuario?.nivelUsuario?.sigla || ''],
+          nivel: [usuario?.nivelUsuario?.nivel || ''],
         }
       ],
     });
     if(usuario?.idUsuario != null){
-      this.usuarioTemNivel = usuario.nivelUsuario.nivel.toString();
+      this.usuarioTemNivel = usuario?.nivelUsuario?.nivel.toString() || "";
     }
   }
 

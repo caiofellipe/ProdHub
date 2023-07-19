@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LoginUsuarioModel } from 'src/app/shared/models/loginUsuario.model';
 import { LocalStorageService } from '../../services/localStorage.service';
 import { ToastrService } from 'ngx-toastr';
+import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +26,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log("");
     this.createForm();
   }
 
@@ -37,36 +39,24 @@ export class LoginComponent implements OnInit {
 
   login(){
     let formLogin = this.form.getRawValue();
-
     let login: LoginUsuarioModel = {
       email: formLogin.email,
       senha: formLogin.senha,
     }
-    let chave = this.criaChaveLocalStorage(login.email);
-    let usuarioLocalStorage =  this.localStorageService.getUsuario(chave);
+    let usuarioLocalStorage: UsuarioModel[] = this.localStorageService.todosUsuarios();
 
     if(usuarioLocalStorage == null){
       this.toast.error("Usuario não encontrado com estes dados","ERRO");
     }
 
-    if(usuarioLocalStorage.email == login.email &&
-      usuarioLocalStorage.senha == login.senha){
-        this.autenticado = true;
-        this.toast.success("Autenticação realizada.","Sucesso");
-        this.router.navigate(["planos"], {queryParams: { usuario: usuarioLocalStorage.id }} );
+    let usuario = usuarioLocalStorage.find((usuarioLocal: UsuarioModel) => usuarioLocal.email == login.email && usuarioLocal.senha && login.senha);
+    if(usuario){
+      this.autenticado = true;
+      this.toast.success("Autenticação realizada.","Sucesso");
+      this.router.navigate(["planos"], {queryParams: { usuario: usuario.id }} );
     }else{
       this.autenticado = false;
       this.toast.error("Email ou senha estão incorretos.","ERRO");
     }
-
   }
-
-  criaChaveLocalStorage(email: string){
-    return "usuario " + email;
-  }
-
-  cadastrar() {
-    this.router.navigate(['cadastre-se']);
-  }
-
 }

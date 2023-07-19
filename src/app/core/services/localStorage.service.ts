@@ -1,7 +1,6 @@
-import { EmpresaModel } from 'src/app/shared/models/empresa.model';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { NovoUsuarioModel } from 'src/app/shared/models/novoUsuario.model';
+import { EmpresaModel } from 'src/app/shared/models/empresa.model';
+import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +9,7 @@ export class LocalStorageService {
 
   constructor() { }
 
-  salvarUsuario(chave: string, novoUsuario: NovoUsuarioModel){
+  salvarUsuario(chave: string, novoUsuario: UsuarioModel){
     localStorage.setItem(chave, JSON.stringify(novoUsuario));
     
   }
@@ -18,6 +17,19 @@ export class LocalStorageService {
   getUsuario(chave: string){
     const usuario = localStorage.getItem(chave);
     return usuario ? JSON.parse(usuario) : null;
+  }
+
+  todosUsuarios(){
+    let objLocalStorage = Object.keys(localStorage);
+    let usuarios: UsuarioModel[] = [];
+
+    objLocalStorage.forEach((chave: string) => {
+      if(chave.startsWith("usuario")){
+        usuarios.push(this.getUsuario(chave));
+      }
+    });
+    console.log(usuarios)
+    return usuarios;
   }
 
   removerUsuario(chave: string){

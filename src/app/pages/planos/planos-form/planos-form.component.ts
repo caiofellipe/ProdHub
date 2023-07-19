@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { LocalStorageService } from './../../../core/services/localStorage.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CategoriaModel } from 'src/app/shared/models/categoria.model';
 import { NivelPlanoModel } from 'src/app/shared/models/nivelPlano.model';
+import { PlanoModel } from 'src/app/shared/models/plano.model';
+import { SubCategoriaModel } from 'src/app/shared/models/subCategoria.model';
+import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 
 @Component({
   selector: 'app-planos-form',
@@ -12,17 +17,44 @@ export class PlanosFormComponent implements OnInit {
   cadastroProduto: string = "Produto";
   cadastroPlano: string = "Plano";
   etapa: Number = 1;
-  categorias: any[] = [];
-  subCategorias: any[] = [];
+  comboSubCategorias: SubCategoriaModel[] = [];
+  
+  categorias: CategoriaModel[] = [
+    {id:1, nome: "Alimentação"},
+    {id:2, nome: "Beleza e Cuidados Pessoais"},
+    {id:3, nome: "Tecnologia"},
+  ];
+  
+  subCategorias: SubCategoriaModel[] = [
+    {id: 1, nome: "Refeições prontas", idCategoria: 1},
+    {id: 2, nome: "Kits de ingredientes para receitas", idCategoria: 1},
+    {id: 3, nome: "Lanches Saudáveis", idCategoria: 1},
+    {id: 4, nome: "Suplementos Alimentares", idCategoria: 1},
+    {id: 5, nome: "Produtos para Limpeza facial", idCategoria: 2},
+    {id: 6, nome: "Hidratantes", idCategoria: 2},
+    {id: 7, nome: "Shampoos e condicionadores", idCategoria: 2},
+    {id: 8, nome: "Maquiagem", idCategoria: 2},
+    {id: 9, nome: "Plano de internet (Movel e Fibra)", idCategoria: 3},
+    {id: 10, nome: "Assinatura Streaming", idCategoria: 3},
+    {id: 11, nome: "Softwares de proteção de privacidade", idCategoria: 3},
+  ];
+
+  usuarioAtual!: UsuarioModel;
+  usuarioTemEmpresaCadastrada: boolean = false;
+
+  temImagem: boolean = false;
+  imagemBase64!: any;
   
   niveisPlano: NivelPlanoModel[] = [
-    {id: 1, nivel:"BÁSICO"},
+    {id: 1, nivel:"BASICO"},
     {id: 2, nivel:"INTERMEDIARIO"},
     {id: 3, nivel:"PLUS"},
   ]
+  usuarioNaoTemEmpresaCadastrada: boolean = false;
 
   constructor(
     private fb: FormBuilder,
+    private localStorageService: LocalStorageService,
   ){}
 
   ngOnInit(): void {
@@ -33,6 +65,7 @@ export class PlanosFormComponent implements OnInit {
     this.form = this.fb.group({
       nome: ['', Validators.required],
       nivel: ['', Validators.required],
+      empresa: ['', Validators.required],
       produto: this.fb.group({
         nome: ['', Validators.required],
         categoria: ['', Validators.required],
@@ -41,13 +74,65 @@ export class PlanosFormComponent implements OnInit {
         imagens: ['', Validators.required],
       }),
     });
+
+    this.form.get('empresa')?.disable();
+  }
+
+  populaSelectSubCategoria(){
+    let categoria = this.form.get('produto.categoria')?.value;
+    if(this.comboSubCategorias.length > 0){
+      this.comboSubCategorias = [];
+    }
+
+    this.subCategorias.map((subCat: SubCategoriaModel) => {
+      if(subCat.idCategoria == Number(categoria)){
+        this.comboSubCategorias.push(subCat);
+      }
+    });
   }
 
   avancar(){
     this.etapa = 2;
-
   }
 
-  enviaImagens(event: any){}
+  vinculaPlanoNaEmpresa(){}
+  empresaVinculadaAoUsuario(){}
+
+  voltar(){
+    this.etapa = 1;
+  }
+
+  salvar(){
+      let form = this.form.getRawValue();
+      /*let plano: PlanoModel = {
+        id: crypto.randomUUID(),
+        nome: form.nome,
+        nivel: form.nivel,
+        produto: {
+          id: crypto.randomUUID(),
+          nome: form.produto.nome,
+          categoria: Number(form.produto.categoria),
+          subcategoria: Number(form.produto.subcategoria),
+          descricao: form.produto.descricao,
+          imagens: this.imagemBase64,
+        },
+      };*/
+
+    console.log(form);
+  }
+
+  enviaImagens(event: any){
+    const file = event.target.files[0];
+    const fileReader = new FileReader;
+
+    fileReader.readAsDataURL(file);
+    fileReader.onloadend = (e) => {
+      this.imagemBase64 = e.target?.result ? e.target?.result : "";
+      this.temImagem = true;
+    }
+  }
+  alterarImagem(){
+    this.temImagem = false;
+  }
 
 }

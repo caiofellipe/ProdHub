@@ -1,9 +1,11 @@
+import { NivelUsuarioModel } from './../../../shared/models/nivelUsuario.model';
+import { EmpresaModel } from './../../../shared/models/empresa.model';
 import { LocalStorageService } from './../../services/localStorage.service';
-import { NovoUsuarioModel } from '../../../shared/models/novoUsuario.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 
 @Component({
   selector: 'app-cadastrar-usuario',
@@ -12,7 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class CadastrarUsuarioComponent implements OnInit {
   form!: FormGroup;
-  novoUsuario!: NovoUsuarioModel;
+  novoUsuario!: UsuarioModel;
   fotoBase64: any;
   idUsuarioQueConvidou!: string | null;
 
@@ -37,15 +39,21 @@ export class CadastrarUsuarioComponent implements OnInit {
 
   cadastrarNovoUsuario(){
     let formUsuario = this.form.getRawValue();
-    let novoUsuario: NovoUsuarioModel = {
+    let novoUsuario: UsuarioModel = {
       id: crypto.randomUUID(),
       idUsuarioConvite: this.idUsuarioQueConvidou || "",
       nome: formUsuario.nome,
       email: formUsuario.email,
+      login: formUsuario.email,
       senha: formUsuario.senha,
-      foto: this.fotoBase64 
+      ativo: true,
+      dataCriado: new Date(),
+      dataAlterado: new Date(),
+      nivelUsuario: {id: 2, nivel: "Usuario", sigla:"USER"},
+      foto: this.fotoBase64, 
+      empresaId: "",
     }
-    let chave = this.criaChaveLocalStorage(novoUsuario.email);
+    let chave = this.criaChaveLocalStorage(novoUsuario?.id);
     this.localStorageService.salvarUsuario(chave, novoUsuario);    
     let usuarioLocalStorage = this.localStorageService.getUsuario(chave);
     if(usuarioLocalStorage != null){
@@ -54,8 +62,8 @@ export class CadastrarUsuarioComponent implements OnInit {
     }
   }
 
-  criaChaveLocalStorage(email: string){
-    return "usuario " + email;
+  criaChaveLocalStorage(id?: string){
+    return "usuario " + id;
   }
 
   enviaFoto(event: any){
