@@ -2,6 +2,7 @@ import { LocalStorageService } from './../../../core/services/localStorage.servi
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CategoriaModel } from 'src/app/shared/models/categoria.model';
+import { EmpresaModel } from 'src/app/shared/models/empresa.model';
 import { NivelPlanoModel } from 'src/app/shared/models/nivelPlano.model';
 import { PlanoModel } from 'src/app/shared/models/plano.model';
 import { SubCategoriaModel } from 'src/app/shared/models/subCategoria.model';
@@ -39,6 +40,8 @@ export class PlanosFormComponent implements OnInit {
     {id: 11, nome: "Softwares de proteção de privacidade", idCategoria: 3},
   ];
 
+  planos: PlanoModel[] = [];
+  empresa?: EmpresaModel;
   usuarioAtual!: UsuarioModel;
   usuarioTemEmpresaCadastrada: boolean = false;
 
@@ -76,6 +79,7 @@ export class PlanosFormComponent implements OnInit {
     });
 
     this.form.get('empresa')?.disable();
+    this.empresaVinculadaAoUsuario();
   }
 
   populaSelectSubCategoria(){
@@ -95,8 +99,17 @@ export class PlanosFormComponent implements OnInit {
     this.etapa = 2;
   }
 
-  vinculaPlanoNaEmpresa(){}
-  empresaVinculadaAoUsuario(){}
+  vinculaPlanoNaEmpresa(){
+
+  }
+
+  empresaVinculadaAoUsuario(){
+    let empresas: EmpresaModel[] = this.localStorageService.todasEmpresas();
+    let empresaEncontrada = empresas.find((empresa: EmpresaModel)=> empresa.id == this.usuarioAtual.empresaId);
+    this.form.get('empresa')?.setValue(empresaEncontrada?.id); 
+    this.empresa = empresaEncontrada;
+    return empresaEncontrada;
+  }
 
   voltar(){
     this.etapa = 1;
@@ -104,10 +117,11 @@ export class PlanosFormComponent implements OnInit {
 
   salvar(){
       let form = this.form.getRawValue();
-      /*let plano: PlanoModel = {
+      let plano: PlanoModel = {
         id: crypto.randomUUID(),
         nome: form.nome,
         nivel: form.nivel,
+        empresaId: form.empresa,
         produto: {
           id: crypto.randomUUID(),
           nome: form.produto.nome,
@@ -116,9 +130,24 @@ export class PlanosFormComponent implements OnInit {
           descricao: form.produto.descricao,
           imagens: this.imagemBase64,
         },
-      };*/
+      };
+      this.atualizaEmpresaComPlanoLocalStorage(plano, this.empresa);
+    console.log(plano);
+  }
 
-    console.log(form);
+  atualizaEmpresaComPlanoLocalStorage(plano: PlanoModel, empresa?: EmpresaModel){
+    if(empresa){
+      let chaveEmpresa = "empresa:" + empresa?.nome;
+      this.planos.push(plano);
+      console.log(empresa);
+      if(this.planos.length > 0){
+        empresa.planos.push(...this.planos);
+      //  this.localStorageService.removerEmpresa(chaveEmpresa);
+        this.localStorageService.salvarEmpresa(chaveEmpresa, empresa);
+        console.log(empresa.planos);
+      }
+    }
+
   }
 
   enviaImagens(event: any){

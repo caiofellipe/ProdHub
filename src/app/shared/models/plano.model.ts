@@ -6,6 +6,6 @@ export interface PlanoModel{
     id: string;
     nome: string;
     nivel: NivelPlanoModel;
-    empresa: EmpresaModel;
+    empresaId: string;
     produto: ProdutoModel;
 }

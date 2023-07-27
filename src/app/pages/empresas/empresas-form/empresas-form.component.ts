@@ -1,3 +1,4 @@
+import { EmpresaService } from 'src/app/core/services/empresa.service';
 import { CepService } from './../../../core/services/cep.service';
 import { LocalStorageService } from './../../../core/services/localStorage.service';
 import { Component, OnInit } from '@angular/core';
@@ -8,6 +9,7 @@ import { pesquisaEstadoPelaUf } from 'src/app/core/helpers/estadosHelper';
 import { CepResponseModel } from 'src/app/shared/models/cepResponse.model';
 import { EmpresaModel } from 'src/app/shared/models/empresa.model';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-empresas-form',
@@ -16,9 +18,10 @@ import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 })
 export class EmpresasFormComponent implements OnInit {
   empresaEdit?: EmpresaModel;
-  logoBase64: any;
+  logoBase64!: any;
   temLogo: boolean = false;
   usuario!: UsuarioModel;
+  empresa!: EmpresaModel;
 
   ramos: string[] = [
     "Pizzaria",
@@ -41,7 +44,8 @@ export class EmpresasFormComponent implements OnInit {
     private modal: NgbModal,
     private toast: ToastrService,
     private cepService: CepService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private empresaService: EmpresaService
   ) { }
 
   ngOnInit(): void {
@@ -72,6 +76,7 @@ export class EmpresasFormComponent implements OnInit {
     if(this.empresaEdit?.logo){
       this.temLogo = true;
     }
+    console.log(this.empresaEdit);
 
   }
 
@@ -101,14 +106,13 @@ export class EmpresasFormComponent implements OnInit {
   salvar(){
     let form = this.form.getRawValue();
     let empresa: EmpresaModel = {
-      id: crypto.randomUUID(),
       nome: form.nome,
       cnpj: form.cnpj,
       email: form.email,
       ramo: form.ramo,
       endereco: {
         rua: form.endereco.rua,
-        numero: form.endereco.numero,
+        numero: Number(form.endereco.numero),
         cep: form.endereco.cep,
         estado: form.endereco.estado,
         cidade: form.endereco.cidade,
@@ -117,18 +121,24 @@ export class EmpresasFormComponent implements OnInit {
       },
       telefone: form.telefone,
       logo: this.logoBase64,
-      usuario: this.usuario,
+      planos: [],
     }
     
-    if(this.usuario.empresaId == ""){
-      this.atualizaEmpresaIdNoCadastroUsuario(empresa.id, empresa.usuario);
-    }
+    //if(this.usuario.empresaId == ""){
+      //this.atualizaEmpresaIdNoCadastroUsuario(empresa.id, empresa.usuario);
+    //}
+
+    this.empresaService.criar(empresa).subscribe((res: HttpResponse<EmpresaModel>) => {
+      console.log(res.body);
+      if(res.body?.id){
+        this.toast.success("Empresa " + empresa.nome + " criada","Cadastro concluido.");
+        this.form.reset();
+        this.fechar();
+      }
+    });
   
-    this.localStorageService.salvarEmpresa("empresa:" + empresa.nome, empresa);
-    this.localStorageService.getEmpresa(empresa.nome);
-    this.toast.success("Empresa " + empresa.nome + " criada","Cadastro concluido.");
-    this.form.reset();
-    this.fechar();
+    //this.localStorageService.salvarEmpresa("empresa:" + empresa.nome, empresa);
+    //this.localStorageService.getEmpresa(empresa.nome);
 
   }
 
@@ -150,7 +160,9 @@ export class EmpresasFormComponent implements OnInit {
 
     fileReader.readAsDataURL(file);
     fileReader.onloadend = (e) => {
-      this.logoBase64 = e.target?.result;
+      if(e.target?.result != null){
+        this.logoBase64 = e.target?.result;
+      }
     }
   }
 

@@ -36,6 +36,10 @@ export class LocalStorageService {
     localStorage.removeItem(chave);
   }
 
+  removerEmpresa(chaveEmpresa: string){
+    localStorage.removeItem(chaveEmpresa);
+  }
+
   salvarEmpresa(chave: string, empresa: EmpresaModel){
     localStorage.setItem(chave, JSON.stringify(empresa));
   }

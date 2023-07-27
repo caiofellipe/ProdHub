@@ -1,11 +1,11 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoginUsuarioModel } from 'src/app/shared/models/loginUsuario.model';
-import { LocalStorageService } from '../../services/localStorage.service';
 import { ToastrService } from 'ngx-toastr';
+import { LoginUsuarioModel } from 'src/app/shared/models/loginUsuario.model';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
+import { LocalStorageService } from '../../services/localStorage.service';
+import { AuthService } from './../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +15,7 @@ import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 export class LoginComponent implements OnInit {
   form!: FormGroup;
   autenticado: boolean = false;
+  public usuarioLogado!: UsuarioModel;
 
   constructor(
     private fb: FormBuilder,
