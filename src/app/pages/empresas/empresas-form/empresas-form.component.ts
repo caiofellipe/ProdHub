@@ -79,11 +79,6 @@ export class EmpresasFormComponent implements OnInit {
     if(this.empresaEdit?.logo){
       this.temLogo = true;
     }
-
-     
-
-    console.log(this.empresaEdit);
-    
   }
 
   ramo(){
@@ -148,7 +143,6 @@ export class EmpresasFormComponent implements OnInit {
     //}
 
     this.empresaService.criar(empresa).subscribe((res: HttpResponse<EmpresaModel>) => {
-      console.log(res);
       if(res){
         this.toast.success("Empresa " + empresa.nome + " criada","Cadastro concluido.");
         this.form.reset();
