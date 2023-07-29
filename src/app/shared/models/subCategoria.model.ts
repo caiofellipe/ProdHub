@@ -1,5 +1,5 @@
 export interface SubCategoriaModel{
     id: Number;
-    idCategoria: Number;
+    categoriaId: Number;
     nome: string;
 }

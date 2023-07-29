@@ -28,7 +28,6 @@ export class LocalStorageService {
         usuarios.push(this.getUsuario(chave));
       }
     });
-    console.log(usuarios)
     return usuarios;
   }
 

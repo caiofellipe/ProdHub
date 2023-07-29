@@ -1,12 +1,18 @@
+import { HttpResponse } from '@angular/common/http';
 import { LocalStorageService } from './../../../core/services/localStorage.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { EmpresaService } from 'src/app/core/services/empresa.service';
 import { CategoriaModel } from 'src/app/shared/models/categoria.model';
 import { EmpresaModel } from 'src/app/shared/models/empresa.model';
 import { NivelPlanoModel } from 'src/app/shared/models/nivelPlano.model';
 import { PlanoModel } from 'src/app/shared/models/plano.model';
 import { SubCategoriaModel } from 'src/app/shared/models/subCategoria.model';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
+import { PlanoService } from 'src/app/core/services/plano.service';
+import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProdutoModel } from 'src/app/shared/models/produto.model';
 
 @Component({
   selector: 'app-planos-form',
@@ -19,6 +25,7 @@ export class PlanosFormComponent implements OnInit {
   cadastroPlano: string = "Plano";
   etapa: Number = 1;
   comboSubCategorias: SubCategoriaModel[] = [];
+  comboEmpresas: EmpresaModel[] = [];
   
   categorias: CategoriaModel[] = [
     {id:1, nome: "Alimentação"},
@@ -27,26 +34,28 @@ export class PlanosFormComponent implements OnInit {
   ];
   
   subCategorias: SubCategoriaModel[] = [
-    {id: 1, nome: "Refeições prontas", idCategoria: 1},
-    {id: 2, nome: "Kits de ingredientes para receitas", idCategoria: 1},
-    {id: 3, nome: "Lanches Saudáveis", idCategoria: 1},
-    {id: 4, nome: "Suplementos Alimentares", idCategoria: 1},
-    {id: 5, nome: "Produtos para Limpeza facial", idCategoria: 2},
-    {id: 6, nome: "Hidratantes", idCategoria: 2},
-    {id: 7, nome: "Shampoos e condicionadores", idCategoria: 2},
-    {id: 8, nome: "Maquiagem", idCategoria: 2},
-    {id: 9, nome: "Plano de internet (Movel e Fibra)", idCategoria: 3},
-    {id: 10, nome: "Assinatura Streaming", idCategoria: 3},
-    {id: 11, nome: "Softwares de proteção de privacidade", idCategoria: 3},
+    {id: 1, nome: "Refeições prontas", categoriaId: 1},
+    {id: 2, nome: "Kits de ingredientes para receitas", categoriaId: 1},
+    {id: 3, nome: "Lanches Saudáveis", categoriaId: 1},
+    {id: 4, nome: "Suplementos Alimentares", categoriaId: 1},
+    {id: 5, nome: "Produtos para Limpeza facial", categoriaId: 2},
+    {id: 6, nome: "Hidratantes", categoriaId: 2},
+    {id: 7, nome: "Shampoos e condicionadores", categoriaId: 2},
+    {id: 8, nome: "Maquiagem", categoriaId: 2},
+    {id: 9, nome: "Plano de internet (Movel e Fibra)", categoriaId: 3},
+    {id: 10, nome: "Assinatura Streaming", categoriaId: 3},
+    {id: 11, nome: "Softwares de proteção de privacidade", categoriaId: 3},
   ];
 
   planos: PlanoModel[] = [];
+  produtos: ProdutoModel[] = [];
+  produtosPlano: ProdutoModel[] = [];
   empresa?: EmpresaModel;
   usuarioAtual!: UsuarioModel;
   usuarioTemEmpresaCadastrada: boolean = false;
 
   temImagem: boolean = false;
-  imagemBase64!: any;
+  imagemBase64: string | ArrayBuffer = "";
   
   niveisPlano: NivelPlanoModel[] = [
     {id: 1, nivel:"BASICO"},
@@ -58,41 +67,53 @@ export class PlanosFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private localStorageService: LocalStorageService,
+    private empresaService: EmpresaService,
+    private planoService: PlanoService,
+    private toast: ToastrService,
+    private modal: NgbModal,
   ){}
 
   ngOnInit(): void {
     this.criaForm();
+    this.inicializaArrayProduto();
   }
 
   criaForm(){
     this.form = this.fb.group({
       nome: ['', Validators.required],
       nivel: ['', Validators.required],
-      empresa: ['', Validators.required],
-      produto: this.fb.group({
+      empresaId: ['', Validators.required],
+      /*produto: this.fb.group({
         nome: ['', Validators.required],
         categoria: ['', Validators.required],
-        subcategoria: ['', Validators.required],
+        subCategoria: ['', Validators.required],
         descricao: ['', Validators.required],
         imagens: ['', Validators.required],
-      }),
+      }),*/
+      produto: this.fb.array([]),
     });
 
     this.form.get('empresa')?.disable();
-    this.empresaVinculadaAoUsuario();
+    //this.empresaVinculadaAoUsuario();
+    this.populaSelectEmpresas();
   }
 
-  populaSelectSubCategoria(){
-    let categoria = this.form.get('produto.categoria')?.value;
+  populaSelectSubCategoria(eventInput: any){
+    let categoria = eventInput.target?.value;
+    
     if(this.comboSubCategorias.length > 0){
       this.comboSubCategorias = [];
     }
 
     this.subCategorias.map((subCat: SubCategoriaModel) => {
-      if(subCat.idCategoria == Number(categoria)){
+      if(subCat.categoriaId == Number(categoria)){
         this.comboSubCategorias.push(subCat);
       }
     });
+  }
+
+  populaSelectEmpresas(){
+    this.empresaService.recuperaTodas().subscribe((res: EmpresaModel[]) => this.comboEmpresas = res);
   }
 
   avancar(){
@@ -116,52 +137,105 @@ export class PlanosFormComponent implements OnInit {
   }
 
   salvar(){
-      let form = this.form.getRawValue();
-      let plano: PlanoModel = {
-        id: crypto.randomUUID(),
-        nome: form.nome,
-        nivel: form.nivel,
-        empresaId: form.empresa,
-        produto: {
-          id: crypto.randomUUID(),
-          nome: form.produto.nome,
-          categoria: Number(form.produto.categoria),
-          subcategoria: Number(form.produto.subcategoria),
-          descricao: form.produto.descricao,
-          imagens: this.imagemBase64,
-        },
-      };
-      this.atualizaEmpresaComPlanoLocalStorage(plano, this.empresa);
-    console.log(plano);
+    let form = this.form.getRawValue();
+  
+    let plano: PlanoModel = {
+      nome: form.nome,
+      nivel: form.nivel,
+      empresaId: Number(form.empresaId),
+      produto: this.produtos,
+    };
+
+    this.planoService.criar(plano).subscribe((res: HttpResponse<PlanoModel>) => {
+      if(res.body?.id){
+        this.toast.success("Plano e Produto cadastrado com Sucesso");
+        this.toast.success("Plano " + res.body.nome + " vinculado a sua empresa");
+        this.form.reset();
+        this.fechar();
+      }
+    });
+
+    // this.atualizaEmpresaComPlanoLocalStorage(plano, this.empresa);
   }
 
   atualizaEmpresaComPlanoLocalStorage(plano: PlanoModel, empresa?: EmpresaModel){
     if(empresa){
       let chaveEmpresa = "empresa:" + empresa?.nome;
       this.planos.push(plano);
-      console.log(empresa);
       if(this.planos.length > 0){
         empresa.planos.push(...this.planos);
       //  this.localStorageService.removerEmpresa(chaveEmpresa);
         this.localStorageService.salvarEmpresa(chaveEmpresa, empresa);
-        console.log(empresa.planos);
       }
     }
 
   }
 
+  inicializaArrayProduto(){
+    this.produtosPlano.push({
+      nome: '',
+      categoria: 0,
+      subCategoria: 0,
+      descricao: '',
+      imagens: ''
+    });
+    this.produtoArray.patchValue(this.produtosPlano);
+  }
+
+  novoProduto(produto: ProdutoModel){
+    this.produtosPlano.push({
+      nome: '',
+      categoria: 0,
+      subCategoria: 0,
+      descricao: '',
+      imagens: ''
+    });
+
+    this.produtoArray.patchValue(this.produtosPlano);
+  }
+
+  get produtoArray(): FormArray{
+    return this.form.controls['produto'] as FormArray;
+  }
+
   enviaImagens(event: any){
     const file = event.target.files[0];
     const fileReader = new FileReader;
-
     fileReader.readAsDataURL(file);
     fileReader.onloadend = (e) => {
       this.imagemBase64 = e.target?.result ? e.target?.result : "";
       this.temImagem = true;
     }
+
+
+    // Insere imagem codificada em um array de string - habilitar se o Produto possibilitar multiplas imagens
+    /*const files: FileList = event.target.files;
+    const fileReader = new FileReader;
+    
+    fileReader.onload = (e) => {
+      const base64String = e.target?.result as string;
+      
+     for(let i = 0; i < files.length; i++){
+      this.imagemBase64.push(base64String);
+     }
+     this.temImagem = true;
+    };
+
+    const blob: Blob[] = [];
+    for(let i = 0; i < files.length; i++){
+      blob.push(files[i]);
+    }
+
+    fileReader.readAsDataURL(new Blob(blob));
+    */
   }
+
   alterarImagem(){
     this.temImagem = false;
+  }
+
+  fechar(){
+    this.modal.dismissAll();
   }
 
 }

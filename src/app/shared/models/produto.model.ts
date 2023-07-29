@@ -1,8 +1,8 @@
 export interface ProdutoModel{
-    id: string;
+    id?: string;
     nome: string;
     categoria: Number;
-    subcategoria: Number;
+    subCategoria: Number;
     descricao: string;
-    imagens: Blob[] | string[];
+    imagens: string | ArrayBuffer;
 }

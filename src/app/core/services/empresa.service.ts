@@ -13,7 +13,7 @@ export class EmpresaService {
     private httpClient: HttpClient
   ) { }
 
-    empresas: EmpresaModel[] = [
+   /* empresas: EmpresaModel[] = [
         {
             id: "dc997cd6-1b67-11ee-be56-0242ac120002",
             nome: "Empresa 1",
@@ -37,10 +37,11 @@ export class EmpresaService {
             planos: [],
           },
     ];
-
+    
     getTodasEmpresas(){
-        return this.empresas;
+      return this.empresas;
     }
+    */
 
     recuperaTodas(): Observable<EmpresaModel[]>{
       return this.httpClient.get<EmpresaModel[]>(this.apiUrl + "/empresa/");

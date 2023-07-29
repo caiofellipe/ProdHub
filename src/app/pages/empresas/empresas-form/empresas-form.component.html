@@ -27,9 +27,9 @@
                 <div class="form-check mb-4 col-12">
                     <h6>Selecione o ramo da Empresa</h6>
                     <div *ngFor="let opcaoRamo of ramos; let i = index">
-                        <input type="radio" class="form-check-input" formControlName="ramo" id="{{i}}" [value]="opcaoRamo">
+                        <input type="radio" class="form-check-input" formControlName="ramo" id="{{i}}" [checked]="opcaoRamo.checked" [value]="opcaoRamo.nome">
                         <label class="form-check-label" for="{{i}}">
-                            {{ opcaoRamo }}
+                            {{ opcaoRamo.nome }}
                         </label>
                     </div>
                 </div>

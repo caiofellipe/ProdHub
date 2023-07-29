@@ -1,7 +1,7 @@
 import { EmpresaService } from 'src/app/core/services/empresa.service';
 import { CepService } from './../../../core/services/cep.service';
 import { LocalStorageService } from './../../../core/services/localStorage.service';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -10,6 +10,7 @@ import { CepResponseModel } from 'src/app/shared/models/cepResponse.model';
 import { EmpresaModel } from 'src/app/shared/models/empresa.model';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 import { HttpResponse } from '@angular/common/http';
+import { Ramo } from 'src/app/shared/models/ramo.model';
 
 @Component({
   selector: 'app-empresas-form',
@@ -20,22 +21,23 @@ export class EmpresasFormComponent implements OnInit {
   empresaEdit?: EmpresaModel;
   logoBase64!: any;
   temLogo: boolean = false;
+  temRamo: Ramo | undefined;
   usuario!: UsuarioModel;
   empresa!: EmpresaModel;
 
-  ramos: string[] = [
-    "Pizzaria",
-    "Lanchonete",
-    "Restaurante",
-    "Bar",
-    "Imobiliária",
-    "Salão de Beleza",
-    "Barbearia",
-    "Pet Shop",
-    "Estudio de Tatuagem",
-    "Loja de Informatica",
-    "Loja de Roupa",
-    "Pessoa Física",
+  ramos: Ramo[] = [
+    {nome: "Pizzaria", checked: false},
+    {nome: "Lanchonete", checked: false},
+    {nome: "Restaurante", checked: false},
+    {nome: "Bar", checked: false},
+    {nome: "Imobiliária", checked: false},
+    {nome: "Salão de Beleza", checked: false},
+    {nome: "Barbearia", checked: false},
+    {nome: "Pet Shop", checked: false},
+    {nome: "Estudio de Tatuagem", checked: false},
+    {nome: "Loja de Informatica", checked: false},
+    {nome: "Loja de Roupa", checked: false},
+    {nome: "Pessoa Física", checked: false},
   ];
   form!: FormGroup;
 
@@ -45,7 +47,8 @@ export class EmpresasFormComponent implements OnInit {
     private toast: ToastrService,
     private cepService: CepService,
     private localStorageService: LocalStorageService,
-    private empresaService: EmpresaService
+    private empresaService: EmpresaService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -59,7 +62,7 @@ export class EmpresasFormComponent implements OnInit {
       nome: [this.empresaEdit?.nome || '', Validators.required],
       cnpj: [this.empresaEdit?.cnpj || '', Validators.required],
       email: [this.empresaEdit?.email || '', Validators.required],
-      ramo: [this.empresaEdit?.ramo || '', Validators.required],
+      ramo: [this.ramo() || '', Validators.required],
       endereco: this.fb.group({
         rua: [this.empresaEdit?.endereco.rua || '', Validators.required],
         numero: [this.empresaEdit?.endereco.numero || '', Validators.required],
@@ -76,8 +79,24 @@ export class EmpresasFormComponent implements OnInit {
     if(this.empresaEdit?.logo){
       this.temLogo = true;
     }
-    console.log(this.empresaEdit);
 
+     
+
+    console.log(this.empresaEdit);
+    
+  }
+
+  ramo(){
+    if(this.empresaEdit?.ramo){
+      let ramo:string = this.empresaEdit.ramo;
+
+      this.temRamo = this.ramos.find((r: Ramo) => r.nome.toUpperCase() == ramo.toUpperCase() );
+      if(this.temRamo){
+        this.temRamo.checked = true;
+      }
+      return this.temRamo;      
+    }
+    return this.empresaEdit?.ramo;
   }
 
   desabilitaCamposEndereco(){
@@ -129,8 +148,8 @@ export class EmpresasFormComponent implements OnInit {
     //}
 
     this.empresaService.criar(empresa).subscribe((res: HttpResponse<EmpresaModel>) => {
-      console.log(res.body);
-      if(res.body?.id){
+      console.log(res);
+      if(res){
         this.toast.success("Empresa " + empresa.nome + " criada","Cadastro concluido.");
         this.form.reset();
         this.fechar();

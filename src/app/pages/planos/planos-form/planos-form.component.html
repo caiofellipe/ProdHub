@@ -17,6 +17,12 @@
                 </select>
                 <label for="idNivel">Nivel do Plano</label>
             </div>
+            <div class="form-floating col-12 mb-4">
+                <select class="form-select" formControlName="empresaId" id="idEmpresa">
+                    <option *ngFor="let emp of comboEmpresas; let i = index" [value]="emp.id">{{ emp.nome }}</option>
+                </select>
+                <label for="idEmpresa">Empresa</label>
+            </div>
             <div class="form-group text-end">
                 <button class="btn btn-outline-primary" (click)="avancar()">
                     Próximo
@@ -24,37 +30,43 @@
             </div>
         </div>
         <div formGroupName="produto" *ngIf="etapa === 2">
-            <div class="form-floating col-12 mb-4">
-                <input type="text" class="form-control" formControlName="nome" id="idNome">
-                <label for="idNome">Nome</label>
-            </div>
-            <div class="form-floating col-12 mb-4">
-                <select class="form-select" formControlName="categoria" id="idCategoria" (change)="populaSelectSubCategoria()">
-                    <option *ngFor="let cat of categorias; let i = index" [value]="cat.id">{{ cat.nome }}</option>
-                </select>
-                <label for="idCategoria">Categorias</label>
-            </div>
-            <div class="form-floating col-12 mb-4">
-                <select class="form-select" formControlName="subcategoria" id="idSubCategoria">
-                    <option *ngFor="let subCat of comboSubCategorias; let i = index" [value]="subCat.id">{{ subCat.nome }}</option>
-                </select>
-                <label for="idSubCategoria">SubCategorias</label>
-            </div>
-            <div class="form-floating col-12 mb-4">
-                <textarea class="form-control" formControlName="descricao" id="idDescricao"></textarea>
-                <label for="idDescricao">Descrição</label>
-            </div>
-            <div class="form-group col-12 mb-4">
-                <label for="idImagens">Adicione Imagens do Produto</label>
-                <input type="file" class="form-control" formControlName="imagens" id="idImagens" (change)="enviaImagens($event)">
+            <div class="row" *ngFor="let p of produtosPlano; let idx = index">
+                <p>Produto: {{ idx }}</p>
+                <div class="form-floating col-12 mb-4">
+                    <input type="text" class="form-control" (formControlName)="'nome'" id="idNome_{{idx}}">
+                    <label for="idNome_{{idx}}">Nome</label>
+                </div>
+                <div class="form-floating col-12 mb-4">
+                    <select class="form-select" (formControlName)="'categoria'" id="idCategoria_{{idx}}" (change)="populaSelectSubCategoria($event)">
+                        <option *ngFor="let cat of categorias; let i = index" [value]="cat.id">{{ cat.nome }}</option>
+                    </select>
+                    <label for="idCategoria_{{idx}}">Categorias</label>
+                </div>
+                <div class="form-floating col-12 mb-4">
+                    <select class="form-select" (formControlName)="'subCategoria'" id="idSubCategoria_{{idx}}">
+                        <option *ngFor="let subCat of comboSubCategorias; let i = index" [value]="subCat.id">{{ subCat.nome }}</option>
+                    </select>
+                    <label for="idSubCategoria_{{idx}}">SubCategorias</label>
+                </div>
+                <div class="form-floating col-12 mb-4">
+                    <textarea class="form-control" (formControlName)="'descricao'" id="idDescricao_{{idx}}"></textarea>
+                    <label for="idDescricao_{{idx}}">Descrição</label>
+                </div>
+                <div class="form-group col-12 mb-4">
+                    <label for="idImagens_{{idx}}">Adicione Imagens do Produto</label>
+                    <input type="file" class="form-control" (formControlName)="'imagens'" id="idImagens_{{idx}}" multiple (change)="enviaImagens($event)">
                 <div *ngIf="temImagem" class="d-grid p-2">
-                    <img [src]="this.imagemBase64" class="mb-3 w-100">
+                    <img [src]="imagemBase64" class="mb-3 img-fluid w-20">
                     <a class="btn btn-outline-primary btn-md" (click)="alterarImagem()">Alterar</a>
                 </div>
             </div>
+            <div class="form-group d-flex justify-content-between">
+                <a class="btn btn-outline-primary" (click)="novoProduto(p)">Adicionar novo Produto</a>
+            </div>
+        </div>
             <hr>
             <div class="form-group d-flex justify-content-between">
-                <button class="btn btn-outline-primary" (click)="voltar()">Voltar</button>
+                <button class="btn btn-outline-secondary" (click)="voltar()">Voltar</button>
                 <button type="submit" class="btn btn-outline-primary">Salvar</button>
             </div>
         </div>

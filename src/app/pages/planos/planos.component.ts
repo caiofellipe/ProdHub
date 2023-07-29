@@ -39,15 +39,15 @@ export class PlanosComponent implements OnInit {
 
   cadastrar(){
     let usuario: UsuarioModel = this.getUsuarioLogado(this.parametroRotaUsuarioId);
-    if(usuario.empresaId != "" && usuario.empresaId != undefined){
+//    if(usuario.empresaId != "" && usuario.empresaId != undefined){
       const modalRefPlanosForm = this.modal.open(PlanosFormComponent, { size: "lg" });
       modalRefPlanosForm.componentInstance.usuarioAtual = usuario;
-    }else{
+   /* }else{
       this.toast.error("","Nenhuma empresa vinculada a este usuario.");
       this.toast.warning("","Cadastre uma empresa para ser vinculada ao seu usuario");
       const modalRefCadastroEmpresa = this.modal.open(EmpresasFormComponent, { size: "lg" });
       modalRefCadastroEmpresa.componentInstance.usuario = usuario;
-    }
+    }*/
   }
 
   getUsuarioLogado(usuarioId: string){

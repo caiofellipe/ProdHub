@@ -3,9 +3,9 @@ import { ProdutoModel } from "./produto.model";
 import { NivelPlanoModel } from './nivelPlano.model';
 
 export interface PlanoModel{
-    id: string;
+    id?: Number;
     nome: string;
     nivel: NivelPlanoModel;
-    empresaId: string;
-    produto: ProdutoModel;
+    empresaId: Number;
+    produto: ProdutoModel[];
 }

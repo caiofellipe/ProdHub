@@ -22,7 +22,7 @@
             <tr *ngFor="let empresa of empresas">
                 <td>{{ empresa.nome }}</td>
                 <td>{{ empresa.ramo }}</td>
-                <td><!--{{ empresa.endereco.rua +", "+ empresa.endereco.numero +" - "+  empresa.endereco.bairro +" - "+ empresa.endereco.cidade}}--></td>
+                <td>{{ empresa.endereco.cidade +" - "+ empresa.endereco.uf }}</td>
                 <td> <img [src]="empresa.logo" width="50" [srcset]="empresa.logo"></td>
                 <td>
                     <div class="btn-group">
