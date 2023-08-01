@@ -37,7 +37,7 @@
                     <label for="idNome_{{idx}}">Nome</label>
                 </div>
                 <div class="form-floating col-12 mb-4">
-                    <select class="form-select" (formControlName)="'categoria'" id="idCategoria_{{idx}}" (change)="populaSelectSubCategoria($event)">
+                    <select class="form-select" (formControlName)="'categoria'" id="idCategoria_{{idx}}" (change)="populaSelectSubCategoria($event, idx)">
                         <option *ngFor="let cat of categorias; let i = index" [value]="cat.id">{{ cat.nome }}</option>
                     </select>
                     <label for="idCategoria_{{idx}}">Categorias</label>

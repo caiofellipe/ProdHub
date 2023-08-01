@@ -98,18 +98,24 @@ export class PlanosFormComponent implements OnInit {
     this.populaSelectEmpresas();
   }
 
-  populaSelectSubCategoria(eventInput: any){
+  populaSelectSubCategoria(eventInput: any, indexProdutoAtual: number){
     let categoria = eventInput.target?.value;
     
     if(this.comboSubCategorias.length > 0){
       this.comboSubCategorias = [];
     }
-
-    this.subCategorias.map((subCat: SubCategoriaModel) => {
-      if(subCat.categoriaId == Number(categoria)){
-        this.comboSubCategorias.push(subCat);
+  
+    this.produtosPlano.map((produto: ProdutoModel) => {
+      if(produto.indexP == indexProdutoAtual){
+        this.subCategorias.map((subCat: SubCategoriaModel) => {
+            if(subCat.categoriaId == Number(categoria)){
+              this.comboSubCategorias.push(subCat);
+            }
+        });
       }
     });
+
+    
   }
 
   populaSelectEmpresas(){
@@ -173,6 +179,7 @@ export class PlanosFormComponent implements OnInit {
 
   inicializaArrayProduto(){
     this.produtosPlano.push({
+      indexP: 0,
       nome: '',
       categoria: 0,
       subCategoria: 0,
@@ -184,6 +191,7 @@ export class PlanosFormComponent implements OnInit {
 
   novoProduto(produto: ProdutoModel){
     this.produtosPlano.push({
+      indexP: this.produtosPlano.length,
       nome: '',
       categoria: 0,
       subCategoria: 0,
