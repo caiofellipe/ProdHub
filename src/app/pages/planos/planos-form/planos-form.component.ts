@@ -21,6 +21,7 @@ import { ProdutoModel } from 'src/app/shared/models/produto.model';
 })
 export class PlanosFormComponent implements OnInit {
   form!: FormGroup;
+  produtoForm!: FormGroup;
   cadastroProduto: string = "Produto";
   cadastroPlano: string = "Plano";
   etapa: Number = 1;
@@ -75,7 +76,7 @@ export class PlanosFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.criaForm();
-    this.inicializaArrayProduto();
+    this.criarFormProduto();
   }
 
   criaForm(){
@@ -83,13 +84,6 @@ export class PlanosFormComponent implements OnInit {
       nome: ['', Validators.required],
       nivel: ['', Validators.required],
       empresaId: ['', Validators.required],
-      /*produto: this.fb.group({
-        nome: ['', Validators.required],
-        categoria: ['', Validators.required],
-        subCategoria: ['', Validators.required],
-        descricao: ['', Validators.required],
-        imagens: ['', Validators.required],
-      }),*/
       produto: this.fb.array([]),
     });
 
@@ -98,24 +92,36 @@ export class PlanosFormComponent implements OnInit {
     this.populaSelectEmpresas();
   }
 
-  populaSelectSubCategoria(eventInput: any, indexProdutoAtual: number){
+  novoProduto(){
+    this.criarFormProduto();
+   }
+ 
+   criarFormProduto(){
+     return this.produtoArray.push(this.fb.group({
+       nome: [''],
+       categoria: [''],
+       subCategoria: [''],
+       descricao: [''],
+       imagens: ['']
+     }));
+   }
+ 
+   get produtoArray(): FormArray{
+     return this.form.get('produto') as FormArray;
+   }
+
+  populaSelectSubCategoria(produto:any, eventInput: any, indexProdutoAtual: number){
     let categoria = eventInput.target?.value;
-    
+
     if(this.comboSubCategorias.length > 0){
       this.comboSubCategorias = [];
     }
   
-    this.produtosPlano.map((produto: ProdutoModel) => {
-      if(produto.indexP == indexProdutoAtual){
-        this.subCategorias.map((subCat: SubCategoriaModel) => {
-            if(subCat.categoriaId == Number(categoria)){
-              this.comboSubCategorias.push(subCat);
-            }
-        });
+    this.subCategorias.map((subCat: SubCategoriaModel) => {
+      if(subCat.categoriaId == Number(categoria)){
+        this.comboSubCategorias.push(subCat);
       }
     });
-
-    
   }
 
   populaSelectEmpresas(){
@@ -144,7 +150,7 @@ export class PlanosFormComponent implements OnInit {
 
   salvar(){
     let form = this.form.getRawValue();
-  
+  console.log(form);
     let plano: PlanoModel = {
       nome: form.nome,
       nivel: form.nivel,
@@ -152,7 +158,7 @@ export class PlanosFormComponent implements OnInit {
       produto: this.produtos,
     };
 
-    this.planoService.criar(plano).subscribe((res: HttpResponse<PlanoModel>) => {
+   /* this.planoService.criar(plano).subscribe((res: HttpResponse<PlanoModel>) => {
       if(res.body?.id){
         this.toast.success("Plano e Produto cadastrado com Sucesso");
         this.toast.success("Plano " + res.body.nome + " vinculado a sua empresa");
@@ -160,7 +166,7 @@ export class PlanosFormComponent implements OnInit {
         this.fechar();
       }
     });
-
+*/
     // this.atualizaEmpresaComPlanoLocalStorage(plano, this.empresa);
   }
 
@@ -177,35 +183,6 @@ export class PlanosFormComponent implements OnInit {
 
   }
 
-  inicializaArrayProduto(){
-    this.produtosPlano.push({
-      indexP: 0,
-      nome: '',
-      categoria: 0,
-      subCategoria: 0,
-      descricao: '',
-      imagens: ''
-    });
-    this.produtoArray.patchValue(this.produtosPlano);
-  }
-
-  novoProduto(produto: ProdutoModel){
-    this.produtosPlano.push({
-      indexP: this.produtosPlano.length,
-      nome: '',
-      categoria: 0,
-      subCategoria: 0,
-      descricao: '',
-      imagens: ''
-    });
-
-    this.produtoArray.patchValue(this.produtosPlano);
-  }
-
-  get produtoArray(): FormArray{
-    return this.form.controls['produto'] as FormArray;
-  }
-
   enviaImagens(event: any){
     const file = event.target.files[0];
     const fileReader = new FileReader;
@@ -214,8 +191,6 @@ export class PlanosFormComponent implements OnInit {
       this.imagemBase64 = e.target?.result ? e.target?.result : "";
       this.temImagem = true;
     }
-
-
     // Insere imagem codificada em um array de string - habilitar se o Produto possibilitar multiplas imagens
     /*const files: FileList = event.target.files;
     const fileReader = new FileReader;
