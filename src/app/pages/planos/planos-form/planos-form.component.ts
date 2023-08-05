@@ -1,18 +1,18 @@
 import { HttpResponse } from '@angular/common/http';
-import { LocalStorageService } from './../../../core/services/localStorage.service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { EmpresaService } from 'src/app/core/services/empresa.service';
-import { CategoriaModel } from 'src/app/shared/models/categoria.model';
+import { PlanoService } from 'src/app/core/services/plano.service';
 import { EmpresaModel } from 'src/app/shared/models/empresa.model';
 import { NivelPlanoModel } from 'src/app/shared/models/nivelPlano.model';
 import { PlanoModel } from 'src/app/shared/models/plano.model';
+import { ProdutoModel } from 'src/app/shared/models/produto.model';
 import { SubCategoriaModel } from 'src/app/shared/models/subCategoria.model';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
-import { PlanoService } from 'src/app/core/services/plano.service';
-import { ToastrService } from 'ngx-toastr';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProdutoModel } from 'src/app/shared/models/produto.model';
+import { LocalStorageService } from './../../../core/services/localStorage.service';
+import { CategoriaModel } from './../../../shared/models/categoria.model';
 
 @Component({
   selector: 'app-planos-form',
@@ -50,7 +50,6 @@ export class PlanosFormComponent implements OnInit {
 
   planos: PlanoModel[] = [];
   produtos: ProdutoModel[] = [];
-  produtosPlano: ProdutoModel[] = [];
   empresa?: EmpresaModel;
   usuarioAtual!: UsuarioModel;
   usuarioTemEmpresaCadastrada: boolean = false;
@@ -94,6 +93,7 @@ export class PlanosFormComponent implements OnInit {
 
   novoProduto(){
     this.criarFormProduto();
+    this.temImagem = false;
    }
  
    criarFormProduto(){
@@ -102,7 +102,7 @@ export class PlanosFormComponent implements OnInit {
        categoria: [''],
        subCategoria: [''],
        descricao: [''],
-       imagens: ['']
+       imagem: ['']
      }));
    }
  
@@ -150,24 +150,50 @@ export class PlanosFormComponent implements OnInit {
 
   salvar(){
     let form = this.form.getRawValue();
-  console.log(form);
+    this.produtos = form.produto;
+    const produtosFormatado: ProdutoModel[] = form.produto; 
+    this.produtos.map((p: ProdutoModel) => {
+      produtosFormatado.map((pr: ProdutoModel) => {
+        pr.nome = p.nome,
+        pr.categoria = this.getCategoria(Number(p.categoria)),
+        pr.subCategoria = this.getSubCategoria(Number(p.categoria.id), Number(p.subCategoria)),
+        pr.descricao = p.descricao,
+        pr.imagem = p.imagem
+      });
+      return produtosFormatado;
+    });
     let plano: PlanoModel = {
       nome: form.nome,
       nivel: form.nivel,
       empresaId: Number(form.empresaId),
-      produto: this.produtos,
+      produto: produtosFormatado,
     };
 
-   /* this.planoService.criar(plano).subscribe((res: HttpResponse<PlanoModel>) => {
-      if(res.body?.id){
+    this.planoService.criar(plano).subscribe((res: HttpResponse<PlanoModel>) => {
+      if(res){
         this.toast.success("Plano e Produto cadastrado com Sucesso");
-        this.toast.success("Plano " + res.body.nome + " vinculado a sua empresa");
         this.form.reset();
         this.fechar();
       }
     });
-*/
     // this.atualizaEmpresaComPlanoLocalStorage(plano, this.empresa);
+  }
+
+  getCategoria(categoriaId: Number){
+    const cat = this.categorias.find((ct: CategoriaModel) => ct.id == categoriaId);
+    
+    if(cat == undefined){
+      throw new Error("Categoria não encontrada!");
+    }
+    return cat;
+  }
+
+  getSubCategoria(categoriaId: Number, subCategoriaId: Number){
+    const subCat = this.subCategorias.find((sbCat: SubCategoriaModel) => sbCat.categoriaId == categoriaId && sbCat.id == subCategoriaId);
+    if(subCat == undefined){
+      throw new Error("SubCategoria não encontrada!");
+    }
+    return subCat;
   }
 
   atualizaEmpresaComPlanoLocalStorage(plano: PlanoModel, empresa?: EmpresaModel){
@@ -183,15 +209,22 @@ export class PlanosFormComponent implements OnInit {
 
   }
 
-  enviaImagens(event: any){
+  enviaImagem(event: any, index: number){
     const file = event.target.files[0];
     const fileReader = new FileReader;
-    fileReader.readAsDataURL(file);
-    fileReader.onloadend = (e) => {
-      this.imagemBase64 = e.target?.result ? e.target?.result : "";
-      this.temImagem = true;
+    const produtos: ProdutoModel[] = this.form.get('produto')?.value;
+    
+    const pr = produtos.at(index);
+    if(pr){
+      fileReader.readAsDataURL(file);
+      fileReader.onloadend = (e) => {
+        pr.imagem = e.target?.result ? e.target?.result : "";
+        this.temImagem = true;
+      }
+      this.produtos.push(pr);
     }
-    // Insere imagem codificada em um array de string - habilitar se o Produto possibilitar multiplas imagens
+    
+    // Insere imagem codificada em um array de string - habilitar se o 1 Produto possibilitar multiplas imagem
     /*const files: FileList = event.target.files;
     const fileReader = new FileReader;
     

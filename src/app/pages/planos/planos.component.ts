@@ -6,6 +6,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PlanosFormComponent } from './planos-form/planos-form.component';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 import { ToastrService } from 'ngx-toastr';
+import { PlanoModel } from 'src/app/shared/models/plano.model';
+import { PlanoService } from 'src/app/core/services/plano.service';
+import { ProdutoModel } from 'src/app/shared/models/produto.model';
+import { ProdutoModalComponent } from './produto-modal/produto-modal.component';
 
 @Component({
   selector: 'app-planos',
@@ -18,16 +22,20 @@ export class PlanosComponent implements OnInit {
   urlAtual!: string;
   host!: string;
   usuarioTemPlano: boolean = false;
+  planos: PlanoModel[] = [];
+  quantidadeProdutosNoPlano: string = "";
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private modal: NgbModal,
     private toast: ToastrService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private planoService: PlanoService,
   ) { }
 
   ngOnInit(): void {
     this.montaLinkConvite();
+    this.getPlanos();
   }
   
   montaLinkConvite(){
@@ -53,6 +61,32 @@ export class PlanosComponent implements OnInit {
   getUsuarioLogado(usuarioId: string){
     let chave: string = "usuario " + usuarioId;
     return this.localStorageService.getUsuario(chave);
+  }
+
+  getPlanos(){
+    this.planoService.recuperaTodas().subscribe((res: PlanoModel[]) => {
+      if(res.length > 0){
+        this.planos = res;
+      }
+    });
+  }
+
+  retornaDescricaoProduto(plano: PlanoModel){
+    let descricaoProduto: string = "";
+    this.quantidadeProdutosNoPlano = "Contém " + plano.produto.length + " Produtos.";
+    
+    if(plano.produto.length > 0){
+      plano.produto.forEach((produto: ProdutoModel) => {
+        descricaoProduto = produto.descricao;
+      });
+    }
+
+    return descricaoProduto;
+  }
+
+  verProdutos(produtos: ProdutoModel[]){
+    const modalRefProdutos = this.modal.open(ProdutoModalComponent, { size: "lg" });
+    modalRefProdutos.componentInstance.produtos = produtos;
   }
 
 }
