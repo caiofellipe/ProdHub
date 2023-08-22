@@ -1,9 +1,11 @@
+import { CategoriaModel } from "./categoria.model";
+import { SubCategoriaModel } from "./subCategoria.model";
+
 export interface ProdutoModel{
     id?: string;
-    indexP?: Number;
     nome: string;
-    categoria: Number;
-    subCategoria: Number;
+    categoria: CategoriaModel;
+    subCategoria: SubCategoriaModel;
     descricao: string;
-    imagens: string | ArrayBuffer;
+    imagem: string | ArrayBuffer;
 }

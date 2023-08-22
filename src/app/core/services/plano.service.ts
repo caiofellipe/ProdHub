@@ -2,12 +2,14 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PlanoModel } from 'src/app/shared/models/plano.model';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class PlanoService {
 
-  private apiUrl = "api";
+  //private apiUrl = "api";
+  private apiUrl = environment.apiUrl; 
 
   constructor(
     private httpClient: HttpClient
