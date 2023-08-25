@@ -155,12 +155,12 @@ export class EmpresasFormComponent implements OnInit {
 
   }
 
-  atualizaEmpresaIdNoCadastroUsuario(empresaId: string, usuario: UsuarioModel){
+  /*atualizaEmpresaIdNoCadastroUsuario(empresaId: string, usuario: UsuarioModel){
     let chaveUsuario = "usuario " + usuario.id;
     this.localStorageService.removerUsuario(chaveUsuario);
     usuario.empresaId = empresaId;
     this.localStorageService.salvarUsuario(chaveUsuario, usuario);
-  }
+  }*/
 
 
   fechar(){

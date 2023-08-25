@@ -8,8 +8,8 @@ import { environment } from 'src/environments/environment';
 })
 export class PlanoService {
 
-  //private apiUrl = "api";
-  private apiUrl = environment.apiUrl; 
+  private apiUrl = "api";
+  //private apiUrl = environment.apiUrl; 
 
   constructor(
     private httpClient: HttpClient

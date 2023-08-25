@@ -136,13 +136,13 @@ export class PlanosFormComponent implements OnInit {
 
   }
 
-  empresaVinculadaAoUsuario(){
+  /*empresaVinculadaAoUsuario(){
     let empresas: EmpresaModel[] = this.localStorageService.todasEmpresas();
     let empresaEncontrada = empresas.find((empresa: EmpresaModel)=> empresa.id == this.usuarioAtual.empresaId);
     this.form.get('empresa')?.setValue(empresaEncontrada?.id); 
     this.empresa = empresaEncontrada;
     return empresaEncontrada;
-  }
+  }*/
 
   voltar(){
     this.etapa = 1;

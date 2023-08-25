@@ -1,9 +1,9 @@
-/*const PROXY_CONFIG = [
+const PROXY_CONFIG = [
     {
         context: ['/api'],
-        target: 'http://localhost:8080/',
+        target: 'http://localhost:8080/prodcore',
         secure: false,
         logLevel: 'debug',
     }
 ];
-module.exports = PROXY_CONFIG;*/
+module.exports = PROXY_CONFIG;

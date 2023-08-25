@@ -44,14 +44,12 @@ export class CadastrarUsuarioComponent implements OnInit {
       idUsuarioConvite: this.idUsuarioQueConvidou || "",
       nome: formUsuario.nome,
       email: formUsuario.email,
-      login: formUsuario.email,
       senha: formUsuario.senha,
       ativo: true,
       dataCriado: new Date(),
       dataAlterado: new Date(),
-      nivelUsuario: {id: 2, nivel: "Usuario", sigla:"USER"},
+      roles: [],
       foto: this.fotoBase64, 
-      empresaId: "",
     }
     let chave = this.criaChaveLocalStorage(novoUsuario?.id);
     this.localStorageService.salvarUsuario(chave, novoUsuario);    

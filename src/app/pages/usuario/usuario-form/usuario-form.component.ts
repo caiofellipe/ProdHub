@@ -37,24 +37,11 @@ export class UsuarioFormComponent implements OnInit {
   criaFormNovoUsuario(usuario?: UsuarioModel){
     this.criarUsuarioForm = this.fb.group({
       nome: [usuario?.nome || ''],
-      sobrenome: [usuario?.sobrenome || ''],
       email: [usuario?.email || ''],
-      login: [usuario?.login || ''],
-      idUsuario: [usuario?.idUsuario || ''],
       ativo: [usuario?.ativo || ''],
       dataCriado: [usuario?.dataCriado || ''],
       dataAlterado: [usuario?.dataAlterado || ''],
-      nivelUsuario: [
-        {
-          id: [usuario?.nivelUsuario?.id || ''],
-          sigla: [usuario?.nivelUsuario?.sigla || ''],
-          nivel: [usuario?.nivelUsuario?.nivel || ''],
-        }
-      ],
     });
-    if(usuario?.idUsuario != null){
-      this.usuarioTemNivel = usuario?.nivelUsuario?.nivel.toString() || "";
-    }
   }
 
   fechar(){

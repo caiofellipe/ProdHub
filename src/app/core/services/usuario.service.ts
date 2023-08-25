@@ -8,8 +8,8 @@ import { environment } from 'src/environments/environment';
 })
 export class UsuarioService {
 
-  //private apiUrl = "api";
-  private apiUrl = environment.apiUrl; 
+  private apiUrl = "api";
+  //private apiUrl = environment.apiUrl; 
 
   constructor(
     private httpClient: HttpClient
@@ -26,7 +26,7 @@ export class UsuarioService {
   getUsuarioPorId(){}
   
   getUsuario(usuario: UsuarioModel): Observable<UsuarioModel>{
-    return this.httpClient.get<UsuarioModel>(`${this.apiUrl}/usuario?nome=${usuario.nome}&email=${usuario.email}&login=${usuario.login}`);
+    return this.httpClient.get<UsuarioModel>(`${this.apiUrl}/usuario?id=${usuario.id}`);
   }
 
 }
