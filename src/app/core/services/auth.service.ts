@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   private apiUrl = "api";
   //private apiUrl = environment.apiUrl; 
+  private token: string = "";
 
   constructor(private httpClient: HttpClient) { }
 
@@ -19,5 +20,14 @@ export class AuthService {
     console.log(this.apiUrl);
     return this.httpClient.post<ResponseUsuarioAuthModel>(`${this.apiUrl}/auth/login`, usuarioAuth);
   }
+
+  setToken(token: string){
+    this.token = token;
+  }
+
+  getToken(){
+    return this.token;
+  }
+
 
 }

@@ -1,3 +1,4 @@
+import { AuthorityModel } from './authority.model';
 import { EmpresaModel } from './empresa.model';
 import { NivelUsuarioModel } from './nivelUsuario.model';
 import { Role } from './role.model';
@@ -10,6 +11,7 @@ export interface UsuarioModel {
 	ativo?: Boolean;
     dataCriado?: Date;
 	dataAlterado?: Date;
-	roles: Role[];
+	roles?: Role[];
+	authorities?: AuthorityModel[];
     foto?: Blob;
 }

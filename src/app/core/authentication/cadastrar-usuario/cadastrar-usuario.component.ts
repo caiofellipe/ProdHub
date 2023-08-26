@@ -48,7 +48,6 @@ export class CadastrarUsuarioComponent implements OnInit {
       ativo: true,
       dataCriado: new Date(),
       dataAlterado: new Date(),
-      roles: [],
       foto: this.fotoBase64, 
     }
     let chave = this.criaChaveLocalStorage(novoUsuario?.id);

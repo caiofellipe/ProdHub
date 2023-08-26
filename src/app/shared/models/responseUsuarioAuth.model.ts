@@ -2,12 +2,6 @@ import { AuthorityModel } from "./authority.model";
 import { UsuarioModel } from "./usuario.model";
 
 export interface ResponseUsuarioAuthModel{
-    password: string;
-    authorities: AuthorityModel[];
+    token: string;
     usuario: UsuarioModel;
-    enabled: boolean;
-    username: string;
-    accountNonExpired: boolean;
-    accountNonLocked: boolean;
-    credentialsNonExpired: boolean;
 }

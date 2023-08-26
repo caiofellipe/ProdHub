@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
 
       if(res.usuario.id){
         this.autenticado = true;
+        this.authService.setToken(res.token);
         this.toast.success("Autenticação realizada.","Sucesso");
         this.router.navigate(["planos"], {queryParams: { usuario: res.usuario.id }} );
       }

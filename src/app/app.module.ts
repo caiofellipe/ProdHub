@@ -8,6 +8,7 @@ import { InterfaceModule } from './shared/modules/interface.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxMaskModule } from 'ngx-mask';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { InterceptorModule } from './core/interceptors/interceptor.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     InterfaceModule,
     HttpClientModule,
     NgxMaskModule.forRoot(),
+    InterceptorModule
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
