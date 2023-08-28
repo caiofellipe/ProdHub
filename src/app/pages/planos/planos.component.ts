@@ -1,3 +1,4 @@
+import { AuthService } from './../../core/services/auth.service';
 import { EmpresasFormComponent } from './../empresas/empresas-form/empresas-form.component';
 import { LocalStorageService } from 'src/app/core/services/localStorage.service';
 import { Component, OnInit } from '@angular/core';
@@ -10,7 +11,6 @@ import { PlanoModel } from 'src/app/shared/models/plano.model';
 import { PlanoService } from 'src/app/core/services/plano.service';
 import { ProdutoModel } from 'src/app/shared/models/produto.model';
 import { ProdutoModalComponent } from './produto-modal/produto-modal.component';
-
 @Component({
   selector: 'app-planos',
   templateUrl: './planos.component.html',
@@ -24,6 +24,7 @@ export class PlanosComponent implements OnInit {
   usuarioTemPlano: boolean = false;
   planos: PlanoModel[] = [];
   quantidadeProdutosNoPlano: string = "";
+  public usuarioAtual!: UsuarioModel;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -31,10 +32,11 @@ export class PlanosComponent implements OnInit {
     private toast: ToastrService,
     private localStorageService: LocalStorageService,
     private planoService: PlanoService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
-    this.montaLinkConvite();
+    //this.montaLinkConvite();
     this.getPlanos();
   }
   
@@ -45,8 +47,19 @@ export class PlanosComponent implements OnInit {
     this.linkConvite = this.host + "/cadastre-se?usuario=" + this.parametroRotaUsuarioId;
   }
 
+  gerarLinkConvite() {
+    this.parametroRotaUsuarioId = this.activatedRoute.snapshot.queryParamMap.get("usuario");
+    this.host = window.location.origin;
+
+    if(this.parametroRotaUsuarioId){
+      this.linkConvite = this.host + "/#/cadastre-se?usuario=" + this.parametroRotaUsuarioId;
+    }else{
+      this.linkConvite = this.host + "/#/cadastre-se?usuario=" + this.usuarioAtual.id;
+    }
+  }
+
   cadastrar(){
-    let usuario: UsuarioModel = this.getUsuarioLogado(this.parametroRotaUsuarioId);
+    let usuario: UsuarioModel = this.getUsuarioLogado();
 //    if(usuario.empresaId != "" && usuario.empresaId != undefined){
       const modalRefPlanosForm = this.modal.open(PlanosFormComponent, { size: "lg" });
       modalRefPlanosForm.componentInstance.usuarioAtual = usuario;
@@ -58,9 +71,9 @@ export class PlanosComponent implements OnInit {
     }*/
   }
 
-  getUsuarioLogado(usuarioId: string){
-    let chave: string = "usuario " + usuarioId;
-    return this.localStorageService.getUsuario(chave);
+  getUsuarioLogado(){
+    this.authService.getUsuarioAtual().subscribe((res: UsuarioModel) => this.usuarioAtual = res);
+    return this.usuarioAtual;
   }
 
   getPlanos(){

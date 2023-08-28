@@ -5,7 +5,7 @@ import { Role } from './role.model';
 export interface UsuarioModel {
 	id?: string;
 	nome?: string;
-	idUsuarioConvite?: string;
+	idUsuarioConvite?: Number;
     senha?: string;
 	email?: string;
 	ativo?: Boolean;

@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-cadastrar-usuario',
@@ -16,10 +17,10 @@ export class CadastrarUsuarioComponent implements OnInit {
   form!: FormGroup;
   novoUsuario!: UsuarioModel;
   fotoBase64: any;
-  idUsuarioQueConvidou!: string | null;
+  idUsuarioQueConvidou!: Number;
 
   constructor(
-    private localStorageService: LocalStorageService,
+    private usuarioService: UsuarioService,
     private fb: FormBuilder,
     private toast: ToastrService,
     private route: Router,
@@ -34,33 +35,27 @@ export class CadastrarUsuarioComponent implements OnInit {
       foto_b64: '',
     });
 
-    this.idUsuarioQueConvidou = this.activatedRoute.snapshot.queryParamMap.get("usuario");
+    this.idUsuarioQueConvidou = Number(this.activatedRoute.snapshot.queryParamMap.get("usuario"));
   }
 
   cadastrarNovoUsuario(){
     let formUsuario = this.form.getRawValue();
     let novoUsuario: UsuarioModel = {
-      id: crypto.randomUUID(),
       idUsuarioConvite: this.idUsuarioQueConvidou || "",
       nome: formUsuario.nome,
       email: formUsuario.email,
       senha: formUsuario.senha,
-      ativo: true,
-      dataCriado: new Date(),
-      dataAlterado: new Date(),
       foto: this.fotoBase64, 
     }
-    let chave = this.criaChaveLocalStorage(novoUsuario?.id);
-    this.localStorageService.salvarUsuario(chave, novoUsuario);    
-    let usuarioLocalStorage = this.localStorageService.getUsuario(chave);
-    if(usuarioLocalStorage != null){
-      this.toast.success("Usuario " + novoUsuario.nome + " criado","Cadastro concluido.");
-      this.form.reset();
-    }
-  }
 
-  criaChaveLocalStorage(id?: string){
-    return "usuario " + id;
+    this.usuarioService.criarUsuario(novoUsuario).subscribe((res: UsuarioModel) => {
+      console.log(res);
+      if(res.id){
+        this.toast.success("Usuario " + novoUsuario.nome + " criado", "Cadastro concluido.");
+        this.form.reset();
+      }
+    });
+
   }
 
   enviaFoto(event: any){

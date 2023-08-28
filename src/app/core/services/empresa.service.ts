@@ -8,7 +8,6 @@ import { environment } from 'src/environments/environment';
 })
 export class EmpresaService {
 
-  //private apiUrl = "api";
   private apiUrl = environment.apiUrl; 
 
   constructor(

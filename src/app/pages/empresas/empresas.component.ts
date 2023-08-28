@@ -28,10 +28,13 @@ export class EmpresasComponent implements OnInit {
   }
 
   recuperaEmpresaLocalStorage(){
-    let empresa = this.localStorageService.todasEmpresas();
+    
+    /*let empresa = this.localStorageService.todasEmpresas();
     if(empresa.length > 0){
       this.empresas.push(...empresa);
-    }
+    }*/
+
+    console.log("IMPLEMENTAR O RECUPERAR EMPRESAS ");
   }
 
   cadastrar(){

@@ -21,7 +21,7 @@ import { InterceptorModule } from './core/interceptors/interceptor.module';
     InterfaceModule,
     HttpClientModule,
     NgxMaskModule.forRoot(),
-    InterceptorModule
+    InterceptorModule,
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]

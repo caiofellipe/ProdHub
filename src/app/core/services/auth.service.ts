@@ -10,17 +10,19 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = "api";
-  //private apiUrl = environment.apiUrl; 
+  private apiUrl = environment.apiUrl; 
   private token: string = "";
-
+  
   constructor(private httpClient: HttpClient) { }
 
   sendAuth(usuarioAuth: LoginUsuarioModel): Observable<ResponseUsuarioAuthModel>{
-    console.log(this.apiUrl);
     return this.httpClient.post<ResponseUsuarioAuthModel>(`${this.apiUrl}/auth/login`, usuarioAuth);
   }
 
+  getUsuarioAtual(): Observable<UsuarioModel>{
+    return this.httpClient.get<UsuarioModel>(`${this.apiUrl}/usuario/atual`);
+  }
+  
   setToken(token: string){
     this.token = token;
   }
@@ -28,6 +30,4 @@ export class AuthService {
   getToken(){
     return this.token;
   }
-
-
 }

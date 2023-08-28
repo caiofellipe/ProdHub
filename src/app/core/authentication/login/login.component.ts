@@ -1,12 +1,11 @@
+import { LocalStorageService } from 'src/app/core/services/localStorage.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LoginUsuarioModel } from 'src/app/shared/models/loginUsuario.model';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
-import { LocalStorageService } from '../../services/localStorage.service';
 import { AuthService } from './../../services/auth.service';
-import { HttpResponse } from '@angular/common/http';
 import { ResponseUsuarioAuthModel } from 'src/app/shared/models/responseUsuarioAuth.model';
 
 @Component({
@@ -25,6 +24,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private routeActive: ActivatedRoute,
     private toast: ToastrService,
+    private localStorageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {
@@ -53,6 +53,8 @@ export class LoginComponent implements OnInit {
       if(res.usuario.id){
         this.autenticado = true;
         this.authService.setToken(res.token);
+        this.localStorageService.salvaToken(res.token);
+        this.usuarioLogado = res.usuario;
         this.toast.success("Autenticação realizada.","Sucesso");
         this.router.navigate(["planos"], {queryParams: { usuario: res.usuario.id }} );
       }

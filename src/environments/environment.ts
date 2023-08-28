@@ -4,7 +4,8 @@
 
 export const environment = {
   production: true,
-  apiUrl: 'https://abcdapublicidade.com.br/prodcore/api'
+  //apiUrl: 'https://abcdapublicidade.com.br/prodcore/api',
+  apiUrl: 'api'
 };
 
 /*
