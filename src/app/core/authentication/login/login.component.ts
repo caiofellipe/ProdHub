@@ -7,6 +7,7 @@ import { LoginUsuarioModel } from 'src/app/shared/models/loginUsuario.model';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 import { AuthService } from './../../services/auth.service';
 import { ResponseUsuarioAuthModel } from 'src/app/shared/models/responseUsuarioAuth.model';
+import { catchError, finalize, tap, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -45,20 +46,19 @@ export class LoginComponent implements OnInit {
       senha: formLogin.senha,
     }
     
-    this.authService.sendAuth(login).subscribe((res: ResponseUsuarioAuthModel) => {
-      if(res.usuario.id == null){
-        this.toast.error("Usuario não encontrado com estes dados","ERRO");
-      }
-
-      if(res.usuario.id){
+    this.authService.sendAuth(login).pipe(
+      tap((resposta: ResponseUsuarioAuthModel) => {
         this.autenticado = true;
-        this.authService.setToken(res.token);
-        this.localStorageService.salvaToken(res.token);
-        this.usuarioLogado = res.usuario;
+        this.authService.setToken(resposta.token);
+        this.localStorageService.salvaToken(resposta.token);
+        this.usuarioLogado = resposta.usuario;
         this.toast.success("Autenticação realizada.","Sucesso");
-        this.router.navigate(["planos"], {queryParams: { usuario: res.usuario.id }} );
-      }
-    });
-
+        this.router.navigate(["planos"], {queryParams: { usuario: resposta.usuario.id }} );
+      }),
+      catchError((error) => {
+        this.toast.error(error.error.erro,"");
+        return throwError(error);
+      })
+    ).subscribe();
   }
 }
