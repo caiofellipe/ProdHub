@@ -49,8 +49,8 @@ export class LoginComponent implements OnInit {
     this.authService.sendAuth(login).pipe(
       tap((resposta: ResponseUsuarioAuthModel) => {
         this.autenticado = true;
-        this.authService.setToken(resposta.token);
-        this.localStorageService.salvaToken(resposta.token);
+        this.authService.setToken(resposta);
+        this.localStorageService.salvaToken(resposta);
         this.usuarioLogado = resposta.usuario;
         this.toast.success("Autenticação realizada.","Sucesso");
         this.router.navigate(["planos"], {queryParams: { usuario: resposta.usuario.id }} );

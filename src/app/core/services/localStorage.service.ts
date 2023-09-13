@@ -1,18 +1,23 @@
 import { Injectable } from '@angular/core';
-import { EmpresaModel } from 'src/app/shared/models/empresa.model';
-import { UsuarioModel } from 'src/app/shared/models/usuario.model';
+import { ResponseUsuarioAuthModel } from 'src/app/shared/models/responseUsuarioAuth.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
 
-  salvaToken(token: string){
-    localStorage.setItem("token", token);
+  salvaToken(token: ResponseUsuarioAuthModel){
+    localStorage.setItem("token",  JSON.stringify(token));
   }
 
   getToken(){
-    return localStorage.getItem("token");
+    let tokenLocalStorage = localStorage.getItem("token");
+   
+    if(tokenLocalStorage != null || tokenLocalStorage != undefined){
+      return JSON.parse(tokenLocalStorage); 
+    }
+    
+    return; 
   }
 
   removeToken(){

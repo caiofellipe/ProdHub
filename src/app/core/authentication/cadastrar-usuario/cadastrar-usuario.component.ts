@@ -49,7 +49,6 @@ export class CadastrarUsuarioComponent implements OnInit {
     }
 
     this.usuarioService.criarUsuario(novoUsuario).subscribe((res: UsuarioModel) => {
-      console.log(res);
       if(res.id){
         this.toast.success("Usuario " + novoUsuario.nome + " criado", "Cadastro concluido.");
         this.form.reset();

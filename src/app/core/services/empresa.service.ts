@@ -29,4 +29,8 @@ export class EmpresaService {
       return this.httpClient.put<EmpresaModel>(`${this.apiUrl}/empresa/atualizar`, empresa);
     }
 
+    recuperaEmpresaPorEstadoECidade(uf: string, cidade: string): Observable<EmpresaModel[]>{
+      return this.httpClient.get<EmpresaModel[]>(`${this.apiUrl}/empresa/localizacao/${uf}/${cidade}`);
+    }
+
 }

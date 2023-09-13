@@ -205,7 +205,6 @@ export class PlanosFormComponent implements OnInit {
         empresa.planos.push(...this.planos);
       //  this.localStorageService.removerEmpresa(chaveEmpresa);
       
-      console.log("implementar o salvar empresa");
       //  this.localStorageService.salvarEmpresa(chaveEmpresa, empresa);
       }
     }

@@ -4,11 +4,15 @@ import { LayoutModule } from './core/components/layout/layout.module';
 import { AuthGuard } from './core/authentication/auth.guard';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo:'login'},
+  { path: '', pathMatch: 'full', redirectTo:'home'},
   {
     path: '',
     canActivate: [AuthGuard],
     loadChildren: () => import('./core/components/layout/layout.module').then((m) => LayoutModule)
+  },
+  {
+    path: 'home',
+    loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
   },
   {
     path: 'login',

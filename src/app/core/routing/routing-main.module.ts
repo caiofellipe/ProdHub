@@ -1,12 +1,7 @@
-import { EmpresasModule } from '../../pages/empresas/empresas.module';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const RoutingMain: Routes = [
-  {
-    path: 'home',
-    loadChildren: () => import('../../pages/home/home.module').then(m => m.HomeModule)
-  },
   {
     path: 'planos',
     loadChildren: () => import('../../pages/planos/planos.module').then(m => m.PlanosModule)
@@ -25,5 +20,5 @@ const RoutingMain: Routes = [
   imports: [RouterModule.forChild(RoutingMain)],
   exports: [RouterModule]
 })
-export class RoutingRoutingModule { }
+export class RoutingMainModule { }
 export { RoutingMain }
