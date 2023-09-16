@@ -12,10 +12,8 @@
     position: relative;
 }
 
-
-
 .position-container{
-    height: 100%;
+    height: 100vh;
     padding: 3.14285714rem;
     position: relative;
     overflow: auto;
@@ -23,12 +21,12 @@
 }
 
 @media screen and (max-width: 768px){
-    .card{
+    .card-filtro{
         height: 26vh;
     }
 }
 @media screen and (min-width: 769px){
-    .card{
+    .card-filtro{
         height: 12vh;
     }
 }

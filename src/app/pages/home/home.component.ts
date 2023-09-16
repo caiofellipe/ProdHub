@@ -7,6 +7,7 @@ import { EmpresaModel } from 'src/app/shared/models/empresa.model';
 import { EmpresaService } from 'src/app/core/services/empresa.service';
 import { catchError, tap, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +24,7 @@ export class HomeComponent implements OnInit {
     private fb: FormBuilder,
     private toast: ToastrService,
     private empresaService: EmpresaService,
+    private router: Router,
     ) {
     this.estados = ESTADOS;
    }
@@ -35,8 +37,8 @@ export class HomeComponent implements OnInit {
     
   }
 
-  recuperaEmpresasPelaLocalizacao(uf: string, cidade: string){
-   
+  conhecerEmpresa(empresa: EmpresaModel){
+    this.router.navigate(["conhecer-empresa"], {queryParams: { empresa: empresa.id }} );
   }
 
   preencheSelectCidade(event: any){
@@ -56,8 +58,14 @@ export class HomeComponent implements OnInit {
     
     this.empresaService.recuperaEmpresaPorEstadoECidade(form.uf, form.cidade).pipe(
       tap((empresasRes: EmpresaModel[]) => {
-        this.empresas.push(...empresasRes);
-        this.toast.success("Visualize empresas da sua região","Sucesso!");
+        if(empresasRes.length == 0){
+          this.toast.warning("Nenhuma empresa encontrada com estes parametros!","Alerta!");
+        }
+
+        if(empresasRes.length > 0){
+          this.empresas.push(...empresasRes);
+          this.toast.success("Visualize empresas da sua região","Sucesso!");
+        }
       }),
       catchError((error) => {
         //this.toast.error(error.error.erro,"");
