@@ -38,13 +38,13 @@
                     </form>
                 <hr>
             </div>
-            <div class="row row-cols-1 row-cols-md-4 g-4" *ngIf="empresas != undefined || empresas != null">
+            <div class="row row-cols-1 row-cols-md-4 g-4 mt-3" *ngIf="empresas != undefined || empresas != null">
                 <div class="col-12 col-md-2" *ngFor="let empresa of empresas">
-                    <div class="card card-emp text-center mb-3 shadow">
-                        <div class="card-header">{{ empresa.ramo }}</div>
+                    <div class="card card-emp text-center mb-3 shadow p-3">
+                        <div class="card-body">{{ empresa.ramo }}</div>
                         <img [src]="empresa.logo" class="card-img-top img-fluid">
                         <div class="card-body">
-                            <h5 class="card-title">{{empresa.nome }}</h5>
+                            <h6 class="card-title">{{empresa.nome }}</h6>
                             <a class="btn btn-primary" (click)="conhecerEmpresa(empresa)">Conhecer</a>
                         </div>
                     </div>

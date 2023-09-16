@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { LocalStorageService } from 'src/app/core/services/localStorage.service';
 import { AuthService } from './../services/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class InterceptorService implements HttpInterceptor{
     private authService: AuthService,
     private localStorageService: LocalStorageService,
     private toast: ToastrService,
+    private router: Router,
     ){}
   
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -35,6 +37,7 @@ export class InterceptorService implements HttpInterceptor{
       if(expiracao < atual){
         this.toast.warning("Faça login novamente!","Alerta! Token expirado");
         this.localStorageService.removeToken();
+        this.router.navigate(['/login']);
       }
 
       request = request.clone({

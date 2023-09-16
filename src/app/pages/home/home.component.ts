@@ -38,7 +38,9 @@ export class HomeComponent implements OnInit {
   }
 
   conhecerEmpresa(empresa: EmpresaModel){
-    this.router.navigate(["conhecer-empresa"], {queryParams: { empresa: empresa.id }} );
+    //this.router.navigate(["conhecer-empresa"], {queryParams: { empresa: empresa.id }} );
+    
+  
   }
 
   preencheSelectCidade(event: any){

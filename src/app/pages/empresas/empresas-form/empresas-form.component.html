@@ -68,15 +68,16 @@
                 <div class="form-group mb-4 col-12 mb-3">
                     <div *ngIf="!temLogo">
                         <label for="idLogo">Logo</label>
-                        <input type="file" class="form-control" id="idLogo" formControlName="logo_b64" (change)="enviaLogo($event)">
+                        <input type="file" class="form-control" id="idLogo" formControlName="logo" (change)="enviaLogo($event)">
                     </div>
                     <div *ngIf="temLogo" class="d-grid">
-                        <img [src]="this.form.get('logo_b64')?.value" class="mb-3">
+                        <img [src]="this.form.get('logo_b64')?.value" class="mb-3 img-fluid">
                         <a class="btn btn-outline-primary btn-md" (click)="alterarLogo()">Alterar Logo</a>
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary m-2">Salvar</button>
+                    <button type="submit" class="btn btn-primary m-2" *ngIf="empresaEdit == undefined">Salvar</button>
+                    <button type="button" class="btn btn-primary m-2" (click)="atualizar()" *ngIf="empresaEdit != undefined">Atualizar</button>
                 </div>
             </div>
         </form>

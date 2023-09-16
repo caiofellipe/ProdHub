@@ -22,19 +22,7 @@ export class EmpresasComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-   // this.empresas.push(...this.empresaService.getTodasEmpresas());
-    //this.recuperaEmpresaLocalStorage();
     this.recuperaEmpresas();
-  }
-
-  recuperaEmpresaLocalStorage(){
-    
-    /*let empresa = this.localStorageService.todasEmpresas();
-    if(empresa.length > 0){
-      this.empresas.push(...empresa);
-    }*/
-
-    console.log("IMPLEMENTAR O RECUPERAR EMPRESAS ");
   }
 
   cadastrar(){

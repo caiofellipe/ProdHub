@@ -197,19 +197,18 @@ export class PlanosFormComponent implements OnInit {
     return subCat;
   }
 
-  atualizaEmpresaComPlanoLocalStorage(plano: PlanoModel, empresa?: EmpresaModel){
+  /*atualizaEmpresaComPlanoLocalStorage(plano: PlanoModel, empresa?: EmpresaModel){
     if(empresa){
-      let chaveEmpresa = "empresa:" + empresa?.nome;
       this.planos.push(plano);
       if(this.planos.length > 0){
-        empresa.planos.push(...this.planos);
+        empresa.planos?.push(...this.planos);
       //  this.localStorageService.removerEmpresa(chaveEmpresa);
       
       //  this.localStorageService.salvarEmpresa(chaveEmpresa, empresa);
       }
     }
 
-  }
+  }*/
 
   enviaImagem(event: any, index: number){
     const file = event.target.files[0];

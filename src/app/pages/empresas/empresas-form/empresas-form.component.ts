@@ -11,6 +11,7 @@ import { EmpresaModel } from 'src/app/shared/models/empresa.model';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 import { HttpResponse } from '@angular/common/http';
 import { Ramo } from 'src/app/shared/models/ramo.model';
+import { catchError, tap } from 'rxjs';
 
 @Component({
   selector: 'app-empresas-form',
@@ -59,10 +60,11 @@ export class EmpresasFormComponent implements OnInit {
 
   criaForm(){
     this.form = this.fb.group({
+      id: [this.empresaEdit?.id || ''],
       nome: [this.empresaEdit?.nome || '', Validators.required],
       cnpj: [this.empresaEdit?.cnpj || '', Validators.required],
       email: [this.empresaEdit?.email || '', Validators.required],
-      ramo: [this.ramo() || '', Validators.required],
+      ramo: [this.empresaEdit?.ramo || '', Validators.required],
       endereco: this.fb.group({
         rua: [this.empresaEdit?.endereco.rua || '', Validators.required],
         numero: [this.empresaEdit?.endereco.numero || '', Validators.required],
@@ -73,25 +75,12 @@ export class EmpresasFormComponent implements OnInit {
         bairro: [this.empresaEdit?.endereco.bairro || '', Validators.required],
       }),
       telefone: [this.empresaEdit?.telefone || '', Validators.required ],
-      logo_b64: [this.empresaEdit?.logo || '', Validators.required ],
+      logo: [this.empresaEdit?.logo || '', Validators.required ],
     });
 
     if(this.empresaEdit?.logo){
       this.temLogo = true;
     }
-  }
-
-  ramo(){
-    if(this.empresaEdit?.ramo){
-      let ramo:string = this.empresaEdit.ramo;
-
-      this.temRamo = this.ramos.find((r: Ramo) => r.nome.toUpperCase() == ramo.toUpperCase() );
-      if(this.temRamo){
-        this.temRamo.checked = true;
-      }
-      return this.temRamo;      
-    }
-    return this.empresaEdit?.ramo;
   }
 
   desabilitaCamposEndereco(){
@@ -108,6 +97,7 @@ export class EmpresasFormComponent implements OnInit {
         if(res.erro){
           this.toast.warning("Digite outro Nº de CEP","CEP não encontrado.");
         }
+        this.toast.success("Endereço preenchido.","Sucesso");
         this.form.get('endereco.cidade')?.setValue(res.localidade);
         this.form.get('endereco.bairro')?.setValue(res.bairro);
         this.form.get('endereco.rua')?.setValue(res.logradouro);
@@ -115,6 +105,27 @@ export class EmpresasFormComponent implements OnInit {
         this.form.get('endereco.estado')?.setValue(pesquisaEstadoPelaUf(res.uf));
       });
     }
+  }
+
+  fechar(){
+    this.modal.dismissAll();
+  }
+
+  enviaLogo(event: any){
+    const file = event.target.files[0];
+    const fileReader = new FileReader;
+
+    fileReader.readAsDataURL(file);
+    fileReader.onloadend = (e) => {
+      if(e.target?.result != null){
+        this.logoBase64 = e.target?.result;
+      }
+    }
+  }
+
+  alterarLogo(){
+    this.temLogo = false;
+    this.form.get('logo')?.reset();
   }
 
   salvar(){
@@ -135,13 +146,8 @@ export class EmpresasFormComponent implements OnInit {
       },
       telefone: form.telefone,
       logo: this.logoBase64,
-      planos: [],
     }
     
-    //if(this.usuario.empresaId == ""){
-      //this.atualizaEmpresaIdNoCadastroUsuario(empresa.id, empresa.usuario);
-    //}
-
     this.empresaService.criar(empresa).subscribe((res: HttpResponse<EmpresaModel>) => {
       if(res){
         this.toast.success("Empresa " + empresa.nome + " criada","Cadastro concluido.");
@@ -149,38 +155,41 @@ export class EmpresasFormComponent implements OnInit {
         this.fechar();
       }
     });
-  
-    //this.localStorageService.salvarEmpresa("empresa:" + empresa.nome, empresa);
-    //this.localStorageService.getEmpresa(empresa.nome);
-
   }
 
-  /*atualizaEmpresaIdNoCadastroUsuario(empresaId: string, usuario: UsuarioModel){
-    let chaveUsuario = "usuario " + usuario.id;
-    this.localStorageService.removerUsuario(chaveUsuario);
-    usuario.empresaId = empresaId;
-    this.localStorageService.salvarUsuario(chaveUsuario, usuario);
-  }*/
+  atualizar(){
+    let form =  this.form.getRawValue();
 
-
-  fechar(){
-    this.modal.dismissAll();
+    let empresa: EmpresaModel = {
+      id: form.id,
+      nome: form.nome,
+      cnpj: form.cnpj,
+      email: form.email,
+      ramo: form.ramo,
+      endereco: {
+        rua: form.endereco.rua,
+        numero: Number(form.endereco.numero),
+        cep: form.endereco.cep,
+        estado: form.endereco.estado,
+        cidade: form.endereco.cidade,
+        uf: form.endereco.uf,
+        bairro: form.endereco.bairro
+      },
+      telefone: form.telefone,
+      logo: this.logoBase64,
+    };
+   
+    this.empresaService.atualizar(empresa).pipe(
+      tap((resposta: EmpresaModel) => {
+        this.toast.success("Cadastro da empresa " + resposta.nome + " foi atualizado","Sucesso.");
+        this.form.reset();
+        this.fechar();
+      }),
+      catchError((error) => {
+        this.toast.error("Erro ao atualizar cadastro.","ERRO.");
+        return error;
+      })
+    ).subscribe();
   }
 
-  enviaLogo(event: any){
-    const file = event.target.files[0];
-    const fileReader = new FileReader;
-
-    fileReader.readAsDataURL(file);
-    fileReader.onloadend = (e) => {
-      if(e.target?.result != null){
-        this.logoBase64 = e.target?.result;
-      }
-    }
-  }
-
-  alterarLogo(){
-    this.temLogo = false;
-    this.form.get('logo_b64')?.reset();
-  }
 }

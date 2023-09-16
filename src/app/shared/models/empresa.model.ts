@@ -11,5 +11,5 @@ export interface EmpresaModel{
     endereco: EnderecoModel;
     telefone: string;
     logo: string[];
-    planos: PlanoModel[],
+    planos?: PlanoModel[],
 }
