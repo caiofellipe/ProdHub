@@ -1,0 +1,21 @@
+.card{
+    background-repeat: no-repeat;
+    background-color: #fff;
+    background-size: cover;
+    background-position: 50%;
+    border: 0 solid transparent;
+    border-radius: 5px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.1);
+    color: inherit;
+    display: block;
+    margin-bottom: 1.57142857rem;
+    position: relative;
+}
+
+.position-container{
+    height: 100vh;
+    padding: 3.14285714rem;
+    position: relative;
+    overflow: auto;
+    overflow-x: hidden;
+}

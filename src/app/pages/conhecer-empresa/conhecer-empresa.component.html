@@ -1,2 +1,25 @@
-<p>conhecer-empresa works!</p>
-
+<div class="container position-container">
+    <div class="row">
+        <div class="card mb-3 p-3">
+            <div class="row g-0" *ngIf="empresa != undefined">
+                <div class="col-md-4">
+                    <img [src]="empresa.logo" class="img-fluid rounded">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"> {{ empresa.nome + " - " + empresa.ramo}} </h5>
+                        <p class="card-text">{{ empresa.telefone | mask: mascaraTel}}<br>{{ empresa.email }}</p>
+                        <p class="card-text"><small class="text-body-secondary">Veja o catalogo de produtos abaixo.</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-0" *ngIf="empresa == undefined">
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        {{ mensagemErro }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

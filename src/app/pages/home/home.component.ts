@@ -8,6 +8,7 @@ import { EmpresaService } from 'src/app/core/services/empresa.service';
 import { catchError, tap, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { PlanoModel } from 'src/app/shared/models/plano.model';
 
 @Component({
   selector: 'app-home',
@@ -38,9 +39,7 @@ export class HomeComponent implements OnInit {
   }
 
   conhecerEmpresa(empresa: EmpresaModel){
-    //this.router.navigate(["conhecer-empresa"], {queryParams: { empresa: empresa.id }} );
-    
-  
+    this.router.navigate(["conhecer-empresa"], {queryParams: { empresa: empresa.id }} );
   }
 
   preencheSelectCidade(event: any){
