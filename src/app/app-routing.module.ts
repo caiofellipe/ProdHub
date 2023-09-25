@@ -18,6 +18,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/conhecer-empresa/conhecer-empresa.module').then((m) => m.ConhecerEmpresaModule)
   },
   {
+    path: 'contratar-planos',
+    loadChildren: () => import('./pages/planos/contratar-planos/contratar-planos.module').then((m) => m.ContratarPlanosModule)
+  },
+  {
     path: 'login',
     loadChildren: () => import('./core/authentication/login/login.module').then((m) => m.LoginModule)
   },

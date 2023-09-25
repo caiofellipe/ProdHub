@@ -4,6 +4,8 @@ import { LayoutComponent } from './layout.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { LayoutRoutingModule } from './layout-routing.module';
 import { ContentComponent } from './content/content.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -12,10 +14,15 @@ import { ContentComponent } from './content/content.component';
     LayoutComponent,
     SidebarComponent,
     ContentComponent,
+    ToolbarComponent,
   ],
   imports: [
     CommonModule,
-    LayoutRoutingModule
+    LayoutRoutingModule,
+    RouterModule
+  ],
+  exports: [
+    ToolbarComponent
   ]
 })
 export class LayoutModule { }

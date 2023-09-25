@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PlanosComponent } from './planos.component';
 import { RoutingMain } from 'src/app/core/routing/routing-main.module';
+import { ContratarPlanosComponent } from './contratar-planos/contratar-planos.component';
 
 const routes: Routes = [
   { path: '', component: PlanosComponent, children: RoutingMain },
-  { path: ':id', component: PlanosComponent, children: RoutingMain }
+  { path: ':id', component: PlanosComponent, children: RoutingMain },
 ];
 
 @NgModule({

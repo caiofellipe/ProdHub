@@ -6,13 +6,14 @@ import { PlanosRoutingModule } from './planos-routing.module';
 import { PlanosComponent } from './planos.component';
 import { PlanosFormComponent } from './planos-form/planos-form.component';
 import { ProdutoModalComponent } from './produto-modal/produto-modal.component';
+import { ContratarPlanosComponent } from './contratar-planos/contratar-planos.component';
 
 
 @NgModule({
   declarations: [
     PlanosComponent,
     PlanosFormComponent,
-    ProdutoModalComponent
+    ProdutoModalComponent,
   ],
   imports: [
     CommonModule,
