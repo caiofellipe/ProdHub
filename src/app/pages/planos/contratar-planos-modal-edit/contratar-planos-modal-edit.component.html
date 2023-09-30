@@ -1,0 +1,34 @@
+<div class="row p-4">
+    <form [formGroup]="form" (ngSubmit)="atualizar()">
+        <div class="form-floating col-12 mb-4">
+            <input type="text" class="form-control" placeholder="Nome" formControlName="nome" id="idNome">
+            <label for="idNome">Nome</label>
+        </div>
+        <div class="form-floating col-12 mb-4">
+            <input type="text" class="form-control" placeholder="Descrição" formControlName="descricao" id="idDescricao">
+            <label for="idDescricao">Descrição</label>
+        </div>
+        <div formGroupName="nivelAcesso">
+
+            <div class="form-floating col-12 mb-4" >
+                <input type="text" class="form-control" placeholder="Nome" formControlName="nome" id="idNomeNivelAcesso">
+                <label for="idNomeNivelAcesso">Nivel de Acesso</label>
+            </div>
+            <div formArrayName="beneficioAcesso">
+                <div class="row" *ngFor="let beneficio of beneficioArray?.controls; let i = index" [formGroupName]="i">
+                    <div class="form-floating col-12 mb-4">
+                        <input type="text" class="form-control" formControlName="nome" id="idNome_{{i}}">
+                        <label for="idNome_{{i}}">Beneficio</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group d-flex justify-content-between">
+                <button type="button" class="btn btn-sm btn-outline-primary" (click)="novoBeneficio()">Novo Beneficio</button>
+            </div>
+        </div>
+        <hr>
+        <div class="form-group d-flex justify-content-between">
+            <button type="submit" class="btn btn-outline-primary">Atualizar</button>
+        </div>
+    </form>
+</div>

@@ -7,6 +7,7 @@ import { PlanosComponent } from './planos.component';
 import { PlanosFormComponent } from './planos-form/planos-form.component';
 import { ProdutoModalComponent } from './produto-modal/produto-modal.component';
 import { ContratarPlanosComponent } from './contratar-planos/contratar-planos.component';
+import { ContratarPlanosModalEditComponent } from './contratar-planos-modal-edit/contratar-planos-modal-edit.component';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { ContratarPlanosComponent } from './contratar-planos/contratar-planos.co
     PlanosComponent,
     PlanosFormComponent,
     ProdutoModalComponent,
+    ContratarPlanosModalEditComponent,
   ],
   imports: [
     CommonModule,

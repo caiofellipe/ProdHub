@@ -3,6 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 const RoutingMain: Routes = [
   {
+    path: 'contratar-planos',
+    loadChildren: () => import('../../pages/planos/contratar-planos/contratar-planos.module').then(m => m.ContratarPlanosModule)
+  },
+  {
     path: 'planos',
     loadChildren: () => import('../../pages/planos/planos.module').then(m => m.PlanosModule)
   },

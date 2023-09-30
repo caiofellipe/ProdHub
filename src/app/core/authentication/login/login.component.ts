@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
         this.localStorageService.salvaToken(resposta);
         this.usuarioLogado = resposta.usuario;
         this.toast.success("Autenticação realizada.","Sucesso");
-        this.router.navigate(["planos"], {queryParams: { usuario: resposta.usuario.id }} );
+        this.router.navigate(["contratar-planos"], {queryParams: { usuario: resposta.usuario.id }} );
       }),
       catchError((error) => {
         this.toast.error(error.error.erro,"");
