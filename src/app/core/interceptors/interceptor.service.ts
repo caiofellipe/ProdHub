@@ -31,8 +31,8 @@ export class InterceptorService implements HttpInterceptor{
     const authToken = this.authService.getToken() || this.localStorageService.getToken();
     
     if(authToken != undefined){
-      let expiracao = new Date(new Date(authToken.expiracao * 1000)).toLocaleString('pt-BR', this.options);
-      let atual = new Date().toLocaleString('pt-BR', this.options);
+      let expiracao = new Date(new Date(authToken.expiracao * 1000));
+      let atual = new Date();
 
       if(expiracao < atual){
         this.toast.warning("Faça login novamente!","Alerta! Token expirado");
