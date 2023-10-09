@@ -1,12 +1,10 @@
-import { NivelUsuarioModel } from './../../../shared/models/nivelUsuario.model';
-import { EmpresaModel } from './../../../shared/models/empresa.model';
-import { LocalStorageService } from './../../services/localStorage.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { CadastroUsuarioModel } from 'src/app/shared/models/cadastroUsuario.model';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
-import { UsuarioService } from '../../services/usuario.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-cadastrar-usuario',
@@ -15,12 +13,11 @@ import { UsuarioService } from '../../services/usuario.service';
 })
 export class CadastrarUsuarioComponent implements OnInit {
   form!: FormGroup;
-  novoUsuario!: UsuarioModel;
   fotoBase64: any;
   idUsuarioQueConvidou!: Number;
 
   constructor(
-    private usuarioService: UsuarioService,
+    private authService: AuthService,
     private fb: FormBuilder,
     private toast: ToastrService,
     private route: Router,
@@ -40,7 +37,7 @@ export class CadastrarUsuarioComponent implements OnInit {
 
   cadastrarNovoUsuario(){
     let formUsuario = this.form.getRawValue();
-    let novoUsuario: UsuarioModel = {
+    let novoUsuario: CadastroUsuarioModel = {
       idUsuarioConvite: this.idUsuarioQueConvidou || "",
       nome: formUsuario.nome,
       email: formUsuario.email,
@@ -48,7 +45,9 @@ export class CadastrarUsuarioComponent implements OnInit {
       foto: this.fotoBase64, 
     }
 
-    this.usuarioService.criarUsuario(novoUsuario).subscribe((res: UsuarioModel) => {
+    console.log(novoUsuario);
+
+    this.authService.criarUsuarioComConvite(novoUsuario).subscribe((res: UsuarioModel) => {
       if(res.id){
         this.toast.success("Usuario " + novoUsuario.nome + " criado", "Cadastro concluido.");
         this.form.reset();

@@ -43,12 +43,12 @@ export class SidebarComponent implements OnInit{
         this.router.navigate(["/contratar-planos"], {relativeTo: this.routeActive});
     }
 
+    convites(){
+        this.router.navigate(["/convites"], {relativeTo: this.routeActive});
+    }
+
     hiddenLink(){
         let usuarioTemPermissao = this.usuario.roles?.find((role: Role) => role.nome.startsWith("ADMIN"));
         return this.hidden = usuarioTemPermissao ? true : false
-        // 1. Mostrar menu empresa qunado usuario for admin
-        // 2. Permita o compartilhamento do link de convite se o usuario for ADMIN
-        // 3. Cadastre um usuario do tipo USER com o link de convite do ADMIN
-        // 4. teste o fluxo do sistema com este usuario USER
     }
 }

@@ -1,11 +1,12 @@
-  <h5 class="">Conheça os planos disponiveis</h5>
+  <h5 class="" nivel-acesso>Conheça os planos disponiveis</h5>
   <div class="card-body row">
     <div class="card h-100 col-12 col-md-4 border-0 border-end" *ngFor="let plano of planosAcesso">
-      <button class="btn btn-sm" (click)="editarPlano(plano)">Editar</button>
+      <button class="btn btn-sm" (click)="editarPlano(plano)" *ngIf="role.nome == 'ADMIN'">Editar</button>
       <i class="fa-solid fa-3x text-center p-3 fa-star card-img-top" [ngClass]="mudaCorIconePlano(plano.nivelAcesso)"></i>
       <div class="card-body text-center">
         <h5 class="card-title">{{ plano.nome }}</h5>
         <p class="card-text">{{ plano.descricao }}</p>
+        <a class="btn btn-primary" (click)="contratarPlano(plano)">Contratar</a>
         <hr>
       </div>
       <p>Benefícios:</p>

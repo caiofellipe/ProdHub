@@ -1,3 +1,4 @@
+import { LocalStorageService } from 'src/app/core/services/localStorage.service';
 import { NivelAcessoModel } from './../../../shared/models/nivelAcesso.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
@@ -8,6 +9,8 @@ import { PlanoAcessoService } from 'src/app/core/services/planoAcesso.service';
 import { BeneficioAcessoModel } from 'src/app/shared/models/beneficioAcesso.model';
 import { PlanoAcessoModel } from 'src/app/shared/models/planoAcesso.model';
 import { ContratarPlanosModalEditComponent } from '../contratar-planos-modal-edit/contratar-planos-modal-edit.component';
+import { ResponseUsuarioAuthModel } from 'src/app/shared/models/responseUsuarioAuth.model';
+import { Role } from 'src/app/shared/models/role.model';
 
 @Component({
   selector: 'app-contratar-planos',
@@ -19,15 +22,21 @@ export class ContratarPlanosComponent implements OnInit {
   planosAcesso: PlanoAcessoModel[] = [];
   beneficiosAcessos: BeneficioAcessoModel[] = [];
   classHtmlCorIconePlanoAcesso: string = "";
+  usuarioAuth!: ResponseUsuarioAuthModel; 
+  role!: Role;
 
   constructor(
     private toast: ToastrService,
     private planoAcessoService: PlanoAcessoService,
+    private localStorageService: LocalStorageService,
     private modal: NgbModal,
+
   ) { }
 
   ngOnInit(): void {
     this.planosDeAcesso();
+    this.habilitaEditar();
+    console.log(this.role);
   }
 
   planosDeAcesso(){
@@ -58,6 +67,16 @@ export class ContratarPlanosComponent implements OnInit {
   editarPlano(planoAcesso: PlanoAcessoModel){
     const modalRef = this.modal.open(ContratarPlanosModalEditComponent, { size: 'lg' });
     modalRef.componentInstance.planoAcessoEdit = planoAcesso;
+  }
+
+  habilitaEditar(){
+    this.usuarioAuth = this.localStorageService.getToken();
+    return this.usuarioAuth.usuario.roles?.map((role: Role) => {
+      this.role = role;
+    });
+  }
+
+  contratarPlano(plano: PlanoAcessoModel){
   }
 
 }

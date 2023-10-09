@@ -13,7 +13,6 @@ import { UsuarioComponent } from './usuario.component';
     UsuarioFormComponent,
   ],
   imports: [
-    CommonModule,
     UsuarioRoutingModule,
     InterfaceModule,
   ]
