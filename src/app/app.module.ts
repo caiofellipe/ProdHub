@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InterceptorModule } from './core/interceptors/interceptor.module';
 import { InterfaceModule } from './shared/modules/interface.module';
+import { ProdutosComponent } from './pages/produtos/produtos.component';
 
 @NgModule({
   declarations: [

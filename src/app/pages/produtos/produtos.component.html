@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-10">
+            <h4 class="m-4">Produtos</h4>
+        </div>
+        <div class="col-12 col-md-2 text-end">
+            <a class="btn btn-primary" (click)="abrirModalCadastro()">Novo Produto</a>
+        </div>
+        <hr>
+    </div>
+    <div class="row" >
+        <div class="col-12 col-md-4" *ngFor="let produto of empresa.produto">
+            <div class="card" *ngIf="produto.id != null">
+                <div class="card-body">
+                    <h5 class="card-title">{{ produto.nome }}</h5>
+                    <p class="card-text">{{ retornaDescricaoProduto(produto) }}</p>
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <small class="card-text pr-1">{{ quantidadeProdutosNoPlano }}</small>
+                        <a class="btn btn-primary" (click)="verProdutos(produto)">Ver</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="alert alert-warning" role="alert" *ngIf="empresa.produto?.length == 0">
+            Não existe nenhum produto cadastrado, clique em "Novo Produto" para cadastrar <a (click)="abrirModalCadastro()" class="alert-link">Novo Produto.</a>
+        </div>
+    </div>
+</div>

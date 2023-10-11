@@ -19,7 +19,7 @@ export class ConhecerEmpresaComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private empreasService: EmpresaService,
+    private empresaService: EmpresaService,
     private toast: ToastrService,
   ) { }
 
@@ -34,7 +34,7 @@ export class ConhecerEmpresaComponent implements OnInit {
         throw new Error(this.mensagemErro);
       }
 
-      this.empreasService.recuperaPorId(Number(idEmpresa)).pipe(
+      this.empresaService.recuperaPorId(Number(idEmpresa)).pipe(
         tap((resposta: EmpresaModel) => {
           this.empresa = resposta;
           this.toast.success("Confira os dados e produtos da Empresa","Sucesso!");

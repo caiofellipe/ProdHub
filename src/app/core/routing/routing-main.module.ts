@@ -22,6 +22,13 @@ const RoutingMain: Routes = [
     }
   },
   {
+    path: 'produtos',
+    loadChildren: () => import('../../pages/produtos/produtos.module').then(m => m.ProdutosModule),
+    data: {
+      roles: ["USER", "ADMIN"]
+    }
+  },
+  {
     path: 'usuario',
     loadChildren: () => import('../../pages/usuario/usuario.module').then(m => m.UsuarioModule),
     data: {

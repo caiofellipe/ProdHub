@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmpresaService } from 'src/app/core/services/empresa.service';
-import { EmpresaModel } from 'src/app/shared/models/empresa.model';
-import { EmpresasFormComponent } from './empresas-form/empresas-form.component';
 import { LocalStorageService } from 'src/app/core/services/localStorage.service';
-import { LoginComponent } from 'src/app/core/authentication/login/login.component';
-import { HttpResponse } from '@angular/common/http';
+import { EmpresaModel } from 'src/app/shared/models/empresa.model';
+import { ProdutosModalComponent } from '../produtos/produtos-modal/produtos-modal.component';
+import { EmpresasFormComponent } from './empresas-form/empresas-form.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-empresas',
@@ -19,6 +19,7 @@ export class EmpresasComponent implements OnInit {
     private empresaService: EmpresaService,
     private localStorageService: LocalStorageService,
     private modal: NgbModal,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -34,7 +35,9 @@ export class EmpresasComponent implements OnInit {
     return this.empresas;
   }
 
-  verPlanos(empresa: EmpresaModel){}
+  verProdutos(empresa: EmpresaModel){
+    this.router.navigate(["produtos"], {queryParams: { empresa: empresa.id }} );
+  }
 
   editar(empresa: EmpresaModel){
     

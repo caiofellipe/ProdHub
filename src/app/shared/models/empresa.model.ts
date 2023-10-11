@@ -1,5 +1,6 @@
 import { EnderecoModel } from "./endereco.model";
 import { PlanoModel } from "./plano.model";
+import { ProdutoModel } from "./produto.model";
 import { UsuarioModel } from "./usuario.model";
 
 export interface EmpresaModel{
@@ -11,5 +12,6 @@ export interface EmpresaModel{
     endereco: EnderecoModel;
     telefone: string;
     logo: string[];
-    planos?: PlanoModel[],
+    produto?: ProdutoModel[],
+    usuario?: UsuarioModel;
 }

@@ -1,17 +1,18 @@
-import { EmpresaService } from 'src/app/core/services/empresa.service';
-import { CepService } from './../../../core/services/cep.service';
-import { LocalStorageService } from './../../../core/services/localStorage.service';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { PlanoAcessoService } from './../../../core/services/planoAcesso.service';
+import { HttpResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { catchError, tap } from 'rxjs';
 import { pesquisaEstadoPelaUf } from 'src/app/core/helpers/estadosHelper';
+import { EmpresaService } from 'src/app/core/services/empresa.service';
 import { CepResponseModel } from 'src/app/shared/models/cepResponse.model';
 import { EmpresaModel } from 'src/app/shared/models/empresa.model';
-import { UsuarioModel } from 'src/app/shared/models/usuario.model';
-import { HttpResponse } from '@angular/common/http';
+import { PlanoAcessoModel } from 'src/app/shared/models/planoAcesso.model';
 import { Ramo } from 'src/app/shared/models/ramo.model';
-import { catchError, tap } from 'rxjs';
+import { UsuarioModel } from 'src/app/shared/models/usuario.model';
+import { CepService } from './../../../core/services/cep.service';
 
 @Component({
   selector: 'app-empresas-form',
@@ -25,6 +26,9 @@ export class EmpresasFormComponent implements OnInit {
   temRamo: Ramo | undefined;
   usuario!: UsuarioModel;
   empresa!: EmpresaModel;
+
+  planoAcessoEscolhido!: PlanoAcessoModel;
+  temPlano: string = "Contratar";
 
   ramos: Ramo[] = [
     {nome: "Pizzaria", checked: false},
@@ -47,15 +51,13 @@ export class EmpresasFormComponent implements OnInit {
     private modal: NgbModal,
     private toast: ToastrService,
     private cepService: CepService,
-    private localStorageService: LocalStorageService,
     private empresaService: EmpresaService,
-    private cdr: ChangeDetectorRef,
+    private planoAcessoService: PlanoAcessoService,
   ) { }
 
   ngOnInit(): void {
     this.criaForm();
     this.desabilitaCamposEndereco();
-    
   }
 
   criaForm(){
@@ -108,7 +110,7 @@ export class EmpresasFormComponent implements OnInit {
   }
 
   fechar(){
-    this.modal.dismissAll();
+    return this.modal.dismissAll();
   }
 
   enviaLogo(event: any){
@@ -146,11 +148,20 @@ export class EmpresasFormComponent implements OnInit {
       },
       telefone: form.telefone,
       logo: this.logoBase64,
+      usuario: this.usuario,
     }
     
+    if(this.planoAcessoEscolhido != null){
+      this.planoAcessoService.salvar(this.planoAcessoEscolhido).subscribe((res: PlanoAcessoModel) => {
+        if(res){
+          this.toast.success("Plano de Acesso vinculado.","Sucesso!");
+        }
+      });
+    }
+
     this.empresaService.criar(empresa).subscribe((res: HttpResponse<EmpresaModel>) => {
       if(res){
-        this.toast.success("Empresa " + empresa.nome + " criada","Cadastro concluido.");
+        this.toast.success("Empresa " + empresa.nome + " criada","Sucesso!");
         this.form.reset();
         this.fechar();
       }
@@ -177,6 +188,7 @@ export class EmpresasFormComponent implements OnInit {
       },
       telefone: form.telefone,
       logo: this.logoBase64,
+      usuario: this.usuario,
     };
    
     this.empresaService.atualizar(empresa).pipe(

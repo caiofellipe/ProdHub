@@ -28,4 +28,7 @@ export class UsuarioService {
     return this.httpClient.get<UsuarioModel>(`${this.apiUrl}/usuario?id=${usuario.id}`);
   }
 
+  getUsuarioAtual(): Observable<UsuarioModel>{
+    return this.httpClient.get<UsuarioModel>(`${this.apiUrl}/usuario/atual`);
+  }
 }

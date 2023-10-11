@@ -75,7 +75,15 @@
                         <a class="btn btn-outline-primary btn-md" (click)="alterarLogo()">Alterar Logo</a>
                     </div>
                 </div>
-                <div class="form-group">
+                <hr>
+                <div *ngIf="planoAcessoEscolhido.id != null || planoAcessoEscolhido.id != undefined">
+                    <h6>Plano de Acesso:</h6>
+                    <div class="form-group form-floating col-12">
+                        <input type="text" class="form-control" placeholder="Plano de Acesso" id="idPlanoAcesso" [value]="planoAcessoEscolhido.nome" disabled>
+                        <label for="idPlanoAcesso">Plano de Acesso</label>
+                    </div>
+                </div>
+                <div class="form-group mt-4">
                     <button type="submit" class="btn btn-primary m-2" *ngIf="empresaEdit == undefined">Salvar</button>
                     <button type="button" class="btn btn-primary m-2" (click)="atualizar()" *ngIf="empresaEdit != undefined">Atualizar</button>
                 </div>

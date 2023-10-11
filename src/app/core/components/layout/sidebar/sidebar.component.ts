@@ -32,21 +32,6 @@ export class SidebarComponent implements OnInit{
         this.router.navigate(['/usuario'], {relativeTo: this.routeActive});
     }
 
-    planos(){
-        this.router.navigate(["/planos"], {relativeTo: this.routeActive});
-    }
-    empresas(){
-        this.router.navigate(["/empresas"], {relativeTo: this.routeActive});
-    }
-
-    contratarPlanos(){
-        this.router.navigate(["/contratar-planos"], {relativeTo: this.routeActive});
-    }
-
-    convites(){
-        this.router.navigate(["/convites"], {relativeTo: this.routeActive});
-    }
-
     hiddenLink(){
         let usuarioTemPermissao = this.usuario.roles?.find((role: Role) => role.nome.startsWith("ADMIN"));
         return this.hidden = usuarioTemPermissao ? true : false

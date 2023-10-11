@@ -5,12 +5,15 @@
     bottom: 0;
     width: 15%;
 }
-.sidebar-header, .nav-item:hover{
+.sidebar-header, .nav-item:hover, .list-group-item:hover{
     border-bottom: 1px solid #cdcdcd;
 }
 
 .navbar-toggler, .btn-close{display: none;}
 
+.list-group-item{
+    background-color: none!important;
+}
 
 /* Estilos para telas menores que 600px */
 @media screen and (max-width: 600px) {

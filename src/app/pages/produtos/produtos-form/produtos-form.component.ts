@@ -11,15 +11,15 @@ import { PlanoModel } from 'src/app/shared/models/plano.model';
 import { ProdutoModel } from 'src/app/shared/models/produto.model';
 import { SubCategoriaModel } from 'src/app/shared/models/subCategoria.model';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
-import { LocalStorageService } from './../../../core/services/localStorage.service';
-import { CategoriaModel } from './../../../shared/models/categoria.model';
+import { LocalStorageService } from '../../../core/services/localStorage.service';
+import { CategoriaModel } from '../../../shared/models/categoria.model';
 
 @Component({
-  selector: 'app-planos-form',
-  templateUrl: './planos-form.component.html',
-  styleUrls: ['./planos-form.component.scss']
+  selector: 'app-produtos-form',
+  templateUrl: './produtos-form.component.html',
+  styleUrls: ['./produtos-form.component.scss']
 })
-export class PlanosFormComponent implements OnInit {
+export class ProdutosFormComponent implements OnInit {
   form!: FormGroup;
   produtoForm!: FormGroup;
   cadastroProduto: string = "Produto";

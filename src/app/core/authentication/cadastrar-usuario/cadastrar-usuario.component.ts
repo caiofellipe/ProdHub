@@ -45,8 +45,6 @@ export class CadastrarUsuarioComponent implements OnInit {
       foto: this.fotoBase64, 
     }
 
-    console.log(novoUsuario);
-
     this.authService.criarUsuarioComConvite(novoUsuario).subscribe((res: UsuarioModel) => {
       if(res.id){
         this.toast.success("Usuario " + novoUsuario.nome + " criado", "Cadastro concluido.");
