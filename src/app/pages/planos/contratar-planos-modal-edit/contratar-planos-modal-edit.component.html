@@ -8,6 +8,10 @@
             <input type="text" class="form-control" placeholder="Descrição" formControlName="descricao" id="idDescricao">
             <label for="idDescricao">Descrição</label>
         </div>
+        <div class="form-floating col-12 mb-4">
+            <input type="text" class="form-control" placeholder="Valor" formControlName="valor" mask="separator.2" suffix="R$" thousandSeparator=","  id="idValor">
+            <label for="idValor">Valor</label>
+        </div>
         <div formGroupName="nivelAcesso">
 
             <div class="form-floating col-12 mb-4" >

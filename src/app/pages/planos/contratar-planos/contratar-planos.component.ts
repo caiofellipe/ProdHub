@@ -15,6 +15,7 @@ import { Role } from 'src/app/shared/models/role.model';
 import { EmpresasFormComponent } from '../../empresas/empresas-form/empresas-form.component';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 import { ContratarPlanosModalComponent } from '../contratar-planos-modal/contratar-planos-modal.component';
+import { formataStringEmDinheiroPtBR } from 'src/app/core/helpers/formataMoedaHelper';
 
 @Component({
   selector: 'app-contratar-planos',
@@ -103,6 +104,10 @@ export class ContratarPlanosComponent implements OnInit {
   getUsuarioAtual(){
     this.usuarioService.getUsuarioAtual().subscribe((res: UsuarioModel) => this.usuarioAtual = res);
     return this.usuarioAtual;
+  }
+
+  formataValor(valor: Number){
+    return formataStringEmDinheiroPtBR(valor);
   }
 
 }

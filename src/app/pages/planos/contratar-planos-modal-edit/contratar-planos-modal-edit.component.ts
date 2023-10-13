@@ -1,12 +1,12 @@
-import { BeneficioAcessoModel } from 'src/app/shared/models/beneficioAcesso.model';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { catchError, tap } from 'rxjs';
 import { PlanoAcessoService } from 'src/app/core/services/planoAcesso.service';
+import { BeneficioAcessoModel } from 'src/app/shared/models/beneficioAcesso.model';
 import { NivelAcessoModel } from 'src/app/shared/models/nivelAcesso.model';
 import { PlanoAcessoModel } from 'src/app/shared/models/planoAcesso.model';
-import { catchError, tap } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-contratar-planos-modal-edit',
@@ -34,6 +34,7 @@ export class ContratarPlanosModalEditComponent implements OnInit {
       id: this.planoAcessoEdit.id || '',
       nome: this.planoAcessoEdit.nome || '',
       descricao: this.planoAcessoEdit.descricao || '',
+      valor: this.planoAcessoEdit.valor || '',
       nivelAcesso: this.fb.group({
         id: this.planoAcessoEdit.nivelAcesso.id || '',
         nome: this.planoAcessoEdit.nivelAcesso.nome || '',
@@ -73,6 +74,7 @@ export class ContratarPlanosModalEditComponent implements OnInit {
       id: Number(form.id),
       nome: form.nome,
       descricao: form.descricao,
+      valor: form.valor,
       nivelAcesso: nivelAcesso,
     };
     this.planoAcessoService.atualizar(planoAcesso).pipe(

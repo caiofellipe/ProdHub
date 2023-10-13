@@ -4,7 +4,7 @@ export interface PlanoAcessoModel{
     id: Number;
     nome: String;
     descricao: String;
-    valor?: Number;
+    valor: Number;
     dataEditado?: Date;
     nivelAcesso: NivelAcessoModel;
 }
