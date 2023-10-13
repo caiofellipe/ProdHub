@@ -1,0 +1,24 @@
+<div class="row p-4 m-auto">
+    <div class="alert alert-warning" role="alert" *ngIf="!usuarioTemEmpresa">
+        É necessario vincular um empresa ao seu usuario. <a (click)="cadastrarEmpresa()" class="alert-link">Cadastre a Empresa</a>
+    </div>
+    <div class="row align-items-center">
+        <h4 class="text-center col-9 col-md-8">
+            {{ planoAcessoEscolhido.nome }} 
+            <i class="fa-solid fa-1x text-center p-3 fa-star" [ngClass]="classePlano"></i>
+        </h4>
+        <h5 class="valor-plano col-3 col-md-4">{{ formataValor(planoAcessoEscolhido.valor) }}</h5>
+        <hr>
+    </div>
+    <div class="row m-auto p-4 mb-3">
+        <div class="col-12 col-md-6 border-end">
+            <p>{{ planoAcessoEscolhido.descricao }}</p>
+        </div>
+        <div class="col-12 col-md-6">
+            <ul class="list-group list-group-flush" *ngFor="let beneficios of planoAcessoEscolhido.nivelAcesso.beneficioAcesso">
+                <li class="list-group-item"><i class="fa-solid fa-check"></i> {{ beneficios.nome }}</li>
+              </ul>
+        </div>
+    </div>
+    <button class="btn btn-primary" (click)="contratar()">Contratar</button>
+</div>

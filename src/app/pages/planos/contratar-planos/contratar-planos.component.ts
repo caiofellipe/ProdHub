@@ -14,7 +14,7 @@ import { ResponseUsuarioAuthModel } from 'src/app/shared/models/responseUsuarioA
 import { Role } from 'src/app/shared/models/role.model';
 import { EmpresasFormComponent } from '../../empresas/empresas-form/empresas-form.component';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
-import { ContratarPlanosModalComponent } from '../contratar-planos-modal/contratar-planos-modal.component';
+import { ContratarPlanosModalComponent } from './contratar-planos-modal/contratar-planos-modal.component';
 import { formataStringEmDinheiroPtBR } from 'src/app/core/helpers/formataMoedaHelper';
 
 @Component({
@@ -43,6 +43,7 @@ export class ContratarPlanosComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuarioAuth = this.localStorageService.getToken();
+    this.getUsuarioAtual();
     this.planosDeAcesso();
     this.habilitaEditar();
     this.alteraMensagemContratoPlano();
@@ -74,7 +75,7 @@ export class ContratarPlanosComponent implements OnInit {
   }
 
   editarPlano(planoAcesso: PlanoAcessoModel){
-    const modalRef = this.modal.open(ContratarPlanosModalEditComponent, { size: 'lg' });
+    const modalRef = this.modal.open(ContratarPlanosModalComponent, { size: 'lg' });
     modalRef.componentInstance.planoAcessoEdit = planoAcesso;
   }
 
@@ -93,17 +94,20 @@ export class ContratarPlanosComponent implements OnInit {
   }
 
   contratarPlano(plano: PlanoAcessoModel){
-    this.usuarioAuth.usuario = this.getUsuarioAtual();
-    
     const modalRef = this.modal.open(ContratarPlanosModalComponent, { size: 'lg' });
     modalRef.componentInstance.planoAcessoEscolhido = plano;
-    modalRef.componentInstance.usuario = this.usuarioAuth.usuario;
-
+    modalRef.componentInstance.usuario = this.usuarioAtual;
+    modalRef.componentInstance.classePlano = this.mudaCorIconePlano(plano.nivelAcesso);
   }
 
-  getUsuarioAtual(){
-    this.usuarioService.getUsuarioAtual().subscribe((res: UsuarioModel) => this.usuarioAtual = res);
-    return this.usuarioAtual;
+  getUsuarioAtual(): UsuarioModel | any{
+    this.usuarioService.getUsuarioAtual().pipe(
+      tap((res: UsuarioModel) => {
+        return this.usuarioAtual = res;
+      }),
+      catchError((error) => {
+        return error;
+      })).subscribe();
   }
 
   formataValor(valor: Number){
