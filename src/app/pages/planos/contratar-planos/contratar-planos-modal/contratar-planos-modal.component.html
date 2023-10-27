@@ -21,6 +21,11 @@
                   </ul>
             </div>
         </div>
-        <button class="btn btn-primary" (click)="contratar()">Contratar</button>
+        <div class="alert alert-warning" role="alert" *ngIf="usuarioPlanoAcesso">
+            <p><b>Plano atual:</b> {{usuario.planoAcesso?.nome}}</p>
+            <p><b>Contratado em</b> {{formataData(usuarioPlanoAcesso.dataContratado)}}</p>
+            <p><b>Expira em</b> {{formataData(usuarioPlanoAcesso.dataExpiracao)}}</p>
+        </div>
+        <button class="btn btn-primary" (click)="contratar()" *ngIf="!usuarioPlanoAcesso">Contratar</button>
     </div>
 </div>

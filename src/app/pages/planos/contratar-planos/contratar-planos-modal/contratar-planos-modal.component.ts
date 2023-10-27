@@ -7,6 +7,8 @@ import { EmpresasFormComponent } from '../../../empresas/empresas-form/empresas-
 import { ToastrService } from 'ngx-toastr';
 import { PlanoAcessoService } from 'src/app/core/services/planoAcesso.service';
 import { catchError, tap } from 'rxjs';
+import { UsuarioPlanoAcessoModel } from 'src/app/shared/models/usuarioPlanoAcessoModel.model';
+import { formataDataPtbr } from 'src/app/core/helpers/formataDataPtbrHelper';
 
 @Component({
   selector: 'app-contratar-planos-modal',
@@ -16,6 +18,7 @@ import { catchError, tap } from 'rxjs';
 export class ContratarPlanosModalComponent implements OnInit {
   usuario!: UsuarioModel;
   planoAcessoEscolhido!: PlanoAcessoModel;
+  usuarioPlanoAcesso!: UsuarioPlanoAcessoModel;
   usuarioTemEmpresa: boolean = false;
   classePlano!: string;
 
@@ -27,6 +30,10 @@ export class ContratarPlanosModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuario.empresa ? this.usuarioTemEmpresa = true : this.usuarioTemEmpresa = false;
+
+    if(this.usuario.planoAcesso){
+      this.planoAcessoService.contratoAtual(Number(this.usuario.id)).subscribe((res: UsuarioPlanoAcessoModel) => this.usuarioPlanoAcesso = res);
+    }
   }
 
   cadastrarEmpresa(){
@@ -37,6 +44,10 @@ export class ContratarPlanosModalComponent implements OnInit {
 
   formataValor(valor: Number){
     return formataStringEmDinheiroPtBR(valor);
+  }
+
+  formataData(data: Date){
+    return formataDataPtbr(data);
   }
 
   contratar(){

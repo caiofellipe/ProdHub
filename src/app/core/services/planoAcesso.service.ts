@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { PlanoAcessoModel } from 'src/app/shared/models/planoAcesso.model';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
+import { UsuarioPlanoAcessoModel } from 'src/app/shared/models/usuarioPlanoAcessoModel.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,9 @@ export class PlanoAcessoService {
 
   contratar(usuario: UsuarioModel): Observable<UsuarioModel>{
     return this.httpClient.post<UsuarioModel>(this.apiUrl + "contratar", usuario);
+  }
+
+  contratoAtual(usuarioId: Number): Observable<UsuarioPlanoAcessoModel>{
+    return this.httpClient.get<UsuarioPlanoAcessoModel>(`${this.apiUrl}/contrato-atual/${usuarioId}`);
   }
 }
