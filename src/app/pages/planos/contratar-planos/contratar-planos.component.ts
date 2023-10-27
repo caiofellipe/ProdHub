@@ -1,21 +1,18 @@
-import { UsuarioService } from './../../../core/services/usuario.service';
-import { LocalStorageService } from 'src/app/core/services/localStorage.service';
-import { NivelAcessoModel } from './../../../shared/models/nivelAcesso.model';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, tap } from 'rxjs';
+import { formataStringEmDinheiroPtBR } from 'src/app/core/helpers/formataMoedaHelper';
+import { LocalStorageService } from 'src/app/core/services/localStorage.service';
 import { PlanoAcessoService } from 'src/app/core/services/planoAcesso.service';
 import { BeneficioAcessoModel } from 'src/app/shared/models/beneficioAcesso.model';
 import { PlanoAcessoModel } from 'src/app/shared/models/planoAcesso.model';
-import { ContratarPlanosModalEditComponent } from '../contratar-planos-modal-edit/contratar-planos-modal-edit.component';
 import { ResponseUsuarioAuthModel } from 'src/app/shared/models/responseUsuarioAuth.model';
 import { Role } from 'src/app/shared/models/role.model';
-import { EmpresasFormComponent } from '../../empresas/empresas-form/empresas-form.component';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
+import { UsuarioService } from './../../../core/services/usuario.service';
+import { NivelAcessoModel } from './../../../shared/models/nivelAcesso.model';
 import { ContratarPlanosModalComponent } from './contratar-planos-modal/contratar-planos-modal.component';
-import { formataStringEmDinheiroPtBR } from 'src/app/core/helpers/formataMoedaHelper';
 
 @Component({
   selector: 'app-contratar-planos',
@@ -30,7 +27,6 @@ export class ContratarPlanosComponent implements OnInit {
   usuarioAuth!: ResponseUsuarioAuthModel; 
   usuarioAtual!: UsuarioModel; 
   role!: Role;
-  temPlano: string = "Contratar";
 
   constructor(
     private toast: ToastrService,
@@ -46,7 +42,6 @@ export class ContratarPlanosComponent implements OnInit {
     this.getUsuarioAtual();
     this.planosDeAcesso();
     this.habilitaEditar();
-    this.alteraMensagemContratoPlano();
   }
 
   planosDeAcesso(){
@@ -85,12 +80,14 @@ export class ContratarPlanosComponent implements OnInit {
     });
   }
 
-  alteraMensagemContratoPlano(){
-    if(this.usuarioAuth.usuario.planoAcesso){
-      this.temPlano = "Atual";
+  alteraMensagemContratoPlano(planoAcesso: PlanoAcessoModel){
+    let planoAcessoId = this.usuarioAuth.usuario.planoAcesso?.id;  
+    
+    if(planoAcesso.id == planoAcessoId){
+      return "Atual";
     }
-
-    return this.temPlano;
+    
+    return "Contratar";
   }
 
   contratarPlano(plano: PlanoAcessoModel){

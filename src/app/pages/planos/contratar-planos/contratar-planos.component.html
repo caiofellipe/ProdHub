@@ -7,7 +7,7 @@
         <h5 class="card-title">{{ plano.nome }}</h5>
         <p class="card-text">{{ plano.descricao }}</p>
         <h5 class="card-text valor-plano">{{ formataValor(plano.valor) }}</h5>
-        <a class="btn btn-primary" (click)="contratarPlano(plano)">{{this.temPlano}}</a>
+        <a class="btn btn-primary" (click)="contratarPlano(plano)">{{alteraMensagemContratoPlano(plano)}}</a>
         <hr>
       </div>
       <p>Benefícios:</p>
