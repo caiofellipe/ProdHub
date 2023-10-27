@@ -35,7 +35,7 @@ export class InterceptorService implements HttpInterceptor{
       let atual = new Date();
 
       if(expiracao < atual){
-        this.toast.warning("Faça login novamente!","Alerta! Token expirado");
+        this.toast.warning("Faça login novamente!","Alerta! Sessão expirada");
         this.localStorageService.removeToken();
         this.router.navigate(['/login']);
       }

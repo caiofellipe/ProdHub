@@ -56,8 +56,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(["contratar-planos"], {queryParams: { usuario: resposta.usuario.id }} );
       }),
       catchError((error) => {
-        this.toast.error(error.error.erro,"");
-        return throwError(error);
+        return error;
       })
     ).subscribe();
   }

@@ -5,6 +5,8 @@ import { PlanoAcessoModel } from 'src/app/shared/models/planoAcesso.model';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 import { EmpresasFormComponent } from '../../../empresas/empresas-form/empresas-form.component';
 import { ToastrService } from 'ngx-toastr';
+import { PlanoAcessoService } from 'src/app/core/services/planoAcesso.service';
+import { catchError, tap } from 'rxjs';
 
 @Component({
   selector: 'app-contratar-planos-modal',
@@ -20,12 +22,11 @@ export class ContratarPlanosModalComponent implements OnInit {
   constructor(
     private modal: NgbModal,
     private toast: ToastrService,
+    private planoAcessoService: PlanoAcessoService
   ) { }
 
   ngOnInit(): void {
-    if(this.usuario.empresa){
-      this.usuarioTemEmpresa = true;
-    }
+    this.usuario.empresa ? this.usuarioTemEmpresa = true : this.usuarioTemEmpresa = false;
   }
 
   cadastrarEmpresa(){
@@ -39,6 +40,17 @@ export class ContratarPlanosModalComponent implements OnInit {
   }
 
   contratar(){
-    this.toast.info("","Não disponivel.");
+    this.usuario.planoAcesso = this.planoAcessoEscolhido;
+    this.planoAcessoService.contratar(this.usuario).pipe(
+      tap((res: UsuarioModel) => {
+        this.toast.success("Plano Contratado","Sucesso!");
+        return res;
+      }),
+      catchError((error) => {
+        return error;
+      })
+    ).subscribe();
+
+
   }
 }

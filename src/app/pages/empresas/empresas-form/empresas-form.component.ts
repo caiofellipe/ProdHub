@@ -151,14 +151,6 @@ export class EmpresasFormComponent implements OnInit {
       usuario: this.usuario,
     }
     
-    if(this.planoAcessoEscolhido != null){
-      this.planoAcessoService.salvar(this.planoAcessoEscolhido).subscribe((res: PlanoAcessoModel) => {
-        if(res){
-          this.toast.success("Plano de Acesso vinculado.","Sucesso!");
-        }
-      });
-    }
-
     this.empresaService.criar(empresa).subscribe((res: HttpResponse<EmpresaModel>) => {
       if(res){
         this.toast.success("Empresa " + empresa.nome + " criada","Sucesso!");
