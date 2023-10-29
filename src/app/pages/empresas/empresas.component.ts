@@ -6,6 +6,9 @@ import { EmpresaModel } from 'src/app/shared/models/empresa.model';
 import { ProdutosModalComponent } from '../produtos/produtos-modal/produtos-modal.component';
 import { EmpresasFormComponent } from './empresas-form/empresas-form.component';
 import { Router } from '@angular/router';
+import { ResponseUsuarioAuthModel } from 'src/app/shared/models/responseUsuarioAuth.model';
+import { Role } from 'src/app/shared/models/role.model';
+import { permissaoUsuario } from 'src/app/core/helpers/permissaoUsuarioHelper';
 
 @Component({
   selector: 'app-empresas',
@@ -14,6 +17,8 @@ import { Router } from '@angular/router';
 })
 export class EmpresasComponent implements OnInit {
   empresas: EmpresaModel[] = [];
+  usuarioAuth!: ResponseUsuarioAuthModel;
+  permissaoUsuario: string = "";
 
   constructor(
     private empresaService: EmpresaService,
@@ -23,16 +28,25 @@ export class EmpresasComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.recuperaEmpresas();
+    this.permissaoUsuario = permissaoUsuario(this.localStorageService.getToken()) || "";
+
+    this.permissaoUsuario == 'USER' ? this.recuperaEmpresaUsuario() : this.recuperaTodasEmpresas();
+    
   }
 
   cadastrar(){
     this.modal.open(EmpresasFormComponent, { size: "lg" });
   }
   
-  recuperaEmpresas(): EmpresaModel[]{
+  recuperaTodasEmpresas(): EmpresaModel[]{
     this.empresaService.recuperaTodas().subscribe((res: EmpresaModel[]) => this.empresas = res);
     return this.empresas;
+  }
+  recuperaEmpresaUsuario(){
+    this.usuarioAuth = this.localStorageService.getToken();
+    this.empresaService.recuperaPorId(Number(this.usuarioAuth.usuario.empresa?.id)).subscribe((res: EmpresaModel) => {
+      return this.empresas.push(res);
+    });
   }
 
   verProdutos(empresa: EmpresaModel){
@@ -43,5 +57,7 @@ export class EmpresasComponent implements OnInit {
     
     const modalRef = this.modal.open(EmpresasFormComponent, {size: "lg"});
     modalRef.componentInstance.empresaEdit = empresa;
+    modalRef.componentInstance.usuario = this.usuarioAuth.usuario;
+    modalRef.componentInstance.planoAcessoEscolhido = this.usuarioAuth.usuario.planoAcesso;
   }
 }

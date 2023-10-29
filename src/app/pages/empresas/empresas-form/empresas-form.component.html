@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <hr>
-                <div *ngIf="planoAcessoEscolhido.id != null || planoAcessoEscolhido.id != undefined">
+                <div *ngIf="planoAcessoEscolhido != null || planoAcessoEscolhido != undefined">
                     <h6>Plano de Acesso:</h6>
                     <div class="form-group form-floating col-12">
                         <input type="text" class="form-control" placeholder="Plano de Acesso" id="idPlanoAcesso" [value]="planoAcessoEscolhido.nome" disabled>

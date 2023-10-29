@@ -1,17 +1,14 @@
-import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { EmpresaService } from 'src/app/core/services/empresa.service';
-import { PlanoService } from 'src/app/core/services/plano.service';
+import { ProdutoService } from 'src/app/core/services/produto.service';
 import { EmpresaModel } from 'src/app/shared/models/empresa.model';
 import { NivelPlanoModel } from 'src/app/shared/models/nivelPlano.model';
 import { PlanoModel } from 'src/app/shared/models/plano.model';
 import { ProdutoModel } from 'src/app/shared/models/produto.model';
 import { SubCategoriaModel } from 'src/app/shared/models/subCategoria.model';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
-import { LocalStorageService } from '../../../core/services/localStorage.service';
 import { CategoriaModel } from '../../../shared/models/categoria.model';
 
 @Component({
@@ -50,7 +47,8 @@ export class ProdutosFormComponent implements OnInit {
 
   planos: PlanoModel[] = [];
   produtos: ProdutoModel[] = [];
-  empresa?: EmpresaModel;
+  empresa!: EmpresaModel;
+  usuario!: UsuarioModel;
   usuarioAtual!: UsuarioModel;
   usuarioTemEmpresaCadastrada: boolean = false;
 
@@ -66,9 +64,7 @@ export class ProdutosFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private localStorageService: LocalStorageService,
-    private empresaService: EmpresaService,
-    private planoService: PlanoService,
+    private produtoService: ProdutoService,
     private toast: ToastrService,
     private modal: NgbModal,
   ){}
@@ -82,16 +78,16 @@ export class ProdutosFormComponent implements OnInit {
     this.form = this.fb.group({
       nome: ['', Validators.required],
       nivel: ['', Validators.required],
-      empresaId: ['', Validators.required],
+      empresa: ['', Validators.required],
       produto: this.fb.array([]),
     });
 
     this.form.get('empresa')?.disable();
-    //this.empresaVinculadaAoUsuario();
-    this.populaSelectEmpresas();
+    this.form.get('empresa')?.setValue(this.empresa.nome)
   }
 
   novoProduto(){
+
     this.criarFormProduto();
     this.temImagem = false;
    }
@@ -124,60 +120,30 @@ export class ProdutosFormComponent implements OnInit {
     });
   }
 
-  populaSelectEmpresas(){
-    this.empresaService.recuperaTodas().subscribe((res: EmpresaModel[]) => this.comboEmpresas = res);
-  }
-
-  avancar(){
-    this.etapa = 2;
-  }
-
-  vinculaPlanoNaEmpresa(){
-
-  }
-
-  /*empresaVinculadaAoUsuario(){
-    let empresas: EmpresaModel[] = this.localStorageService.todasEmpresas();
-    let empresaEncontrada = empresas.find((empresa: EmpresaModel)=> empresa.id == this.usuarioAtual.empresaId);
-    this.form.get('empresa')?.setValue(empresaEncontrada?.id); 
-    this.empresa = empresaEncontrada;
-    return empresaEncontrada;
-  }*/
-
-  voltar(){
-    this.etapa = 1;
-  }
-
   salvar(){
     let form = this.form.getRawValue();
     this.produtos = form.produto;
-    const produtosFormatado: ProdutoModel[] = form.produto; 
+    const produtosFormatados: ProdutoModel[] = form.produto; 
+    
     this.produtos.map((p: ProdutoModel) => {
-      produtosFormatado.map((pr: ProdutoModel) => {
+      produtosFormatados.map((pr: ProdutoModel) => {
         pr.nome = p.nome,
         pr.categoria = this.getCategoria(Number(p.categoria)),
         pr.subCategoria = this.getSubCategoria(Number(p.categoria.id), Number(p.subCategoria)),
         pr.descricao = p.descricao,
+        pr.empresa = this.empresa,
         pr.imagem = p.imagem
       });
-      return produtosFormatado;
+      return produtosFormatados;
     });
     
-    let plano: PlanoModel = {
-      nome: form.nome,
-      nivel: form.nivel,
-      empresaId: Number(form.empresaId),
-      produto: produtosFormatado,
-    };
-
-    this.planoService.criar(plano).subscribe((res: HttpResponse<PlanoModel>) => {
+    this.produtoService.salvar(produtosFormatados).subscribe((res: ProdutoModel[]) => {
       if(res){
-        this.toast.success("Plano e Produto cadastrado com Sucesso");
+        this.toast.success("Produtos cadastrados", "Sucesso!");
         this.form.reset();
         this.fechar();
       }
     });
-    // this.atualizaEmpresaComPlanoLocalStorage(plano, this.empresa);
   }
 
   getCategoria(categoriaId: Number){
@@ -196,19 +162,6 @@ export class ProdutosFormComponent implements OnInit {
     }
     return subCat;
   }
-
-  /*atualizaEmpresaComPlanoLocalStorage(plano: PlanoModel, empresa?: EmpresaModel){
-    if(empresa){
-      this.planos.push(plano);
-      if(this.planos.length > 0){
-        empresa.planos?.push(...this.planos);
-      //  this.localStorageService.removerEmpresa(chaveEmpresa);
-      
-      //  this.localStorageService.salvarEmpresa(chaveEmpresa, empresa);
-      }
-    }
-
-  }*/
 
   enviaImagem(event: any, index: number){
     const file = event.target.files[0];

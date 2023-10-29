@@ -8,6 +8,7 @@ import { ProdutosModalComponent } from './produtos-modal/produtos-modal.componen
 import { catchError, tap } from 'rxjs';
 import { EmpresaService } from 'src/app/core/services/empresa.service';
 import { EmpresaModel } from 'src/app/shared/models/empresa.model';
+import { ProdutosFormComponent } from './produtos-form/produtos-form.component';
 
 @Component({
   selector: 'app-produtos',
@@ -76,8 +77,9 @@ export class ProdutosComponent implements OnInit {
   }
 
   abrirModalCadastro(){
-    const modalRef = this.modal.open(ProdutosModalComponent, { size: "lg" });
+    const modalRef = this.modal.open(ProdutosFormComponent, { size: "lg" });
     modalRef.componentInstance.empresa = this.empresa;
+    modalRef.componentInstance.usuario = this.empresa.usuario;
   }
 
 }

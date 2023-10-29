@@ -8,6 +8,6 @@ export interface ProdutoModel{
     categoria: CategoriaModel;
     subCategoria: SubCategoriaModel;
     descricao: string;
-    empresa?: EmpresaModel;
+    empresa: EmpresaModel;
     imagem: string | ArrayBuffer;
 }

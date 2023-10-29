@@ -1,35 +1,10 @@
 <div class="row p-4">
-    <div class="col-10">
-        <h4>{{ etapa === 1 ? cadastroPlano : cadastroProduto}}</h4>
-    </div>
-    <div class="col-2">
-        <p>Etapa {{ etapa }} de 2</p>
-    </div>
     <form [formGroup]="form" (ngSubmit)="salvar()">
-        <div *ngIf="etapa === 1">
-            <div class="form-floating col-12 mb-4">
-                <input type="text" class="form-control" placeholder="Nome" formControlName="nome" id="idNome">
-                <label for="idNome">Nome</label>
-            </div>
-            <div class="form-floating col-12 mb-4">
-                <select class="form-select" formControlName="nivel" id="idNivel">
-                    <option *ngFor="let np of niveisPlano; let i = index" [value]="np.nivel">{{ np.nivel }}</option>
-                </select>
-                <label for="idNivel">Nivel do Plano</label>
-            </div>
-            <div class="form-floating col-12 mb-4">
-                <select class="form-select" formControlName="empresaId" id="idEmpresa">
-                    <option *ngFor="let emp of comboEmpresas; let i = index" [value]="emp.id">{{ emp.nome }}</option>
-                </select>
-                <label for="idEmpresa">Empresa</label>
-            </div>
-            <div class="form-group text-end">
-                <button class="btn btn-outline-primary" (click)="avancar()">
-                    Próximo
-                </button>
-            </div>
+        <div class="form-floating col-12 mb-4">
+            <input class="form-control" formControlName="empresa" id="idEmpresa"/>
+            <label for="idEmpresa">Empresa</label>
         </div>
-        <div formArrayName="produto" *ngIf="etapa === 2">
+        <div formArrayName="produto" >
             <div class="row" *ngFor="let p of produtoArray.controls; let idx = index" >
                 <div [formGroupName]="idx">
                     <p>Produto: {{ idx }}</p>
@@ -68,7 +43,6 @@
             </div>
             <hr>
             <div class="form-group d-flex justify-content-between">
-                <button class="btn btn-outline-secondary" (click)="voltar()">Voltar</button>
                 <button type="submit" class="btn btn-outline-primary">Salvar</button>
             </div>
         </div>

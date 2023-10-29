@@ -3,7 +3,7 @@
         <h5>Empresas</h5>
     </div>
     <div class="col-12 col-md-4 text-end">
-        <a class="btn btn-primary" (click)="cadastrar()">Cadastrar Empresa</a>
+        <a class="btn btn-primary" (click)="cadastrar()" *ngIf="permissaoUsuario === 'ADMIN'">Cadastrar Empresa</a>
     </div>
 </div>
 <hr>
