@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -21,6 +22,7 @@ export class ConhecerEmpresaComponent implements OnInit {
     private router: Router,
     private empresaService: EmpresaService,
     private toast: ToastrService,
+    private location: Location,
   ) { }
 
   ngOnInit(): void {
@@ -46,6 +48,10 @@ export class ConhecerEmpresaComponent implements OnInit {
         })
       ).subscribe();
     });
+  }
+
+  voltar(){
+    return this.location.back();
   }
 
 }

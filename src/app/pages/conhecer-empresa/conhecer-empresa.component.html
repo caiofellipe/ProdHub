@@ -1,6 +1,9 @@
 <div class="container position-container">
     <div class="row">
         <div class="card mb-3 p-3 shadow-op">
+            <div class="row">
+                <a class="link" (click)="voltar()"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
+            </div>
             <div class="row g-0" *ngIf="empresa != undefined">
                 <div class="col-md-4">
                     <img [src]="empresa.logo" class="img-fluid rounded">
