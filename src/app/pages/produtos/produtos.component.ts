@@ -74,9 +74,9 @@ export class ProdutosComponent implements OnInit {
     return descricaoProduto;
   }
 
-  verProdutos(produtos: ProdutoModel){
+  verProduto(produto: ProdutoModel){
     const modalRefProdutos = this.modal.open(ProdutosModalComponent, { size: "lg" });
-    modalRefProdutos.componentInstance.produtos = produtos;
+    modalRefProdutos.componentInstance.produto = produto;
   }
 
   abrirModalCadastro(){

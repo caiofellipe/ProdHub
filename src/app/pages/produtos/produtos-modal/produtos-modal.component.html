@@ -1,13 +1,51 @@
 <div class="row">
-    <div *ngFor="let produto of produtos">
-        <div class="row g-0 bg-body-secondary position-relative">
-            <div class="col-md-6 mb-md-0 p-md-4">
-          <img [src]="produto.imagem" class="w-100">
-        </div>
-        <div class="col-md-6 p-4 ps-md-0">
-            <h5 class="mt-0">Produto - {{ produto.nome}}</h5>
-            <p>{{produto.descricao}}</p>
-            <a href="#" >Contratar</a>
-        </div>
-    </div>  
+    <div class="row g-0 bg-body-secondary position-relative">
+        <div class="col-md-6 mb-md-0 p-md-4">
+        <img [src]="produto.imagem" class="w-100">
+    </div>
+    <div class="col-md-6 p-4 ps-md-0">
+        <h5 class="mt-0">Produto - {{ produto.nome}}</h5>
+        <p>Categoria: {{produto.categoria.nome}}</p>
+        <p>SubCategoria: {{produto.subCategoria.nome}}</p>
+        <p>{{produto.descricao}}</p>
+        <a (click)="habilitarEdicao()" class="btn btn-primary">Editar</a>
+    </div>
 </div>
+    <div class="row mt-5 p-5" *ngIf="edicao">
+        <h6>Dados do Produto</h6>
+        <form [formGroup]="form" (ngSubmit)="editar()">
+            <div class="form-floating col-12 mb-4">
+                <input type="text" class="form-control" formControlName="nome" id="idNome">
+                <label for="idNome">Nome</label>
+            </div>
+            <div class="form-floating col-12 mb-4">
+                <select class="form-select" formControlName="categoria" id="idCategoria" >
+                    <option [value]="produto.categoria">{{ produto.categoria.nome }}</option>
+                </select>
+                <label for="idCategoria">Categoria</label>
+            </div>
+            <div class="form-floating col-12 mb-4">
+                <select class="form-select" formControlName="subCategoria" id="idSubCategoria">
+                    <option [value]="produto.subCategoria">{{ produto.subCategoria.nome }}</option>
+                </select>
+                <label for="idSubCategoria">SubCategoria</label>
+            </div>
+            <div class="form-floating col-12 mb-4">
+                <textarea class="form-control" formControlName="descricao" id="idDescricao"></textarea>
+                <label for="idDescricao">Descrição</label>
+            </div>
+            <div class="form-group col-12 mb-4">
+                <label for="idImagem">Imagem do Produto</label>
+                <div *ngIf="!temImagem">
+                    <input type="file" class="form-control" formControlName="imagem" id="idImagem" (change)="enviaImagem($event)">
+                </div>
+                <div *ngIf="temImagem" class="d-grid p-2">
+                    <img [src]="produto.imagem" class="mb-3 img-fluid w-20">
+                    <a class="btn btn-outline-primary btn-md" (click)="alterarImagem()">Alterar Imagem</a>
+                </div>
+            </div>
+            <div class="form-group d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
+    </div>

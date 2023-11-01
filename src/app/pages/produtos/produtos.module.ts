@@ -5,12 +5,14 @@ import { InterfaceModule } from 'src/app/shared/modules/interface.module';
 import { ProdutosFormComponent } from './produtos-form/produtos-form.component';
 import { ProdutosRoutingModule } from './produtos-routing.module';
 import { ProdutosComponent } from './produtos.component';
+import { ProdutosModalComponent } from './produtos-modal/produtos-modal.component';
 
 
 @NgModule({
   declarations: [
     ProdutosComponent,
-    ProdutosFormComponent
+    ProdutosFormComponent,
+    ProdutosModalComponent,
   ],
   imports: [
     CommonModule,

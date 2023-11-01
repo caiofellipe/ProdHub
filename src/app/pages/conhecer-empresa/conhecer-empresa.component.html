@@ -12,6 +12,18 @@
                         <p class="card-text"><small class="text-body-secondary">Veja o catalogo de produtos abaixo.</small></p>
                     </div>
                 </div>
+                <hr>
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-3" *ngFor="let produto of empresa.produto">
+                        <div class="card text-center mb-3 box-shadow-none">
+                            <div class="card-body">{{ produto.nome }}</div>
+                            <img [src]="produto.imagem" class="card-img-top img-fluid">
+                            <div class="card-body">
+                                <a class="btn btn-primary btn-sm">COMPRAR</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row g-0" *ngIf="empresa == undefined">
                 <div class="card-body">
