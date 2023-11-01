@@ -19,6 +19,7 @@ export class ProdutosComponent implements OnInit {
   quantidadeProdutosNoPlano: string = "";
   produtos: ProdutoModel[] = [];
   empresa!: EmpresaModel;
+  temProduto!: boolean;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -44,8 +45,10 @@ export class ProdutosComponent implements OnInit {
            
             if(this.empresa.produto != undefined && this.empresa.produto?.length > 0){
               this.toast.success("Confira os produtos.", "Sucesso");
+              this.temProduto = true;
             }else{
               this.toast.warning("É necessário cadastrar produtos.", "Atenção"); 
+              this.temProduto = false;
             }
 
           }),

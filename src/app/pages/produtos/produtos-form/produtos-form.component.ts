@@ -53,7 +53,7 @@ export class ProdutosFormComponent implements OnInit {
   usuarioTemEmpresaCadastrada: boolean = false;
 
   temImagem: boolean = false;
-  imagemBase64: string | ArrayBuffer = "";
+  imagemBase64: string | ArrayBuffer= "";
   
   niveisPlano: NivelPlanoModel[] = [
     {id: 1, nivel:"BASICO"},
@@ -83,11 +83,10 @@ export class ProdutosFormComponent implements OnInit {
     });
 
     this.form.get('empresa')?.disable();
-    this.form.get('empresa')?.setValue(this.empresa.nome)
+    this.form.get('empresa')?.setValue(this.empresa.nome);
   }
 
   novoProduto(){
-
     this.criarFormProduto();
     this.temImagem = false;
    }
@@ -121,22 +120,20 @@ export class ProdutosFormComponent implements OnInit {
   }
 
   salvar(){
-    let form = this.form.getRawValue();
-    this.produtos = form.produto;
-    const produtosFormatados: ProdutoModel[] = form.produto; 
+    const produtosFormatados: ProdutoModel[] = []; 
     
     this.produtos.map((p: ProdutoModel) => {
-      produtosFormatados.map((pr: ProdutoModel) => {
-        pr.nome = p.nome,
-        pr.categoria = this.getCategoria(Number(p.categoria)),
-        pr.subCategoria = this.getSubCategoria(Number(p.categoria.id), Number(p.subCategoria)),
-        pr.descricao = p.descricao,
-        pr.empresa = this.empresa,
-        pr.imagem = p.imagem
+      produtosFormatados.push({
+        nome: p.nome,
+        categoria: this.getCategoria(Number(p.categoria)),
+        subCategoria: this.getSubCategoria(Number(p.categoria.id) || Number(p.categoria), Number(p.subCategoria)),
+        descricao: p.descricao,
+        empresa: this.empresa,
+        imagem: p.imagem 
       });
       return produtosFormatados;
     });
-    
+  
     this.produtoService.salvar(produtosFormatados).subscribe((res: ProdutoModel[]) => {
       if(res){
         this.toast.success("Produtos cadastrados", "Sucesso!");
@@ -150,6 +147,7 @@ export class ProdutosFormComponent implements OnInit {
     const cat = this.categorias.find((ct: CategoriaModel) => ct.id == categoriaId);
     
     if(cat == undefined){
+      this.toast.warning("Categoria não encontrada","ERRO");
       throw new Error("Categoria não encontrada!");
     }
     return cat;
@@ -158,6 +156,7 @@ export class ProdutosFormComponent implements OnInit {
   getSubCategoria(categoriaId: Number, subCategoriaId: Number){
     const subCat = this.subCategorias.find((sbCat: SubCategoriaModel) => sbCat.categoriaId == categoriaId && sbCat.id == subCategoriaId);
     if(subCat == undefined){
+      this.toast.warning("SubCategoria não encontrada!","ERRO");
       throw new Error("SubCategoria não encontrada!");
     }
     return subCat;
@@ -172,7 +171,7 @@ export class ProdutosFormComponent implements OnInit {
     if(pr){
       fileReader.readAsDataURL(file);
       fileReader.onloadend = (e) => {
-        pr.imagem = e.target?.result ? e.target?.result : "";
+        pr.imagem = e.target?.result as string;
         this.temImagem = true;
       }
       this.produtos.push(pr);

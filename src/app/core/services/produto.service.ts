@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ProdutoService {
 
-  private apiUrl = environment.apiUrl; 
+  private apiUrl = environment.apiUrl + "/produto/"; 
 
   constructor(
     private httpClient: HttpClient
@@ -21,6 +21,10 @@ export class ProdutoService {
 
   buscarTodos(): Observable<ProdutoModel[]>{
     return this.httpClient.get<ProdutoModel[]>(this.apiUrl); 
+  }
+
+  buscarPorId(produtoId: Number): Observable<ProdutoModel>{
+    return this.httpClient.get<ProdutoModel>(`${this.apiUrl}/${produtoId}`); 
   }
 
   atualizar(produto: ProdutoModel): Observable<ProdutoModel>{

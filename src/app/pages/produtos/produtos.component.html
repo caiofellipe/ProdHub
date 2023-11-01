@@ -9,7 +9,7 @@
         <hr>
     </div>
     <div class="row" >
-        <div class="col-12 col-md-4" *ngIf="empresa.produto?.length != 0">
+        <div class="col-12 col-md-4" *ngIf="temProduto">
             <div class="card" *ngFor="let produto of empresa.produto">
                 <div class="card-body">
                     <h5 class="card-title">{{ produto.nome }}</h5>
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-        <div class="alert alert-warning" role="alert" *ngIf="empresa.produto?.length == 0">
+        <div class="alert alert-warning" role="alert" *ngIf="!temProduto">
             Não existe nenhum produto cadastrado, clique em "Novo Produto" para cadastrar <a (click)="abrirModalCadastro()" class="alert-link">Novo Produto.</a>
         </div>
     </div>
