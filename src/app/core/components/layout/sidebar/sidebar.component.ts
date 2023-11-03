@@ -1,8 +1,11 @@
+import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "src/app/core/services/auth.service";
 import { Role } from "src/app/shared/models/role.model";
 import { UsuarioModel } from "src/app/shared/models/usuario.model";
+import { LocalStorageService } from 'src/app/core/services/localStorage.service';
+import { ResponseUsuarioAuthModel } from 'src/app/shared/models/responseUsuarioAuth.model';
 
 @Component({
     selector: 'app-sidebar',
@@ -17,15 +20,12 @@ export class SidebarComponent implements OnInit{
     constructor(
         private router: Router,
         private routeActive: ActivatedRoute,
-        private authService: AuthService,
+        private localStorageService: LocalStorageService,
+        private usuarioService: UsuarioService
     ){}
 
     ngOnInit(): void {
-      //  this.getUsuarioAtual();
-    }
-
-    getUsuarioAtual(){
-        this.authService.getUsuarioAtual().subscribe((res: UsuarioModel) => this.usuario = res);
+        this.usuario = this.localStorageService.getToken().usuario as UsuarioModel;
     }
 
     perfil() {
@@ -33,7 +33,17 @@ export class SidebarComponent implements OnInit{
     }
 
     hiddenLink(){
-        let usuarioTemPermissao = this.usuario.roles?.find((role: Role) => role.nome.startsWith("ADMIN"));
+        let usuarioTemPermissao = this.usuario.role.nome;
         return this.hidden = usuarioTemPermissao ? true : false
+    }
+
+    usuarioTemNivelAcesso(){
+        let acesso: boolean = false;
+        let role = this.usuario.role.nome;
+
+        if(this.usuario.planoAcesso?.nivelAcesso.nome != "Bronze" || role){
+            return acesso = true;
+        }
+        return acesso;
     }
 }

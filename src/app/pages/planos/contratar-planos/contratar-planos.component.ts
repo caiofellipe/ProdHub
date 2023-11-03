@@ -75,9 +75,7 @@ export class ContratarPlanosComponent implements OnInit {
   }
 
   habilitaEditar(){
-    return this.usuarioAuth.usuario.roles?.map((role: Role) => {
-      this.role = role;
-    });
+    return this.role = this.usuarioAuth.usuario.role;
   }
 
   alteraMensagemContratoPlano(planoAcesso: PlanoAcessoModel){

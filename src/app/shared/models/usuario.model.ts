@@ -12,7 +12,7 @@ export interface UsuarioModel {
 	ativo?: Boolean;
     dataCriado?: Date;
 	dataAlterado?: Date;
-	roles?: Role[];
+	role: Role;
 	authorities?: AuthorityModel[];
 	empresa?: EmpresaModel;
 	planoAcesso?: PlanoAcessoModel;
