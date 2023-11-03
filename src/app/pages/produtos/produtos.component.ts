@@ -61,18 +61,6 @@ export class ProdutosComponent implements OnInit {
     });
   }
 
-  retornaDescricaoProduto(produto: ProdutoModel){
-    let descricaoProduto: string = "";
-    this.quantidadeProdutosNoPlano = "Contém " + " Produtos.";
-    
-  /*  if(plano.produto.length > 0){
-      plano.produto.forEach((produto: ProdutoModel) => {
-        descricaoProduto = produto.descricao;
-      });
-    }
-*/
-    return descricaoProduto;
-  }
 
   verProduto(produto: ProdutoModel){
     const modalRefProdutos = this.modal.open(ProdutosModalComponent, { size: "lg" });
