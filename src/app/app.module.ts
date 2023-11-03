@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { InterceptorModule } from './core/interceptors/interceptor.module';
 import { InterfaceModule } from './shared/modules/interface.module';
 import { ProdutosComponent } from './pages/produtos/produtos.component';
+import { BeneficioAcessoComponent } from './pages/beneficio-acesso/beneficio-acesso.component';
 
 @NgModule({
   declarations: [

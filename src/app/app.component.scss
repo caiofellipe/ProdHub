@@ -14,3 +14,10 @@
 .p3{
     color: #ffd700;
 }
+.position-container{
+    height: 100vh;
+    padding: 3.14285714rem;
+    position: relative;
+    overflow: auto;
+    overflow-x: hidden;
+}

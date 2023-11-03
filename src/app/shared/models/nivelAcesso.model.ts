@@ -2,6 +2,6 @@ import { BeneficioAcessoModel } from "./beneficioAcesso.model";
 
 export interface NivelAcessoModel{
     id: Number;
-    nome: String;
+    nome: string;
     beneficioAcesso: BeneficioAcessoModel[];
 }

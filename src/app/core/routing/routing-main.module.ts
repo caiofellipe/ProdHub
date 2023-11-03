@@ -48,6 +48,15 @@ const RoutingMain: Routes = [
     data: {
       roles: ["USER", "ADMIN"]
     }
+    
+  },
+  {
+    path: 'beneficio-acesso',
+    loadChildren: () => import('../../pages/beneficio-acesso/beneficio-acesso.module').then(m => m.BeneficioAcessoModule),
+    data: {
+      roles: ["USER", "ADMIN"]
+    }
+    
   },
 ];
 

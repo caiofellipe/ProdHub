@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12 mb-2 p-1">
+            <a class="link" (click)="voltar()">
+                <small>
+                    <i class="fa-solid fa-arrow-left"></i> Voltar
+                </small>
+            </a>
+        </div>
+        <div class="col-12 col-md-10">
+            <h5>Beneficios de Acesso</h5>
+        </div>
+        <div class="col-12 col-md-2">
+            <a class="btn btn-primary" (click)="modalCadastroOuEdicao()">Cadastrar</a>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Código</th>
+                        <th scope="col">Nivel Acesso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ba of beneficioAcesso">
+                        <td>{{ ba.nome }}</td>
+                        <td>{{ ba.codigo }}</td>
+                        <td>{{ preencheNomeNivelAcesso(ba) }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a (click)="modalCadastroOuEdicao(ba)" class="btn btn-outline-primary">Editar</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

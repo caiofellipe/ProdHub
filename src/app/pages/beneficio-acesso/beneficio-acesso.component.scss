@@ -1,0 +1,22 @@
+$ouro: #ffd700;
+$prata: #c0c0c0;
+$bronze: #cd7f32;
+$branco: #ffffff;
+$preto: #000000;
+
+
+.nv1{
+    color: $preto;
+    background-color: $ouro;
+    border-color: $branco;
+}
+.nv2{
+    color: $preto;
+    background-color: $prata;
+    border-color: $branco;
+}
+.nv3{
+    color: $preto;
+    background-color: $bronze;
+    border-color: $branco;
+}

@@ -1,0 +1,27 @@
+<div class="row p-4">
+    <form [formGroup]="form" (ngSubmit)="salvar()">
+        <h6>Beneficio - Nivel de Acesso</h6>
+        <div class="form-floating col-12 mb-4">
+            <input type="text" class="form-control" formControlName="nome" id="idNome" (change)="criaCodigoBeneficio()">
+            <label for="idNome">Nome</label>
+        </div>
+        <div class="form-floating col-12 mb-4">
+            <input type="text" class="form-control" formControlName="codigo" id="idCodigo">
+            <label for="idCodigo">Codigo</label>
+        </div>
+        <div class="form-floating col-12 mb-4" *ngIf="niveisAcesso.length > 1">
+            <select class="form-select" formControlName="nivelAcesso" id="idNivelAcesso">
+                <option *ngFor="let nv of niveisAcesso; let i = index" [value]="nv.id">{{ nv.nome }}</option>
+            </select>
+            <label for="idNivelAcesso">Nivel Acesso</label>
+        </div>
+        <div class="form-floating col-12 mb-4" *ngIf="niveisAcesso.length <= 1">
+            <input type="text" class="form-control" formControlName="nivelAcesso" id="idNivelAcesso">
+            <label for="idNivelAcesso">Nivel Acesso</label>
+        </div>
+        <hr>
+        <div class="form-group d-flex justify-content-between">
+            <button type="submit" class="btn btn-outline-primary">Salvar</button>
+        </div>
+    </form>
+</div>

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { PlanoAcessoModel } from 'src/app/shared/models/planoAcesso.model';
 import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 import { UsuarioPlanoAcessoModel } from 'src/app/shared/models/usuarioPlanoAcessoModel.model';
+import { NivelAcessoModel } from 'src/app/shared/models/nivelAcesso.model';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,15 @@ export class PlanoAcessoService {
   }
 
   contratoAtual(usuarioId: Number): Observable<UsuarioPlanoAcessoModel>{
-    return this.httpClient.get<UsuarioPlanoAcessoModel>(`${this.apiUrl}/contrato-atual/${usuarioId}`);
+    return this.httpClient.get<UsuarioPlanoAcessoModel>(`${this.apiUrl}contrato-atual/${usuarioId}`);
   }
+
+  niveisAcessoComBeneficio(): Observable<NivelAcessoModel[]>{
+    return this.httpClient.get<NivelAcessoModel[]>(`${this.apiUrl}niveis-acesso/beneficios`);
+  }
+
+  niveisAcesso(): Observable<NivelAcessoModel[]>{
+    return this.httpClient.get<NivelAcessoModel[]>(`${this.apiUrl}niveis-acesso/`);
+  }
+  
 }
