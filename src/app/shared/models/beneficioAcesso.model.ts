@@ -4,6 +4,6 @@ export interface BeneficioAcessoModel{
     id: Number;
     nome: string;
     nivelAcesso?: NivelAcessoModel;
-    nomeNivelAcesso: string,
+    nomeNivelAcesso: string;
     codigo: string;
 }

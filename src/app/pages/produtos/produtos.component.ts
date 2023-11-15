@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { LocalStorageService } from 'src/app/core/services/localStorage.service';
-import { ProdutoModel } from 'src/app/shared/models/produto.model';
-import { ProdutosModalComponent } from './produtos-modal/produtos-modal.component';
 import { catchError, tap } from 'rxjs';
 import { EmpresaService } from 'src/app/core/services/empresa.service';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { EmpresaModel } from 'src/app/shared/models/empresa.model';
+import { ProdutoModel } from 'src/app/shared/models/produto.model';
 import { ProdutosFormComponent } from './produtos-form/produtos-form.component';
+import { ProdutosModalComponent } from './produtos-modal/produtos-modal.component';
+import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 
 @Component({
   selector: 'app-produtos',
@@ -20,13 +21,16 @@ export class ProdutosComponent implements OnInit {
   produtos: ProdutoModel[] = [];
   empresa!: EmpresaModel;
   temProduto!: boolean;
+  usuario!: UsuarioModel;
+  sugereMudancaPlano: boolean = false;
+  podeCadastrarProduto!: boolean;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private modal: NgbModal,
     private toast: ToastrService,
-    private localStorageService: LocalStorageService,
+    private usuarioService: UsuarioService,
     private empresaService: EmpresaService,
   ) { }
 
@@ -42,7 +46,7 @@ export class ProdutosComponent implements OnInit {
         this.empresaService.recuperaPorId(empresaId).pipe(
           tap((res: EmpresaModel) => {
             this.empresa = res;
-           
+            
             if(this.empresa.produto != undefined && this.empresa.produto?.length > 0){
               this.toast.success("Confira os produtos.", "Sucesso");
               this.temProduto = true;
@@ -59,6 +63,8 @@ export class ProdutosComponent implements OnInit {
         ).subscribe();
       }
     });
+  
+  
   }
 
 
@@ -68,9 +74,31 @@ export class ProdutosComponent implements OnInit {
   }
 
   abrirModalCadastro(){
-    const modalRef = this.modal.open(ProdutosFormComponent, { size: "lg" });
-    modalRef.componentInstance.empresa = this.empresa;
-    modalRef.componentInstance.usuario = this.empresa.usuario;
+    let quantidadeProdutosPlano: number | undefined = this.empresa.usuario?.planoAcesso?.quantidadeProdutos; 
+    let quantidadeProdutosNaEmresa: number | undefined = this.empresa.produto?.length;
+ 
+
+    if(this.empresa.usuario == undefined){
+      this.toast.info("Empresa não tem vinculo com nenhum usuario","Atenção");
+    }
+
+    if(quantidadeProdutosPlano != undefined && quantidadeProdutosNaEmresa != undefined){
+      if(quantidadeProdutosNaEmresa <= quantidadeProdutosPlano){
+        const modalRef = this.modal.open(ProdutosFormComponent, { size: "lg" });
+        modalRef.componentInstance.empresa = this.empresa;
+        modalRef.componentInstance.usuario = this.empresa.usuario;
+      }else{
+        this.sugereMudancaPlano = true;
+      }
+    }
+
+
+
+  }
+
+  getUsuario(){
+    this.usuario = this.usuarioService.getUsuarioAtualLocalStorage();
+
   }
 
 }

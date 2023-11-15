@@ -19,9 +19,15 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="alert alert-warning" role="alert" *ngIf="!temProduto">
+    <div class="row" *ngIf="!temProduto">
+        <div class="alert alert-warning" role="alert" >
             Não existe nenhum produto cadastrado, clique em "Novo Produto" para cadastrar <a (click)="abrirModalCadastro()" class="alert-link">Novo Produto.</a>
+        </div>
+    </div>
+    <hr>
+    <div class="row" *ngIf="sugereMudancaPlano">
+        <div class="alert alert-success" role="alert">
+            Considere mudar de plano para cadastrar novos produtos. <a routerLink="/contratar-planos" class="alert-link">Ir para planos.</a>
         </div>
     </div>
 </div>

@@ -15,7 +15,6 @@ import { ResponseUsuarioAuthModel } from 'src/app/shared/models/responseUsuarioA
 export class SidebarComponent implements OnInit{
     public sidebarShow: boolean = false;
     usuario!: UsuarioModel;
-    hidden: boolean = false;
 
     constructor(
         private router: Router,
@@ -25,25 +24,17 @@ export class SidebarComponent implements OnInit{
     ){}
 
     ngOnInit(): void {
-        this.usuario = this.localStorageService.getToken().usuario as UsuarioModel;
     }
 
     perfil() {
         this.router.navigate(['/usuario'], {relativeTo: this.routeActive});
     }
 
-    hiddenLink(){
-        let usuarioTemPermissao = this.usuario.role.nome;
-        return this.hidden = usuarioTemPermissao ? true : false
+    usuarioTemNivelAcesso(){
+       return this.usuarioService.usuarioTemNivelAcesso();
     }
 
-    usuarioTemNivelAcesso(){
-        let acesso: boolean = false;
-        let role = this.usuario.role.nome;
-
-        if(this.usuario.planoAcesso?.nivelAcesso.nome != "Bronze" || role){
-            return acesso = true;
-        }
-        return acesso;
+    roleUsuario(){
+        return this.usuarioService.roleUsuario().nome;   
     }
 }

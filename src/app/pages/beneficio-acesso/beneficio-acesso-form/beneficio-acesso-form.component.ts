@@ -85,7 +85,7 @@ export class BeneficioAcessoFormComponent implements OnInit {
       id: form.id,
       nome: form.nome,
       codigo: this.criaCodigoBeneficio(),
-      nomeNivelAcesso: form.nivelAcesso
+      nomeNivelAcesso: form.nivelAcesso,
     };
 
     if(beneficio.id.toString() != ''){

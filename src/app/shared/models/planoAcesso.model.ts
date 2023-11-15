@@ -7,4 +7,6 @@ export interface PlanoAcessoModel{
     valor: Number;
     dataEditado?: Date;
     nivelAcesso: NivelAcessoModel;
+    empresaCadastraProduto: boolean;
+    quantidadeProdutos: number;
 }

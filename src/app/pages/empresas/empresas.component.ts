@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { ResponseUsuarioAuthModel } from 'src/app/shared/models/responseUsuarioAuth.model';
 import { Role } from 'src/app/shared/models/role.model';
 import { permissaoUsuario } from 'src/app/core/helpers/permissaoUsuarioHelper';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 
 @Component({
   selector: 'app-empresas',
@@ -17,20 +19,21 @@ import { permissaoUsuario } from 'src/app/core/helpers/permissaoUsuarioHelper';
 })
 export class EmpresasComponent implements OnInit {
   empresas: EmpresaModel[] = [];
-  usuarioAuth!: ResponseUsuarioAuthModel;
-  permissaoUsuario: string = "";
+  usuario!: UsuarioModel;
+  roleUsuario!: Role;
 
   constructor(
     private empresaService: EmpresaService,
     private localStorageService: LocalStorageService,
+    private usuarioService: UsuarioService,
     private modal: NgbModal,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
-    this.permissaoUsuario = permissaoUsuario(this.localStorageService.getToken()) || "";
+    this.roleUsuario = this.usuarioService.roleUsuario();
 
-    this.permissaoUsuario == 'USER' ? this.recuperaEmpresaUsuario() : this.recuperaTodasEmpresas();
+    this.roleUsuario.nome == 'USER' ? this.recuperaEmpresaUsuario() : this.recuperaTodasEmpresas();
     
   }
 
@@ -43,8 +46,8 @@ export class EmpresasComponent implements OnInit {
     return this.empresas;
   }
   recuperaEmpresaUsuario(){
-    this.usuarioAuth = this.localStorageService.getToken();
-    this.empresaService.recuperaPorId(Number(this.usuarioAuth.usuario.empresa?.id)).subscribe((res: EmpresaModel) => {
+    this.usuario = this.usuarioService.getUsuarioAtualLocalStorage();
+    this.empresaService.recuperaPorId(Number(this.usuario.empresa?.id)).subscribe((res: EmpresaModel) => {
       return this.empresas.push(res);
     });
   }
@@ -57,7 +60,7 @@ export class EmpresasComponent implements OnInit {
     
     const modalRef = this.modal.open(EmpresasFormComponent, {size: "lg"});
     modalRef.componentInstance.empresaEdit = empresa;
-    modalRef.componentInstance.usuario = this.usuarioAuth.usuario;
-    modalRef.componentInstance.planoAcessoEscolhido = this.usuarioAuth.usuario.planoAcesso;
+    modalRef.componentInstance.usuario = this.usuario;
+    modalRef.componentInstance.planoAcessoEscolhido = this.usuario.planoAcesso;
   }
 }

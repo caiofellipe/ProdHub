@@ -40,9 +40,12 @@ export class ContratarPlanosModalEditComponent implements OnInit {
         nome: this.planoAcessoEdit.nivelAcesso.nome || '',
         beneficioAcesso: this.fb.array([])
       }),
+      empresaCadastraProduto: [this.planoAcessoEdit.empresaCadastraProduto || ""],
+      quantidadeProdutos: [this.planoAcessoEdit.quantidadeProdutos || ""]
     });
     this.criaFormBeneficio();
     this.form.get('nivelAcesso.nome')?.disable();
+    this.form.get('quantidadeProdutos')?.disable();
   }
 
   criaFormBeneficio(){
@@ -67,6 +70,19 @@ export class ContratarPlanosModalEditComponent implements OnInit {
     return this.form.get('nivelAcesso.beneficioAcesso') as FormArray;
   }
 
+  cadastraProduto(event: any){
+    let checked = event.target.checked;
+
+    if(!checked){
+      this.form.get('quantidadeProdutos')?.setValue(0);
+      this.form.get('quantidadeProdutos')?.disable();
+      return;
+    }
+
+    return this.form.get('quantidadeProdutos')?.enable();
+
+  }
+
   atualizar(){
     let form = this.form.getRawValue();
     let nivelAcesso: NivelAcessoModel = form.nivelAcesso;
@@ -76,6 +92,8 @@ export class ContratarPlanosModalEditComponent implements OnInit {
       descricao: form.descricao,
       valor: form.valor,
       nivelAcesso: nivelAcesso,
+      empresaCadastraProduto: form.empresaCadastraProduto,
+      quantidadeProdutos: Number(form.quantidadeProdutos)
     };
     this.planoAcessoService.atualizar(planoAcesso).pipe(
       tap((resposta: PlanoAcessoModel) => {

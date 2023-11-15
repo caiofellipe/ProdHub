@@ -13,6 +13,7 @@ import { UsuarioModel } from 'src/app/shared/models/usuario.model';
 import { UsuarioService } from './../../../core/services/usuario.service';
 import { NivelAcessoModel } from './../../../shared/models/nivelAcesso.model';
 import { ContratarPlanosModalComponent } from './contratar-planos-modal/contratar-planos-modal.component';
+import { ContratarPlanosModalEditComponent } from '../contratar-planos-modal-edit/contratar-planos-modal-edit.component';
 
 @Component({
   selector: 'app-contratar-planos',
@@ -70,7 +71,7 @@ export class ContratarPlanosComponent implements OnInit {
   }
 
   editarPlano(planoAcesso: PlanoAcessoModel){
-    const modalRef = this.modal.open(ContratarPlanosModalComponent, { size: 'lg' });
+    const modalRef = this.modal.open(ContratarPlanosModalEditComponent, { size: 'lg' });
     modalRef.componentInstance.planoAcessoEdit = planoAcesso;
   }
 

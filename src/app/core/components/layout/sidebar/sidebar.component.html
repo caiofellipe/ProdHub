@@ -20,9 +20,9 @@
                         Gerenciamento <i class="fa-solid fa-caret-down"></i>
                     </a>
                     <ul class="collapse" id="collapseGerenciamento">
-                        <li><a class="list-group-item text-white p-2" routerLink="/empresas" [hidden]="hidden">Empresa</a></li>
-                        <li *ngIf="usuarioTemNivelAcesso()"><a class="list-group-item text-white p-2" routerLink="/convites">Convites</a></li>
-                        <li><a class="list-group-item text-white p-2" routerLink="/beneficio-acesso">Beneficio Acesso</a></li>
+                        <li><a class="list-group-item text-white p-2" routerLink="/empresas" >Empresa</a></li>
+                        <li *ngIf="usuarioTemNivelAcesso() || roleUsuario() == 'ADMIN'"><a class="list-group-item text-white p-2" routerLink="/convites">Convites</a></li>
+                        <li *ngIf="usuarioTemNivelAcesso() || roleUsuario() == 'ADMIN'"><a class="list-group-item text-white p-2" routerLink="/beneficio-acesso">Beneficio Acesso</a></li>
                     </ul>
                 </div>
                 <div class="list-group-item">
@@ -30,7 +30,7 @@
                         Planos <i class="fa-solid fa-caret-down"></i>
                     </a>
                     <ul class="collapse" id="collapsePlanos">
-                        <li><a class="list-group-item text-white p-2" routerLink="/contratar-planos" [hidden]="hidden">Contratar Planos</a></li>
+                        <li><a class="list-group-item text-white p-2" routerLink="/contratar-planos">Contratar Planos</a></li>
                     </ul>
                 </div>
             </ul>

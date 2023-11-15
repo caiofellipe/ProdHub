@@ -35,22 +35,22 @@ export class UsuarioService {
     return this.httpClient.get<UsuarioModel>(`${this.apiUrl}/usuario/atual`);
   }
 
-  usuarioTemPermissao(){
+  usuarioTemNivelAcesso(){
     let acesso: boolean = false;
     let usuario: UsuarioModel = this.localStorageService.getToken().usuario as UsuarioModel;
-    let role = usuario.role.nome;
 
-    if(usuario.planoAcesso?.nivelAcesso.nome != "Bronze" || role){
-        return acesso = true;
+    if(usuario.planoAcesso?.nivelAcesso.nome != "Bronze"){
+      return acesso = true;
     }
     return acesso;
   }
 
-  usuarioTemPlano(){
-    this.getUsuarioAtual().subscribe((user: UsuarioModel) => {
-      return user.planoAcesso?.nivelAcesso.nome;
-    });
+  getUsuarioAtualLocalStorage(): UsuarioModel{
+    return this.localStorageService.getToken().usuario as UsuarioModel;
   }
 
+  roleUsuario(){
+    return this.localStorageService.getToken().usuario.role as Role;
+  }
 
 }

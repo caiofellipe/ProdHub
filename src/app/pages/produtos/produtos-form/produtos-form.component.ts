@@ -87,8 +87,15 @@ export class ProdutosFormComponent implements OnInit {
   }
 
   novoProduto(){
-    this.criarFormProduto();
-    this.temImagem = false;
+    let quantidadeProdutosPlano: number | undefined = this.empresa.usuario?.planoAcesso?.quantidadeProdutos;
+    
+    if((quantidadeProdutosPlano != undefined) && this.produtoArray.length < quantidadeProdutosPlano){
+      this.criarFormProduto();
+      this.temImagem = false;
+    }else{
+      this.toast.info("Limite de Produtos atingido!","Atenção");
+    }
+
    }
  
    criarFormProduto(){
